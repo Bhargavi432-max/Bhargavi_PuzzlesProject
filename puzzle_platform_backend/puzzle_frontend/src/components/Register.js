@@ -28,7 +28,7 @@ export const Register = (props) => {
         // Here you would make an API call to your backend server
         // which then sends an email with the OTP to the provided email address
         // Example implementation:
-        const response = await fetch('your-backend-api-url/send-otp', {
+        const response = await fetch('http://127.0.0.1:8000/api/register_user/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
