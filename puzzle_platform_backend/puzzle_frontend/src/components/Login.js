@@ -3,10 +3,41 @@ import React, { useState } from "react";
 export const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email);
+        setLoading(true);
+        setError(null);
+        // console.log(email);
+
+        const userData = {
+            email:email,
+            password: pass,
+        };
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/user_login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message);
+                setError(data.message);
+            }
+            // Optionally, you can show a success message or redirect the user
+        } catch (error) {
+            console.error('Error registering:', error.message);
+            setError('Login failed. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
