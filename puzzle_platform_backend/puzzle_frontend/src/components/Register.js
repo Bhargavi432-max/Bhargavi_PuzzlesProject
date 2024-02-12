@@ -28,10 +28,11 @@ export const Register = (props) => {
                 },
                 body: JSON.stringify(userData)
             });
-            if (!response.ok) {
-                throw new Error('Registration failed');
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message);
+                setError(data.message);
             }
-            console.log('Registration successful');
             // Optionally, you can show a success message or redirect the user
         } catch (error) {
             console.error('Error registering:', error.message);
