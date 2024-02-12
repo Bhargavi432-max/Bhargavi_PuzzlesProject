@@ -5,44 +5,40 @@ export const Register = (props) => {
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(email, pass, name, phone);
+        setLoading(true);
+        setError(null);
+
+        const userData = {
+            email:email,
+            password: pass,
+            username: name,
+            mobile_number: phone
+        };
 
         try {
-            // Call a function to send OTP to the registered email
-            await sendOtpEmail(email);
-            // Optionally, you can show a success message or navigate to a verification page
-            console.log("OTP sent successfully.");
+            const response = await fetch('http://127.0.0.1:8000/api/register_user/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+            if (!response.ok) {
+                throw new Error('Registration failed');
+            }
+            console.log('Registration successful');
+            // Optionally, you can show a success message or redirect the user
         } catch (error) {
-            // Handle error if OTP sending fails
-            console.error("Error sending OTP:", error);
+            console.error('Error registering:', error.message);
+            setError('Registration failed. Please try again.');
+        } finally {
+            setLoading(false);
         }
-    }
-
-    const sendOtpEmail = async (email) => {
-        // Replace this function with the implementation using your email service provider
-        // For example, you could use a service like SendGrid, Mailgun, etc.
-        const otp = generateOTP(); // Generate OTP
-        // Here you would make an API call to your backend server
-        // which then sends an email with the OTP to the provided email address
-        // Example implementation:
-        const response = await fetch('http://127.0.0.1:8000/api/register_user/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, otp })
-        });
-        if (!response.ok) {
-            throw new Error('Failed to send OTP');
-        }
-    }
-
-    const generateOTP = () => {
-        // Generate OTP logic
-        return Math.floor(100000 + Math.random() * 900000); // Example OTP generation
     }
 
     return (
@@ -51,13 +47,18 @@ export const Register = (props) => {
             <form className="register-form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Full name</label>
                 <input value={name} name="name" onChange={(e) => setName(e.target.value)} id="name" placeholder="Full Name" />
+                <br />
                 <label htmlFor="email">Email</label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
+                <br />
                 <label htmlFor="password">Password</label>
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
+                <br />
                 <label htmlFor="phone">Phone Number</label>
                 <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder="Phone Number" id="phone" name="phone" />
-                <button type="submit">Register</button>
+                <br />
+                <button type="submit" disabled={loading}>Register</button>
+                {error && <p className="error-message">{error}</p>}
             </form>
             <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
         </div>
