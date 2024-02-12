@@ -4,7 +4,7 @@ class CustomUser(models.Model):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
+    password = models.CharField(max_length=150)
     mobile_number = models.CharField(max_length=20)
     login_status = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
