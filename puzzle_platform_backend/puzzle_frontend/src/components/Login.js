@@ -7,7 +7,7 @@ export const Login = (props) => {
     const [error, setError] = useState(null);
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
