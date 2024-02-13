@@ -60,7 +60,7 @@ def user_login(request):
         data = json.loads(request.body)
         email = data.get('email')
         password = data.get('password')
-
+        print(email,password)
         user = authenticate_user(email, password)
         if user is not None:
             if user.is_active:

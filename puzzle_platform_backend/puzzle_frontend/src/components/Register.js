@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export const Register = (props) => {
+export const Register = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,7 +16,7 @@ export const Register = (props) => {
         setError(null);
 
         const userData = {
-            email:email,
+            email: email,
             password: pass,
             username: name,
             mobile_number: phone
@@ -33,13 +35,16 @@ export const Register = (props) => {
                 console.log(data.message);
                 setError(data.message);
             }
-            // Optionally, you can show a success message or redirect the user
         } catch (error) {
             console.error('Error registering:', error.message);
             setError('Registration failed. Please try again.');
         } finally {
             setLoading(false);
         }
+    }
+
+    const navigateToLogin = () => {
+        navigate('/login');
     }
 
     return (
@@ -61,7 +66,7 @@ export const Register = (props) => {
                 <button type="submit" disabled={loading}>Register</button>
                 {error && <p className="error-message">{error}</p>}
             </form>
-            <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
+            <button className="link-btn" onClick={navigateToLogin}>Already have an account? Login here.</button>
         </div>
     )
 }
