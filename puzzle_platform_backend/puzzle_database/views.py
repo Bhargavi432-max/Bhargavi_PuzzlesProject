@@ -4,7 +4,11 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import CustomUser,Admin
 import json
-from django.core.exceptions import ObjectDoesNotExist
+import random
+from django.core.mail import send_mail
+from django.conf import settings
+
+
 
 @csrf_exempt
 def register_user(request):
@@ -20,16 +24,35 @@ def register_user(request):
         
         if CustomUser.objects.filter(username=username).exists():
             return JsonResponse({'message': 'Username already exists'})
-        else:
-            try:
-                hashed_password = make_password(password)
-                new_user = CustomUser.objects.create(username=username, email=email, password=hashed_password, mobile_number=mobile_number)
-                return JsonResponse({'message': 'User registered successfully'})
-            except Exception as e:
-                return JsonResponse({'message': 'Error occurred while registering user'})
+
+        otp = str(random.randint(100000, 999999))
+        
+        try:
+            hashed_password = make_password(password)
+            new_user = CustomUser.objects.create(
+                username=username, 
+                email=email, 
+                password=hashed_password, 
+                mobile_number=mobile_number,
+                otp=otp, 
+                is_active=False
+            )
+            
+            send_mail(
+                'Account Activation OTP',
+                f'Your OTP for account activation is: {otp}',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+
+            return JsonResponse({'message': 'User registered successfully. Please check your email for OTP.'})
+        except Exception as e:
+            return JsonResponse({'message': 'Error occurred while registering user'})
 
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
 
 @csrf_exempt
 def user_login(request):
@@ -37,23 +60,25 @@ def user_login(request):
         data = json.loads(request.body)
         email = data.get('email')
         password = data.get('password')
-        print(email,password)
 
         user = authenticate_user(email, password)
         if user is not None:
-            user.login_status = True
-            user.save()
-            return JsonResponse({'message': 'User login successful','login_status':user.login_status})
+            if user.is_active:
+                user.login_status = True
+                user.save()
+                return JsonResponse({'message': 'User login successful', 'login_status': user.login_status})
+            else:
+                return JsonResponse({'message': 'User account is not active', 'login_status': False})
         
         admin = authenticate_admin(email, password)
         if admin is not None:
             admin.login_status = True
             admin.save()
-            return JsonResponse({'message': 'Admin login successful','login_status':user.login_status})
+            return JsonResponse({'message': 'Admin login successful', 'login_status': admin.login_status})
 
-        return JsonResponse({'message': 'Invalid username or password','login_status':False})
+        return JsonResponse({'message': 'Invalid username or password', 'login_status': False})
     else:
-        return JsonResponse({'message': 'Only POST requests are allowed','login_status':False})
+        return JsonResponse({'message': 'Only POST requests are allowed', 'login_status': False})
 
 
 @csrf_exempt
@@ -79,6 +104,23 @@ def change_password(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
+
+@csrf_exempt
+def verify_otp(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        otp = data.get('otp')
+
+        try:
+            user = CustomUser.objects.get(email=email, otp=otp)
+            user.is_active = True
+            user.save()
+            return JsonResponse({'message': 'Account activated successfully'})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'message': 'Invalid OTP'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
 def authenticate_admin(email, password):
     try:

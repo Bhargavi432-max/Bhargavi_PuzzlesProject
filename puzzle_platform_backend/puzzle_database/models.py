@@ -7,6 +7,8 @@ class CustomUser(models.Model):
     password = models.CharField(max_length=150)
     mobile_number = models.CharField(max_length=20)
     login_status = models.BooleanField(default=False)
+    otp = models.CharField(max_length=6, null=True, blank=True)
+    is_active = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
