@@ -104,6 +104,85 @@ def change_password(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
+@csrf_exempt
+def forgot_password(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'message': 'User with this email does not exist'})
+
+        # Generate OTP
+        otp = str(random.randint(100000, 999999))
+
+        # Save the OTP to the user instance
+        user.otp = otp
+        user.save()
+
+        # Send email with OTP
+        subject = 'Password Reset OTP'
+        message = f'Your OTP for password reset is: {otp}'
+        email_from = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [email]
+        send_mail(subject, message, email_from, recipient_list)
+
+        return JsonResponse({'message': 'OTP sent to your email. Please check your inbox.'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
+
+@csrf_exempt
+def check_otp(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        otp = data.get('otp')
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            if user.otp == otp:
+                return JsonResponse({'message': 'OTP is valid'})
+            else:
+                return JsonResponse({'message': 'Invalid OTP'})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'message': 'User with this email does not exist'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
+
+@csrf_exempt
+def reset_password(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        new_password = data.get('new_password')
+        confirm_password = data.get('confirm_password')
+
+        if not (email and new_password and confirm_password):
+            return JsonResponse({'message': 'All fields are required'})
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            if new_password != confirm_password:
+                return JsonResponse({'message': 'Passwords do not match'})
+
+            # Change the password
+            user.set_password(new_password)
+            user.save()
+
+            # Clear the OTP
+            user.otp = None
+            user.save()
+
+            return JsonResponse({'message': 'Password reset successfully'})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'message': 'User with this email does not exist'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
 
 @csrf_exempt
 def verify_otp(request):
@@ -113,14 +192,19 @@ def verify_otp(request):
         otp = data.get('otp')
 
         try:
-            user = CustomUser.objects.get(email=email, otp=otp)
-            user.is_active = True
-            user.save()
-            return JsonResponse({'message': 'Account activated successfully'})
+            user = CustomUser.objects.get(email=email)
+            if user.otp == otp:
+                user.is_active = True
+                user.otp = None
+                user.save()
+                return JsonResponse({'message': 'Account activated successfully'})
+            else:
+                return JsonResponse({'message': 'Invalid OTP'})
         except CustomUser.DoesNotExist:
-            return JsonResponse({'message': 'Invalid OTP'})
+            return JsonResponse({'message': 'User not found'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
 
 def authenticate_admin(email, password):
     try:
