@@ -56,6 +56,29 @@ def user_login(request):
         return JsonResponse({'message': 'Only POST requests are allowed','login_status':False})
 
 
+@csrf_exempt
+def change_password(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        old_password = data.get('old_password')
+        new_password = data.get('new_password')
+
+        if not (email and old_password and new_password):
+            return JsonResponse({'message': 'All fields are required'})
+
+        user = authenticate_user(email, old_password)
+        if user is not None:
+            hashed_new_password = make_password(new_password)
+            user.password = hashed_new_password
+            user.save()
+            return JsonResponse({'message': 'Password changed successfully'})
+        else:
+            return JsonResponse({'message': 'Invalid email or password'})
+
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
 
 def authenticate_admin(email, password):
     try:
