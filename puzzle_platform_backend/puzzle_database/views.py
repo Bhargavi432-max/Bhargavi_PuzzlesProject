@@ -26,6 +26,7 @@ def register_user(request):
             return JsonResponse({'message': 'Username already exists'})
 
         otp = str(random.randint(100000, 999999))
+        print(otp)
         
         try:
             hashed_password = make_password(password)
@@ -190,7 +191,6 @@ def verify_otp(request):
         data = json.loads(request.body)
         email = data.get('email')
         otp = data.get('otp')
-
         try:
             user = CustomUser.objects.get(email=email)
             if user.otp == otp:

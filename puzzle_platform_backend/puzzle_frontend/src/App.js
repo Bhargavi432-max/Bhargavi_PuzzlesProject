@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/otp" element={<OTPVerification />} />
+          <Route path="/otp/:email" element={<OTPVerification />} />
         </Routes>
       </div>
     </Router>
