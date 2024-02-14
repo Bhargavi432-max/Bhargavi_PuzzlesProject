@@ -35,7 +35,7 @@ export const Register = () => {
                 console.log(data.message);
                 console.log(data.login_status)
                 setError(data.message);
-                navigate(`/otp/${email}`);
+                navigate('/otp', { state: { email } });
             }
         } catch (error) {
             console.error('Error registering:', error.message);

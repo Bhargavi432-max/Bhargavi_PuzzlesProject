@@ -28,7 +28,6 @@ def register_user(request):
             return JsonResponse({'message': 'Email already exists'})
 
         otp = str(random.randint(100000, 999999))
-        print(otp)
         
         try:
             hashed_password = make_password(password)
@@ -63,7 +62,6 @@ def user_login(request):
         data = json.loads(request.body)
         email = data.get('email')
         password = data.get('password')
-        print(email,password)
         user = authenticate_user(email, password)
         if user is not None:
             if user.is_active:
@@ -116,23 +114,19 @@ def forgot_password(request):
         try:
             user = CustomUser.objects.get(email=email)
         except CustomUser.DoesNotExist:
-            return JsonResponse({'message': 'User with this email does not exist'})
+            return JsonResponse({'status': False, 'message': 'User with this email does not exist'})
 
-        # Generate OTP
         otp = str(random.randint(100000, 999999))
-
-        # Save the OTP to the user instance
         user.otp = otp
         user.save()
 
-        # Send email with OTP
         subject = 'Password Reset OTP'
         message = f'Your OTP for password reset is: {otp}'
         email_from = settings.DEFAULT_FROM_EMAIL
         recipient_list = [email]
         send_mail(subject, message, email_from, recipient_list)
 
-        return JsonResponse({'message': 'OTP sent to your email. Please check your inbox.'})
+        return JsonResponse({'status': True, 'message': 'OTP sent to your email. Please check your inbox.'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
@@ -147,11 +141,11 @@ def check_otp(request):
         try:
             user = CustomUser.objects.get(email=email)
             if user.otp == otp:
-                return JsonResponse({'message': 'OTP is valid'})
+                return JsonResponse({'status': True, 'message': 'OTP is valid'})
             else:
-                return JsonResponse({'message': 'Invalid OTP'})
+                return JsonResponse({'status': False, 'message': 'Invalid OTP'})
         except CustomUser.DoesNotExist:
-            return JsonResponse({'message': 'User with this email does not exist'})
+            return JsonResponse({'status': False, 'message': 'User with this email does not exist'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
@@ -165,24 +159,22 @@ def reset_password(request):
         confirm_password = data.get('confirm_password')
 
         if not (email and new_password and confirm_password):
-            return JsonResponse({'message': 'All fields are required'})
+            return JsonResponse({'status': False, 'message': 'All fields are required'})
 
         try:
             user = CustomUser.objects.get(email=email)
             if new_password != confirm_password:
-                return JsonResponse({'message': 'Passwords do not match'})
+                return JsonResponse({'status': False, 'message': 'Passwords do not match'})
 
-            # Change the password
-            user.set_password(new_password)
+            hashed_new_password = make_password(new_password)
+            user.password = hashed_new_password
             user.save()
-
-            # Clear the OTP
             user.otp = None
             user.save()
 
-            return JsonResponse({'message': 'Password reset successfully'})
+            return JsonResponse({'status': True, 'message': 'Password reset successfully'})
         except CustomUser.DoesNotExist:
-            return JsonResponse({'message': 'User with this email does not exist'})
+            return JsonResponse({'status': False, 'message': 'User with this email does not exist'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 

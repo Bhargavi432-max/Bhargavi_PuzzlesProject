@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const OTPVerification = () => {
     const [otp, setOtp] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const { email } = useParams();
+    const location = useLocation();
+    const email = location.state && location.state.email;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
