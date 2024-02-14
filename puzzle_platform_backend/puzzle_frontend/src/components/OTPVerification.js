@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate,useParams  } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const OTPVerification = () => {
     const [otp, setOtp] = useState('');
@@ -12,11 +12,12 @@ const OTPVerification = () => {
         e.preventDefault();
         setLoading(true);
         setError(null);
-        console.log(email)
+
         const userData = {
             email: email,
             otp: otp,
         };
+
         try {
             const response = await fetch('http://127.0.0.1:8000/api/verify_otp/', {
                 method: 'POST',
@@ -25,12 +26,15 @@ const OTPVerification = () => {
                 },
                 body: JSON.stringify(userData)
             });
+
             if (response.ok) {
                 const data = await response.json();
-                console.log(data.message);
-                console.log(data.login_status)
                 setError(data.message);
-                navigateToLogin();
+                if (data.status) {
+                    navigateToLogin();
+                }
+            } else {
+                setError('OTP verification failed. Please try again.');
             }
         } catch (error) {
             console.error('Error verifying OTP:', error.message);
@@ -39,6 +43,7 @@ const OTPVerification = () => {
             setLoading(false);
         }
     }
+
     const navigateToLogin = () => {
         navigate('/login');
     }

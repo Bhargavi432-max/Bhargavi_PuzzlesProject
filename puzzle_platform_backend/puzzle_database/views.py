@@ -24,6 +24,8 @@ def register_user(request):
         
         if CustomUser.objects.filter(username=username).exists():
             return JsonResponse({'message': 'Username already exists'})
+        if CustomUser.objects.filter(email=email).exists():
+            return JsonResponse({'message': 'Email already exists'})
 
         otp = str(random.randint(100000, 999999))
         print(otp)
@@ -197,13 +199,14 @@ def verify_otp(request):
                 user.is_active = True
                 user.otp = None
                 user.save()
-                return JsonResponse({'message': 'Account activated successfully'})
+                return JsonResponse({'status': True, 'message': 'Account activated successfully'})
             else:
-                return JsonResponse({'message': 'Invalid OTP'})
+                return JsonResponse({'status': False, 'message': 'Invalid OTP'})
         except CustomUser.DoesNotExist:
-            return JsonResponse({'message': 'User not found'})
+            return JsonResponse({'status': False, 'message': 'User not found'})
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+        return JsonResponse({'status': False, 'error': 'Only POST requests are allowed'}, status=400)
+
 
 
 def authenticate_admin(email, password):
