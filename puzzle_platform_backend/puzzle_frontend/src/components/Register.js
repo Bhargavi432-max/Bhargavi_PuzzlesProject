@@ -33,7 +33,9 @@ export const Register = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
+                console.log(data.login_status)
                 setError(data.message);
+                navigate('/otp', { state: { email: email } });
             }
         } catch (error) {
             console.error('Error registering:', error.message);
@@ -46,6 +48,11 @@ export const Register = () => {
     const navigateToLogin = () => {
         navigate('/login');
     }
+
+    // const navigateToOtp = () => {
+    //     navigate('/otp');
+    // }
+
 
     return (
         <div className="auth-form-container">
