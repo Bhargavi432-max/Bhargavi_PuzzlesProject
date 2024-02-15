@@ -47,6 +47,9 @@ export const Login = (props) => {
     const navigateToRegister = () => {
         navigate('/register');
     }
+    const navigateToForgotPasswordPage = () => {
+              navigate('/forgotpassword');
+                }
 
     return (
         <div className="Login-container">
@@ -61,10 +64,11 @@ export const Login = (props) => {
                         <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" /><br />
                         <label htmlFor="password">Password:</label>
                         <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" /><br />
+                        <p className="link-btn" id="Forgot" onClick={navigateToForgotPasswordPage}><span className="register-link">Forgot Password?</span></p>
                         <button type="submit" disabled={loading}>Log In</button>
                         {error && <p className="error-message">{error}</p>}
                     </form>
-                    
+
                     <p className="link-btn" onClick={navigateToRegister}>Don't have an account yet? <span className="register-link">Sign In</span></p>
                 </div>
             </div>
