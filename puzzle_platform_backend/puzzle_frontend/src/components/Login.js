@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoginImage from "./Login-cuate.svg";
+import "./Login.css";
 
 export const Login = (props) => {
     const [email, setEmail] = useState('');
@@ -17,7 +19,6 @@ export const Login = (props) => {
             email: email,
             password: pass,
         };
-        console.log(userData);
 
         try {
             const response = await fetch('http://127.0.0.1:8000/api/user_login/', {
@@ -48,17 +49,27 @@ export const Login = (props) => {
     }
 
     return (
-        <div className="auth-form-container">
-            <h2>Login Page!</h2>
-            <form className="login-form" onSubmit={handleSubmit}>
-                <label htmlFor="email">Email</label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" /><br />
-                <label htmlFor="password">Password</label>
-                <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" /><br />
-                <button type="submit" disabled={loading}>Log In</button>
-                {error && <p className="error-message">{error}</p>}
-            </form>
-            <button className="link-btn" onClick={navigateToRegister}>Don't have an account? Register here.</button>
+        <div className="Login-container">
+            <div className="Login-Image-container">
+                <img src={LoginImage} alt="LoginImg" />
+            </div>
+            <div className="auth-form-container">
+                <div className="Login-From">
+                    <h2 className="Header-Login-Text">Login</h2>
+                    <form className="login-form" onSubmit={handleSubmit}>
+                        <label htmlFor="email">Email:</label>
+                        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" /><br />
+                        <label htmlFor="password">Password:</label>
+                        <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" /><br />
+                        <button type="submit" disabled={loading}>Log In</button>
+                        {error && <p className="error-message">{error}</p>}
+                    </form>
+                    
+                    <p className="link-btn" onClick={navigateToRegister}>Don't have an account yet? <span className="register-link">Sign In</span></p>
+                </div>
+            </div>
         </div>
     )
 }
+
+export default Login;
