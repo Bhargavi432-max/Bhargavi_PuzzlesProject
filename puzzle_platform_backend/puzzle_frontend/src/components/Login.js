@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginImage from "./Login-cuate.svg";
+import LoginImage from "./Images/Login-cuate.svg";
 import "./Login.css";
 
 export const Login = (props) => {

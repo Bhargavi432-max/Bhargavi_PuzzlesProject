@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import RegisterImage from "./Images/Sign up-cuate.svg"
+import "./Register.css";
 
 export const Register = () => {
     const [email, setEmail] = useState('');
@@ -55,25 +57,32 @@ export const Register = () => {
 
 
     return (
-        <div className="auth-form-container">
-            <h2>Register</h2>
-            <form className="register-form" onSubmit={handleSubmit}>
-                <label htmlFor="name">Full name</label>
-                <input value={name} name="name" onChange={(e) => setName(e.target.value)} id="name" placeholder="Full Name" />
-                <br />
-                <label htmlFor="email">Email</label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
-                <br />
-                <label htmlFor="password">Password</label>
-                <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
-                <br />
-                <label htmlFor="phone">Phone Number</label>
-                <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder="Phone Number" id="phone" name="phone" />
-                <br />
-                <button type="submit" disabled={loading}>Register</button>
-                {error && <p className="error-message">{error}</p>}
-            </form>
-            <button className="link-btn" onClick={navigateToLogin}>Already have an account? Login here.</button>
+        <div className="Register-container">
+            <div className="Register-Image-container">
+                    <img src={RegisterImage} alt="RegisterImg" />
+            </div>
+            <div className="Register-form-container">
+                <div className="Register-form">
+                    <h2 className="Header-Text">Sign Up</h2>
+                    <form className="register-form" onSubmit={handleSubmit}>
+                        <label htmlFor="name">Full name</label>
+                        <input value={name} name="name" onChange={(e) => setName(e.target.value)} type="text" id="name" placeholder="Full Name" />
+                        <br />
+                        <label htmlFor="email">Email</label>
+                        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
+                        <br />
+                        <label htmlFor="password">Password</label>
+                        <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
+                        <br />
+                        <label htmlFor="phone">Phone Number</label>
+                        <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder="Phone Number" id="phone" name="phone" />
+                        <br />
+                        <button type="submit" disabled={loading}>Register</button>
+                        {error && <p className="error-message">{error}</p>}
+                    </form>
+                    <p className="link-btn" onClick={navigateToLogin}>Already have an account? <span className="register-link">Login</span></p>
+                </div>
+            </div>
         </div>
     )
 }

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./forgotPassword.css";
+import ForgotPasswordImage from "./Images/Forgot password-cuate.svg";
 
 const ForgotPasswordPage = () => {
     const [email, setEmail] = useState('');
@@ -27,13 +29,22 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <div>
-            <h2>Forgot Password</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
-                <button type="submit">Send OTP</button>
-            </form>
-            {message && <p>{message}</p>}
+        <div className='ForgotPassword-container'>
+            <div className="Forgotpassord-Image-container">
+                <img src={ForgotPasswordImage} alt="ForgotpasswordImg" />
+            </div>
+            <div className='ForgotPassword-form'>
+                <div className='Forgot-box'>
+                    <h2 className='Header-Text'>Forgot Password</h2>
+                    <h2 className='Text'>Enter your email below to recover your password</h2>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="email">Email:</label>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="User@gmail.com" />
+                        <button type="submit">Submit</button>
+                    </form>
+                    {message && <p>{message}</p>}
+                </div>
+            </div>
         </div>
     );
 };

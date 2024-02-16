@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import VerificationImage from"./Images/Enter OTP-cuate.svg";
+import "./OTPVerification.css";
 
 const OTPVerification = () => {
     const [otp, setOtp] = useState('');
@@ -50,17 +52,24 @@ const OTPVerification = () => {
     }
 
     return (
-        <div className="auth-form-container">
-            <h2>OTP Verification</h2>
-            <form className="otp-form" onSubmit={handleSubmit}>
-                <p>An OTP has been sent to {email}. Please enter it below.</p>
-                <label htmlFor="otp">Enter OTP</label>
-                <input value={otp} onChange={(e) => setOtp(e.target.value)} type="text" placeholder="OTP" id="otp" name="otp" />
-                <br />
-                <button type="submit" disabled={loading}>Verify OTP</button>
-                {error && <p className="error-message">{error}</p>}
-            </form>
+        <div className="Verification-container">
+            <div className="Verification-Image-container">
+                <img src={VerificationImage} alt="VerificationImg" />
+            </div>
+            <div className="Verification-form-container">
+                <div className="Verification-box">
+                    <h2 className="Header-Text">Verify Code</h2>
+                    <h2 className="Text">An authentication code has been sent to your email</h2>
+                    <form className="otp-form" onSubmit={handleSubmit}>
+                        <label htmlFor="otp">Enter code</label>
+                        <input value={otp} onChange={(e) => setOtp(e.target.value)} type="text" placeholder="OTP" id="otp" name="otp" />
+                        <button type="submit" disabled={loading}>Verify</button>
+                        {error && <p className="error-message">{error}</p>}
+                    </form>
+                </div>
+            </div>
         </div>
+
     )
 }
 
