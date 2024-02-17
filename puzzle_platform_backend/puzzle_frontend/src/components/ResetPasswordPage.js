@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import ResetPasswordImage from "./Images/Secure data-cuate.svg";
+import "./ReserPasswordPage.css";
 
 const ResetPasswordPage = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -30,15 +32,25 @@ const ResetPasswordPage = () => {
     };
 
     return (
-        <div>
-            <h2>Reset Password</h2>
-            <p>You are resetting the password for {email}.</p>
-            <form onSubmit={handleSubmit}>
-                <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="New Password" />
-                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />
-                <button type="submit">Reset Password</button>
-            </form>
-            {message && <p>{message}</p>}
+        <div className='ResetPassword-container'>
+             <div className="ResetPassword-Image-container">
+                <img src={ResetPasswordImage}  className="Resetimage"alt="ResetpasswordImg" />
+            </div>
+            <div className='Resetpassword-form'>
+                <div className='ResetPassword-Box'>
+                    <h2 className='Header-Text'>Set a Password</h2>
+                    <p className='Text'>Set a new password for your account</p>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="password">New Password</label>
+                        <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="New Password" />
+                        <label htmlFor="password">Confrim Password</label>
+                        <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />
+                        <button type="submit">Reset Password</button>
+                        {message && <p>{message}</p>}
+                    </form>
+                    
+                </div>
+            </div>
         </div>
     );
 };
