@@ -28,13 +28,14 @@
   
   .Register-form {
     padding: 50px;
-    padding-top:8%;
+    padding-top: 8%;
     background-color: rgb(244, 245, 255);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     border-radius: 20px;
     width: 75%;
-    height: 65vh;
-  }
+    min-height: 65vh; /* Change height to min-height */
+    transition: min-height 0.5s ease; /* Add transition for smooth height change */
+}
   
   .Register-form form {
     margin-top: 20px;
@@ -71,8 +72,12 @@
   
   .error-message {
     color: red;
-    margin-top: 10px;
-  }
+    padding-top: 5px;
+}
+.error-message + .link-btn {
+  margin-top: 20px; /* Increase margin to provide space for the error message */
+}
+
   
   .link-btn {
     margin-top: 5px;

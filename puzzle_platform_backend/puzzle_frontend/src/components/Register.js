@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RegisterImage from "./Images/Sign up-cuate.svg"
+import RegisterImage from "./Images/Sign up-cuate.svg";
 import "./Register.css";
 
 export const Register = () => {
@@ -51,15 +51,10 @@ export const Register = () => {
         navigate('/login');
     }
 
-    // const navigateToOtp = () => {
-    //     navigate('/otp');
-    // }
-
-
     return (
-        <div className="Register-container">
+        <div className={`Register-container ${error ? 'error' : ''}`}>
             <div className="Register-Image-container">
-                    <img src={RegisterImage} alt="RegisterImg" />
+                <img src={RegisterImage} alt="RegisterImg" />
             </div>
             <div className="Register-form-container">
                 <div className="Register-form">
@@ -79,8 +74,8 @@ export const Register = () => {
                         <br />
                         <button type="submit" disabled={loading}>Register</button>
                         {error && <p className="error-message">{error}</p>}
+                        <p className="link-btn" onClick={navigateToLogin}>Already have an account? <span className="register-link">Login</span></p>
                     </form>
-                    <p className="link-btn" onClick={navigateToLogin}>Already have an account? <span className="register-link">Login</span></p>
                 </div>
             </div>
         </div>

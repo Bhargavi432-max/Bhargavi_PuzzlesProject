@@ -48,7 +48,6 @@ const ResetPasswordPage = () => {
                         <button type="submit">Reset Password</button>
                         {message && <p>{message}</p>}
                     </form>
-                    
                 </div>
             </div>
         </div>

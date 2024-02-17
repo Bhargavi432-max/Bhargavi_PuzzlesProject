@@ -57,7 +57,7 @@ export const Login = (props) => {
                 <img src={LoginImage} alt="LoginImg" />
             </div>
             <div className="auth-form-container">
-                <div className="Login-From">
+                <div className={`Login-From ${error ? 'error' : ''}`}>
                     <h2 className="Header-Login-Text">Login</h2>
                     <form className="login-form" onSubmit={handleSubmit}>
                         <label htmlFor="email">Email:</label>
@@ -67,9 +67,8 @@ export const Login = (props) => {
                         <p className="link-btn" id="Forgot" onClick={navigateToForgotPasswordPage}><span className="register-link">Forgot Password?</span></p>
                         <button type="submit" disabled={loading}>Log In</button>
                         {error && <p className="error-message">{error}</p>}
+                        <p className="link-btn" onClick={navigateToRegister}>Don't have an account yet? <span className="register-link">Sign In</span></p>
                     </form>
-
-                    <p className="link-btn" onClick={navigateToRegister}>Don't have an account yet? <span className="register-link">Sign In</span></p>
                 </div>
             </div>
         </div>

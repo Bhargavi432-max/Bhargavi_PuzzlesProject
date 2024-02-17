@@ -32,8 +32,9 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     width: 70%;
-    height: 50vh;
-  }
+    min-height: 50vh; /* Change height to min-height */
+    transition: min-height 0.5s ease; /* Add transition for smooth height change */
+}
   
   .Login-From form {
     margin-top: 20px;
@@ -68,7 +69,11 @@
   .error-message {
     color: red;
     margin-top: 10px;
-  }
+}
+
+.error-message + .link-btn {
+    margin-top: 20px; /* Increase margin to provide space for the error message */
+}
   
   .link-btn {
     margin-top: 5px;
