@@ -8,6 +8,7 @@ import ChangePassword from "./components/ChangePassword";
 import ForgotPasswordPage from "./components/ForgotPasswordPage";
 import CheckOTPPage from "./components/CheckOTPPage";
 import ResetPasswordPage from "./components/ResetPasswordPage";
+import PuzzlePage from "./components/PuzzlePage";
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
         </Routes>
       </div>
     </Router>
+    // <div className="App">
+    //   <PuzzlePage/>
+    // </div>
   );
 }
 

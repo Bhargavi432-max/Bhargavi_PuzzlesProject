@@ -7,6 +7,7 @@ const OTPVerification = () => {
     const [otp, setOtp] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState(''); // Define message state
     const navigate = useNavigate();
     const location = useLocation();
     const email = location.state && location.state.email;
@@ -32,12 +33,12 @@ const OTPVerification = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                setError(data.message);
+                setMessage(data.message); // Update message state
                 if (data.status) {
                     navigateToLogin();
                 }
             } else {
-                setError('OTP verification failed. Please try again.');
+                setMessage('OTP verification failed. Please try again.'); // Update message state
             }
         } catch (error) {
             console.error('Error verifying OTP:', error.message);
@@ -57,14 +58,14 @@ const OTPVerification = () => {
                 <img src={VerificationImage} alt="VerificationImg" />
             </div>
             <div className="Verification-form-container">
-                <div className="Verification-box">
+                <div className={`Verification-Box ${message ? 'error' : ''}`}>
                     <h2 className="Header-Text">Verify Code</h2>
                     <h2 className="Text">An authentication code has been sent to your email</h2>
                     <form className="otp-form" onSubmit={handleSubmit}>
                         <label htmlFor="otp">Enter code</label>
                         <input value={otp} onChange={(e) => setOtp(e.target.value)} type="text" placeholder="OTP" id="otp" name="otp" />
                         <button type="submit" disabled={loading}>Verify</button>
-                        {error && <p className="error-message">{error}</p>}
+                        {error && <p className="error-message">{error}</p>} {/* Update error state */}
                     </form>
                 </div>
             </div>
