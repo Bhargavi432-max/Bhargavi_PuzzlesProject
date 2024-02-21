@@ -1,8 +1,7 @@
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password,check_password
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CustomUser,Admin
+from .models import CustomUser,Admin,Subscription,DataTable,UserDataTableStatus 
 import json
 import random
 from django.core.mail import send_mail
@@ -20,12 +19,12 @@ def register_user(request):
         mobile_number = data.get('mobile_number')
         
         if not (username and email and password and mobile_number):
-            return JsonResponse({'message': 'All fields are required'})
+            return JsonResponse({'status': False,'message': 'All fields are required'})
         
         if CustomUser.objects.filter(username=username).exists():
-            return JsonResponse({'message': 'Username already exists'})
+            return JsonResponse({'status': False,'message': 'Username already exists'})
         if CustomUser.objects.filter(email=email).exists():
-            return JsonResponse({'message': 'Email already exists'})
+            return JsonResponse({'status': False,'message': 'Email already exists'})
 
         otp = str(random.randint(100000, 999999))
         
@@ -48,9 +47,9 @@ def register_user(request):
                 fail_silently=False,
             )
 
-            return JsonResponse({'message': 'User registered successfully. Please check your email for OTP.'})
+            return JsonResponse({'status': True,'message': 'User registered successfully. Please check your email for OTP.'})
         except Exception as e:
-            return JsonResponse({'message': 'Error occurred while registering user'})
+            return JsonResponse({'status': False,'message': 'Error occurred while registering user'})
 
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
@@ -137,6 +136,7 @@ def check_otp(request):
         data = json.loads(request.body)
         email = data.get('email')
         otp = data.get('otp')
+        print(otp)
 
         try:
             user = CustomUser.objects.get(email=email)
@@ -220,3 +220,85 @@ def authenticate_user(email, password):
             return None
     except CustomUser.DoesNotExist:
         return None
+@csrf_exempt
+def get_puzzle_details(request):
+    if request.method == 'GET':
+        data = json.loads(request.body)
+        email = data.get('email')
+        task_id = data.get('task_id')
+        puzzle_id = data.get('puzzle_id')
+        
+        try:
+            user = CustomUser.objects.get(email=email)
+            subscription = Subscription.objects.get(user=user)
+            plan_type = subscription.sub_plan_type
+            
+            # Check if the task exists
+            task = DataTable.objects.filter(task_no=task_id).first()
+            if task is None:
+                return HttpResponse("Task not found")
+
+            # Check if the puzzle exists for the given task
+            puzzle = DataTable.objects.filter(puzzle_no=puzzle_id, task_no=task_id).first()
+            if puzzle is None:
+                return HttpResponse("Puzzle not found")
+
+            # Check the user's subscription plan and grant access accordingly
+            if plan_type == 'Free':
+                if task_id == 1 and puzzle_id <= 5:
+                    return HttpResponse("Accept")
+                else:
+                    return HttpResponse("Not Accept. Upgrade your plan.")
+            elif plan_type == 'Basic':
+                prev_puzzle_id = puzzle_id - 1
+                prev_puzzle = DataTable.objects.filter(puzzle_no=prev_puzzle_id, task_no=task_id).first()
+                if prev_puzzle is None:
+                    return HttpResponse("Invalid puzzle_id")
+
+                prev_puzzle_status = UserDataTableStatus.objects.get(user=user, data_table=prev_puzzle)
+                if prev_puzzle_status.status != "completed":
+                    return HttpResponse("Complete Previous Puzzles")
+
+                return HttpResponse("Accept")
+            elif plan_type == 'Premium':
+                return HttpResponse("Accept")
+        except CustomUser.DoesNotExist:
+            return HttpResponse("User not found")
+        except Subscription.DoesNotExist:
+            return HttpResponse("Subscription not found")
+        except DataTable.DoesNotExist:
+            return HttpResponse("DataTable not found")
+        except UserDataTableStatus.DoesNotExist:
+            return HttpResponse("UserDataTableStatus not found")
+
+    return HttpResponse('Hello')
+
+
+@csrf_exempt
+def contact_us(request):
+    if request.method == 'POST':
+        data = request.POST
+        name = data.get('name')
+        email = data.get('email')
+        mobile_number = data.get('mobile_number')
+        
+        if not (name and email and mobile_number):
+            return JsonResponse({'status': False, 'message': 'All fields are required'})
+        
+        return JsonResponse({'status': True, 'message': 'Contact form submitted successfully'})
+    else:
+        return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
+
+@csrf_exempt
+def feedback(request):
+    if request.method == 'POST':
+        data = request.POST
+        rating = data.get('rating')
+        review = data.get('review')
+        
+        if not (rating and review):
+            return JsonResponse({'status': False, 'message': 'All fields are required'})
+        
+        return JsonResponse({'status': True, 'message': 'Feedback form submitted successfully'})
+    else:
+        return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})

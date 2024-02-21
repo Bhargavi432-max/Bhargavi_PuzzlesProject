@@ -89,3 +89,17 @@ class Plan(models.Model):
 
     def __str__(self):
         return self.plan_type
+    
+class UserDataTableStatus(models.Model):
+    STATUS_CHOICES = (
+        ('notstarted', 'notstarted'),
+        ('incompleted', 'Incompleted'),
+        ('completed', 'Completed'),
+    )
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    data_table = models.ForeignKey(DataTable, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+
+    class Meta:
+        unique_together = ['user', 'data_table']
