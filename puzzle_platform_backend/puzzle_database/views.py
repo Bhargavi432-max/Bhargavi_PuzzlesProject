@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password,check_password
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CustomUser,Admin,Subscription,DataTable,UserDataTableStatus 
+from .models import CustomUser,Admin,Subscription,DataTable,UserDataTableStatus,FAQ
 import json
 import random
 from django.core.mail import send_mail
@@ -220,6 +220,7 @@ def authenticate_user(email, password):
             return None
     except CustomUser.DoesNotExist:
         return None
+    
 @csrf_exempt
 def get_puzzle_details(request):
     if request.method == 'GET':
@@ -302,3 +303,25 @@ def feedback(request):
         return JsonResponse({'status': True, 'message': 'Feedback form submitted successfully'})
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
+    
+
+@csrf_exempt
+def add_faq(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        question = data.get('question')
+        answer = data.get('answer')
+
+        if not (question and answer):
+            return JsonResponse({'status': False, 'message': 'Both question and answer are required'})
+
+        FAQ.objects.create(question=question, answer=answer)
+        return JsonResponse({'status': True, 'message': 'FAQ added successfully'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+    
+def retrieve_faqs(request):
+    faqs = FAQ.objects.all()
+    faq_list = [{'question': faq.question, 'answer': faq.answer} for faq in faqs]
+
+    return JsonResponse({'status': True, 'faqs': faq_list})

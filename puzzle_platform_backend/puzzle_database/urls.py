@@ -10,4 +10,6 @@ urlpatterns = [
      path('check_otp/', views.check_otp, name='check_otp'),
     path('verify_otp/', views.verify_otp, name='verify_otp'),
     path('get_puzzle_details/', views.get_puzzle_details, name='get_puzzle_details'),
+    path('add_faq/', views.add_faq, name='add_faq'),
+    path('get_faq/', views.retrieve_faqs, name='get_faq'),
 ]
