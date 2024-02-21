@@ -65,7 +65,7 @@ const OTPVerification = () => {
                         <label htmlFor="otp">Enter code</label>
                         <input value={otp} onChange={(e) => setOtp(e.target.value)} type="text" placeholder="OTP" id="otp" name="otp" />
                         <button type="submit" disabled={loading}>Verify</button>
-                        {error && <p className="error-message">{error}</p>} {/* Update error state */}
+                        {error && <p className="error-message">{error}</p>}
                     </form>
                 </div>
             </div>

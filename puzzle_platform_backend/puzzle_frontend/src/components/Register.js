@@ -32,12 +32,14 @@ export const Register = () => {
                 },
                 body: JSON.stringify(userData)
             });
-            if (response.ok) {
-                const data = await response.json();
+            const data = await response.json();
+            if (response.ok && data.status === true) {
                 console.log(data.message);
-                console.log(data.login_status)
+                console.log(data.status)
                 setError(data.message);
                 navigate('/otp', { state: { email } });
+            } else {
+                setError(data.message);
             }
         } catch (error) {
             console.error('Error registering:', error.message);

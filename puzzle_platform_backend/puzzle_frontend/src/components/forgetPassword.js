@@ -1,5 +1,3 @@
-// ForgotPassword.js
-
 import React, { useState } from 'react';
 import './forgotPassword.css'; // Import your CSS file
 
@@ -12,13 +10,12 @@ function ForgotPassword(){
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Implement password recovery logic here
     console.log(`Recover password for email: ${email}`);
   };
 
   return (
     <div className="forgot-password-container">
-      <div className="image-placeholder"></div> {/* Add your image here */}
+      <div className="image-placeholder"></div>
       <div className="form-container">
         <h2>FORGOT YOUR PASSWORD?</h2>
         <h5>Enter your email below to recover your password</h5>
@@ -32,7 +29,6 @@ function ForgotPassword(){
           <button type="submit">Submit</button>
         </form>
         <p>or continue with</p>
-        {/* Add social media login buttons here */}
       </div>
     </div>
   );
