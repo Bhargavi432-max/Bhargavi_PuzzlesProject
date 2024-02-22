@@ -12,4 +12,5 @@ urlpatterns = [
     path('get_puzzle_details/', views.get_puzzle_details, name='get_puzzle_details'),
     path('add_faq/', views.add_faq, name='add_faq'),
     path('get_faq/', views.retrieve_faqs, name='get_faq'),
+    path('get_ids/', views.get_all_full_ids, name='get_ids'),
 ]

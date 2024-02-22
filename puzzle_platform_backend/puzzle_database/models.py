@@ -27,6 +27,7 @@ class Admin(models.Model):
     
 class DataTable(models.Model):
     id = models.AutoField(primary_key=True)
+    full_id=models.CharField(max_length=50)
     admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE)
     task_no = models.IntegerField()
     puzzle_no = models.IntegerField()
