@@ -90,16 +90,16 @@ def change_password(request):
         new_password = data.get('new_password')
 
         if not (email and old_password and new_password):
-            return JsonResponse({'message': 'All fields are required'})
+            return JsonResponse({'status': False,'message': 'All fields are required'})
 
         user = authenticate_user(email, old_password)
         if user is not None:
             hashed_new_password = make_password(new_password)
             user.password = hashed_new_password
             user.save()
-            return JsonResponse({'message': 'Password changed successfully'})
+            return JsonResponse({'status': True,'message': 'Password changed successfully'})
         else:
-            return JsonResponse({'message': 'Invalid email or password'})
+            return JsonResponse({'status': False,'message': 'Invalid email or password'})
 
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
@@ -325,3 +325,16 @@ def retrieve_faqs(request):
     faq_list = [{'question': faq.question, 'answer': faq.answer} for faq in faqs]
 
     return JsonResponse({'status': True, 'faqs': faq_list})
+
+def get_all_full_ids(request):
+    print(request.method)
+    if request.method == 'GET':
+        try:
+            all_full_ids = DataTable.objects.values_list('full_id', flat=True)
+            full_ids_list = list(all_full_ids)
+            print(full_ids_list)
+            return JsonResponse({'status': True, 'full_ids': full_ids_list})
+        except Exception as e:
+            return JsonResponse({'status': False, 'message': 'Error fetching full_ids'})
+
+    return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})
