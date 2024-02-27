@@ -23,12 +23,12 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
           <Route path="/checkotp" element={<CheckOTPPage />} />
           <Route path="/resetpassword" element={<ResetPasswordPage />} />
+          <Route path="/puzzlepage" element={<PuzzlePage />} />
+
         </Routes>
       </div>
     </Router>
-    // <div className="App">
-    //   <PuzzlePage/>
-    // </div>
+    
   );
 }
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import LoginImage from "./Images/Login-cuate.svg";
 import "./Login.css";
 
-export const Login = (props) => {
+export const Login = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [loading, setLoading] = useState(false);
@@ -33,6 +33,9 @@ export const Login = (props) => {
                 const data = await response.json();
                 console.log(data.message);
                 setError(data.message);
+
+                // Redirect to puzzle page with email data
+                navigate('/puzzlepage', { state: { email: email } });
             } else {
                 throw new Error('Login failed');
             }
@@ -47,9 +50,10 @@ export const Login = (props) => {
     const navigateToRegister = () => {
         navigate('/register');
     }
+    
     const navigateToForgotPasswordPage = () => {
-              navigate('/forgotpassword');
-                }
+        navigate('/forgotpassword');
+    }
 
     return (
         <div className="Login-container">
