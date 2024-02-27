@@ -330,10 +330,30 @@ def get_all_full_ids(request):
     print(request.method)
     if request.method == 'GET':
         try:
-            all_full_ids = DataTable.objects.values_list('full_id', flat=True)
-            full_ids_list = list(all_full_ids)
-            print(full_ids_list)
-            return JsonResponse({'status': True, 'full_ids': full_ids_list})
+            data = json.loads(request.body)
+            email = data.get('email')
+            # email = 'uday80022@gmail.com'
+            user = CustomUser.objects.get(email=email)
+            status_objects = UserDataTableStatus.objects.filter(user=user)
+            data_table_objects = DataTable.objects.all()
+            status_dict = {status.data_table_id: status.status for status in status_objects}
+            data_list = [
+                {
+                    'id': obj.id,
+                    'full_id': obj.full_id,
+                    'task_no': obj.task_no,
+                    'puzzle_no': obj.puzzle_no,
+                    'puzzle_name': obj.puzzle_name,
+                    'puzzle_video': obj.puzzle_video,
+                    'puzzle_question': obj.puzzle_question,
+                    'level': obj.level,
+                    'puzzle_price': str(obj.puzzle_price),
+                    'user_status': status_dict.get(obj.id, 'notstarted'),
+                }
+                for obj in data_table_objects
+            ]
+            print(data_list)
+            return JsonResponse({'status': True, 'full_ids': data_list})
         except Exception as e:
             return JsonResponse({'status': False, 'message': 'Error fetching full_ids'})
 
