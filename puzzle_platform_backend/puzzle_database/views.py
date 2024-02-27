@@ -328,7 +328,7 @@ def retrieve_faqs(request):
 
 def get_all_full_ids(request):
     print(request.method)
-    if request.method == 'GET':
+    if request.method == 'POST':
         try:
             data = json.loads(request.body)
             email = data.get('email')
