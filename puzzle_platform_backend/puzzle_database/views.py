@@ -326,6 +326,7 @@ def retrieve_faqs(request):
 
     return JsonResponse({'status': True, 'faqs': faq_list})
 
+@csrf_exempt
 def get_all_full_ids(request):
     print(request.method)
     if request.method == 'POST':
