@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginImage from "./Images/Login-cuate.svg";
 import "./Login.css";
+import { useEmail } from "./EmailContext";
 
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { setEmail: setEmailContext } = useEmail();
     const navigate = useNavigate();
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,9 +36,8 @@ export const Login = () => {
                 const data = await response.json();
                 console.log(data.message);
                 setError(data.message);
-
-                // Redirect to puzzle page with email data
-                navigate('/puzzlepage', { state: { email: email } });
+                setEmailContext(email);
+                navigate('/puzzlepage');
             } else {
                 throw new Error('Login failed');
             }

@@ -9,11 +9,13 @@ import ForgotPasswordPage from "./components/ForgotPasswordPage";
 import CheckOTPPage from "./components/CheckOTPPage";
 import ResetPasswordPage from "./components/ResetPasswordPage";
 import PuzzlePage from "./components/PuzzlePage";
+import { EmailProvider } from "./components/EmailContext";
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <EmailProvider>
         <Routes>
         <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
@@ -26,6 +28,7 @@ function App() {
           <Route path="/puzzlepage" element={<PuzzlePage />} />
 
         </Routes>
+        </EmailProvider>
       </div>
     </Router>
     

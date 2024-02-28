@@ -2,61 +2,54 @@ import React from "react";
 
 const Content = ({
   selectedPuzzle,
-  renderDifficultyBoxButtons,
+  puzzleData,
   handleDifficultyBoxButtonClick,
 }) => {
+  const renderPuzzleButtons = (puzzles) => {
+    return puzzles.map((puzzle, index) => (
+      <button
+        key={puzzle.id}
+        onClick={() => handleDifficultyBoxButtonClick(puzzle.id)}
+        className={selectedPuzzle?.id === puzzle.id ? "active active-difficulty-button" : ""}
+      >
+        {index + 1}
+      </button>
+    ));
+  };
+
+  const renderDifficultyBoxButtons = () => {
+    
+    const easyPuzzles = puzzleData.filter(puzzle => puzzle.level === 'easy');
+    const mediumPuzzles = puzzleData.filter(puzzle => puzzle.level === 'medium');
+    const hardPuzzles = puzzleData.filter(puzzle => puzzle.level === 'hard');
+
+    return (
+      <div className="difficulty-container">
+        <div className="difficulty-box">
+          <h3>Easy</h3>
+          <div className="difficulty-buttons">
+            {renderPuzzleButtons(easyPuzzles)}
+          </div>
+        </div>
+        <div className="difficulty-box">
+          <h3>Medium</h3>
+          <div className="difficulty-buttons">
+            {renderPuzzleButtons(mediumPuzzles)}
+          </div>
+        </div>
+        <div className="difficulty-box">
+          <h3>Hard</h3>
+          <div className="difficulty-buttons">
+            {renderPuzzleButtons(hardPuzzles)}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="content">
-      {selectedPuzzle && (
-        <>
-          <div className="difficulty-container">
-            <div className="difficulty-box">
-              <h3>Easy</h3>
-              <div className="difficulty-buttons">
-                {renderDifficultyBoxButtons(selectedPuzzle.id, 1, handleDifficultyBoxButtonClick)}
-              </div>
-            </div>
-            <div className="difficulty-box">
-              <h3>Medium</h3>
-              <div className="difficulty-buttons">
-                {renderDifficultyBoxButtons(selectedPuzzle.id, 2, handleDifficultyBoxButtonClick)}
-              </div>
-            </div>
-            <div className="difficulty-box">
-              <h3>Hard</h3>
-              <div className="difficulty-buttons">
-                {renderDifficultyBoxButtons(selectedPuzzle.id, 3, handleDifficultyBoxButtonClick)}
-              </div>
-            </div>
-          </div>
-          <div className="puzzle">
-            <div className="image-container">
-              {selectedPuzzle.imageUrl ? (
-                <img
-                  src={selectedPuzzle.imageUrl}
-                  alt="imag"
-                  className="puzzle-image"
-                />
-              ) : (
-                <div className="nothing"></div>
-              )}
-            </div>
-            <div className="video-container">
-              {selectedPuzzle.videoUrl ? (
-                <video
-                  key={selectedPuzzle.videoUrl}
-                  title="Puzzle Video"
-                  controls
-                >
-                  <source src={selectedPuzzle.videoUrl} type="video/mp4" />
-                </video>
-              ) : (
-                <div className="nothing"></div>
-              )}
-            </div>
-          </div>
-        </>
-      )}
+      {selectedPuzzle && renderDifficultyBoxButtons()}
     </div>
   );
 };

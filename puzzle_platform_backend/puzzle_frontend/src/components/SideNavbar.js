@@ -1,19 +1,19 @@
 import React from "react";
 
-const SideNavbar = ({ puzzles, handleSidebarButtonClick, selectedPuzzleId }) => {
+const SideNavbar = ({ tasks, handleSidebarButtonClick, selectedPuzzleId }) => {
   const handleClick = (id) => {
     handleSidebarButtonClick(id);
   };
 
   return (
     <div className="sidenavbar">
-      {puzzles.map((puzzle) => (
+      {tasks.map((task) => (
         <button
-          key={puzzle.id}
-          onClick={() => handleClick(puzzle.id)}
-          className={selectedPuzzleId === puzzle.id ? "active" : ""}
+          key={task.id}
+          onClick={() => handleClick(task.id)}
+          className={selectedPuzzleId === task.id ? "active" : ""}
         >
-          {puzzle.id}
+          {task.id}
         </button>
       ))}
     </div>
