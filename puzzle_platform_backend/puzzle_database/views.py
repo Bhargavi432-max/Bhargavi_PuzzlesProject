@@ -329,12 +329,13 @@ def retrieve_faqs(request):
 @csrf_exempt
 def get_all_full_ids(request):
     print(request.method)
-    if request.method == 'GET':
+    if request.method == 'POST':
         try:
-            # data = json.loads(request.body)
-            # email = data.get('email')
-            email = 'uday80022@gmail.com'
-            task_id = 2
+            data = json.loads(request.body)
+            email = data.get('email')
+            task_id = data.get('taskId')
+            # email = 'uday80022@gmail.com'
+            # task_id = 2
             user = CustomUser.objects.get(email=email)
             print(user)
             status_objects = UserDataTableStatus.objects.filter(user=user)
