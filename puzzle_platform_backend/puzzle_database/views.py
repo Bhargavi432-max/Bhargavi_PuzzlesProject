@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password,check_password
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CustomUser,Admin,Subscription,DataTable,UserDataTableStatus,FAQ
+from .models import CustomUser,Admin,Subscription,DataTable,UserDataTableStatus,FAQ,UserProfile
 import json
 import random
 from django.core.mail import send_mail
@@ -334,14 +334,9 @@ def get_all_full_ids(request):
             data = json.loads(request.body)
             email = data.get('email')
             task_id = data.get('taskId')
-            # email = 'uday80022@gmail.com'
-            # task_id = 2
             user = CustomUser.objects.get(email=email)
-            print(user)
             status_objects = UserDataTableStatus.objects.filter(user=user)
-            print(status_objects)
             data_table_objects = DataTable.objects.filter(task_no=task_id)
-            print(data_table_objects)
             status_dict = {status.data_table_id: status.status for status in status_objects}
             data_list = [
                 {
@@ -364,3 +359,71 @@ def get_all_full_ids(request):
             return JsonResponse({'status': False, 'message': 'Error fetching full_ids'})
 
     return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})
+
+
+@csrf_exempt
+def get_user_statistics(request):
+    if request.method == 'GET':
+        try:
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            user = CustomUser.objects.get(email=user_email)
+            user_statistics = {
+                'completed_puzzles': UserDataTableStatus.objects.filter(user=user, status='completed').count(),
+                'incompleted_puzzles': UserDataTableStatus.objects.filter(user=user, status='incompleted').count(),
+                'notstarted_puzzles': UserDataTableStatus.objects.filter(user=user, status='notstarted').count(),
+            }
+            return JsonResponse({'status': True, 'user_statistics': user_statistics})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except Subscription.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Subscription not found'})
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'UserProfile not found'})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed'}, status=400)
+    
+@csrf_exempt
+def mark_puzzle_completed(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            task_id = data.get('task_id')
+            puzzle_id = data.get('puzzle_id')
+            user = CustomUser.objects.get(email=user_email)
+            puzzle = DataTable.objects.get(task_no=task_id, puzzle_no=puzzle_id)
+            status = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
+            
+            if status.status == 'completed':
+                return JsonResponse({'status': False, 'message': 'Puzzle already completed'})
+
+            status.status = 'completed'
+            status.save()
+
+            return JsonResponse({'status': True, 'message': 'Puzzle marked as completed'})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except DataTable.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Puzzle not found'})
+        except UserDataTableStatus.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'UserDataTableStatus not found'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+    
+@csrf_exempt
+def get_subscription_details(request):
+    if request.method == 'POST':
+        try:
+            user_email = request.POST.get('email')
+            user = CustomUser.objects.get(email=user_email)
+            subscription_details = {
+                'plan_type': Subscription.objects.get(user=user).sub_plan_type,
+                'renewal_status': Subscription.objects.get(user=user).sub_renewal,
+                'next_renewal_date': Subscription.objects.get(user=user).timestamp,
+            }
+            return JsonResponse({'status': True, 'subscription_details': subscription_details})
+        except Subscription.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Subscription not found'})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed'}, status=400)

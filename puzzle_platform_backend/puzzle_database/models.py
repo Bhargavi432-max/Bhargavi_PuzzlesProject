@@ -30,7 +30,7 @@ class DataTable(models.Model):
     full_id=models.CharField(max_length=50)
     admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE)
     task_no = models.IntegerField()
-    puzzle_no = models.IntegerField()
+    puzzle_no = models.CharField(max_length=100)
     puzzle_name = models.CharField(max_length=255)
     puzzle_video = models.URLField()
     puzzle_question = models.TextField()
