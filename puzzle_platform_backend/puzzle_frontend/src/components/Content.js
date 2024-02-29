@@ -1,27 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 
-const Content = ({
-  selectedPuzzle,
-  puzzleData,
-  handleDifficultyBoxButtonClick,
-}) => {
+const Content = ({ selectedTask, puzzleData }) => {
+  const [selectedPuzzle, setSelectedPuzzle] = useState(null);
+
+  const handleDifficultyBoxButtonClick = (puzzleId) => {
+    const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
+    setSelectedPuzzle(clickedPuzzle);
+  };
+
   const renderPuzzleButtons = (puzzles) => {
     return puzzles.map((puzzle, index) => (
       <button
         key={puzzle.id}
         onClick={() => handleDifficultyBoxButtonClick(puzzle.id)}
-        className={selectedPuzzle?.id === puzzle.id ? "active active-difficulty-button" : ""}
+        className={
+          selectedPuzzle?.id === puzzle.id
+            ? "active active-difficulty-button"
+            : ""
+        }
       >
         {index + 1}
       </button>
     ));
   };
 
+  const renderPuzzleDetails = () => {
+    if (!selectedPuzzle) {
+      return null;
+    }
+
+    if (!selectedPuzzle.puzzle_question || !selectedPuzzle.puzzle_video) {
+      return <p>No data found for this puzzle</p>;
+    }
+
+    return (
+      <div className="puzzle-details">
+        <h2>{selectedPuzzle.puzzle_question}</h2>
+        <iframe
+          width="560"
+          height="315"
+          src={selectedPuzzle.puzzle_video}
+          title="Puzzle Video"
+          frameBorder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+    );
+  };
+
   const renderDifficultyBoxButtons = () => {
-    
-    const easyPuzzles = puzzleData.filter(puzzle => puzzle.level === 'easy');
-    const mediumPuzzles = puzzleData.filter(puzzle => puzzle.level === 'medium');
-    const hardPuzzles = puzzleData.filter(puzzle => puzzle.level === 'hard');
+    const easyPuzzles = puzzleData.filter((puzzle) => puzzle.level.toLowerCase() === "easy");
+    const mediumPuzzles = puzzleData.filter((puzzle) => puzzle.level.toLowerCase() === "medium");
+    const hardPuzzles = puzzleData.filter((puzzle) => puzzle.level.toLowerCase() === "hard");
+
 
     return (
       <div className="difficulty-container">
@@ -49,7 +81,8 @@ const Content = ({
 
   return (
     <div className="content">
-      {selectedPuzzle && renderDifficultyBoxButtons()}
+      {selectedTask && renderDifficultyBoxButtons()}
+      {renderPuzzleDetails()}
     </div>
   );
 };
