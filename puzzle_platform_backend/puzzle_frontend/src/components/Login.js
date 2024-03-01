@@ -5,7 +5,7 @@ import "./Login.css";
 import { useEmail } from "./EmailContext";
 
 export const Login = () => {
-    const [email, setEmail] = useState(localStorage.getItem('email') || '');
+    const [email, setEmail] = useState(localStorage.getItem(null) || '');
     const [pass, setPass] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
