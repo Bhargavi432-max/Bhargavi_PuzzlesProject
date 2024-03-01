@@ -5,7 +5,7 @@ import "./Login.css";
 import { useEmail } from "./EmailContext";
 
 export const Login = () => {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(localStorage.getItem('email') || '');
     const [pass, setPass] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -37,6 +37,7 @@ export const Login = () => {
                 console.log(data.message);
                 setError(data.message);
                 setEmailContext(email);
+                localStorage.setItem('email', email); // Store email in local storage
                 navigate('/puzzlepage');
             } else {
                 throw new Error('Login failed');

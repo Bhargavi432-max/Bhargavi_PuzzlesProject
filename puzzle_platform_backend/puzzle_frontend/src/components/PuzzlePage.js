@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideNavbar from "./SideNavbar";
 import Content from "./Content";
-import { useEmail } from "./EmailContext";
+//import { useEmail } from "./EmailContext";
 
 const PuzzlePage = () => {
   const tasks = [];
@@ -10,9 +10,8 @@ const PuzzlePage = () => {
   }
 
   const [selectedTask, setSelectedTask] = useState(null);
-  const { email } = useEmail();
   const [puzzleData, setPuzzleData] = useState([null]);
-
+  const email = localStorage.getItem('email');
 
   const handleSidebarButtonClick = async (id) => {
     try {
@@ -31,11 +30,14 @@ const PuzzlePage = () => {
       console.log(data);
       setSelectedTask({ id });
       setPuzzleData(data.full_ids);
-      
     } catch (error) {
       console.error("Error sending task ID and email to backend", error);
     }
   };
+
+  useEffect(() => {
+    handleSidebarButtonClick(); 
+  }, [email]);
 
   return (
     <div className="puzzlepage">
@@ -46,7 +48,7 @@ const PuzzlePage = () => {
       />
       <Content
         selectedTask={selectedTask}
-        puzzleData={puzzleData} // Adjust this function as needed
+        puzzleData={puzzleData} 
       />
     </div>
   );
