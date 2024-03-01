@@ -37,7 +37,7 @@ export const Login = () => {
                 console.log(data.message);
                 setError(data.message);
                 setEmailContext(email);
-                localStorage.setItem('email', email); // Store email in local storage
+                localStorage.setItem('email', email);
                 navigate('/puzzlepage');
             } else {
                 throw new Error('Login failed');

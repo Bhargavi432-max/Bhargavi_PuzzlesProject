@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactPlayer from 'react-player/youtube';
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
@@ -36,15 +37,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     return (
       <div className="puzzle-details">
         <h2>{selectedPuzzle.puzzle_question}</h2>
-        <iframe
-          width="560"
-          height="315"
-          src={selectedPuzzle.puzzle_video}
-          title="Puzzle Video"
-          frameBorder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+        <ReactPlayer url={selectedPuzzle.puzzle_video} />
       </div>
     );
   };
