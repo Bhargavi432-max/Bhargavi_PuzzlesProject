@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SideNavbar from "./SideNavbar";
 import Content from "./Content";
+import { useNavigate } from "react-router-dom";
 //import { useEmail } from "./EmailContext";
 
 const PuzzlePage = () => {
@@ -9,9 +10,21 @@ const PuzzlePage = () => {
     tasks.push({ id: index + 1 });
   }
 
+  const [authenticated, setAuthenticated] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [puzzleData, setPuzzleData] = useState([null]);
+  const navigate = useNavigate();
   const email = localStorage.getItem('email');
+  useEffect(() => {
+    // Check if the user is authenticated (you can adjust this logic based on your authentication implementation)
+    const isAuthenticated = !!email; // Example: Check if email exists in local storage
+    setAuthenticated(isAuthenticated);
+
+    if (!isAuthenticated) {
+      // If not authenticated, redirect to the login page
+      navigate('/login');
+    }
+  }, [email, navigate]);
 
   const handleSidebarButtonClick = async (id) => {
     try {
@@ -40,17 +53,19 @@ const PuzzlePage = () => {
   }, [email]);
 
   return (
-    <div className="puzzlepage">
-      <SideNavbar
-        tasks={tasks}
-        handleSidebarButtonClick={handleSidebarButtonClick}
-        selectedPuzzleId={selectedTask?.id}
-      />
-      <Content
-        selectedTask={selectedTask}
-        puzzleData={puzzleData} 
-      />
-    </div>
+    authenticated && (
+      <div className="puzzlepage">
+        <SideNavbar
+          tasks={tasks}
+          handleSidebarButtonClick={handleSidebarButtonClick}
+          selectedPuzzleId={selectedTask?.id}
+        />
+        <Content
+          selectedTask={selectedTask}
+          puzzleData={puzzleData} 
+        />
+      </div>
+    )
   );
 };
 
