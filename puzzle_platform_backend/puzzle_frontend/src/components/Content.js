@@ -8,21 +8,21 @@ const Content = ({ selectedTask, puzzleData }) => {
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
-    setSelectedPuzzle(clickedPuzzle);
-
-    const emailToSend = selectedTask ? selectedTask.email : email; // Use localStorage email if selectedTask is not available
-
+    setSelectedPuzzle(clickedPuzzle); // Use localStorage email if selectedTask is not available
+    
     fetch('http://127.0.0.1:8000/api/get_puzzle_access/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: emailToSend,
+        email: email,
         task_id: selectedTask ? selectedTask.id : null, // Assuming selectedTask contains task ID
         puzzle_id: puzzleId,
       }),
+
     })
+    
     .then(response => {
       if (response.ok) {
         console.log('Request successful');
