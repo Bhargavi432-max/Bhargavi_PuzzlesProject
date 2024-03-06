@@ -16,5 +16,7 @@ urlpatterns = [
     path('get_user_statistics/', views.get_user_statistics, name='get_user_statistics'),
     path('mark_puzzle_completed/', views.mark_puzzle_completed, name='mark_puzzle_completed'),
     path('get_subscription_details/', views.get_subscription_details, name='get_subscription_details'),
+    
     path('get_puzzle_access/', views.get_puzzle_access, name='get_puzzle_access'),
+
 ]
