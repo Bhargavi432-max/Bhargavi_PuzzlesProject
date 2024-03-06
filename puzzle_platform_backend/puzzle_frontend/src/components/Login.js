@@ -5,13 +5,12 @@ import "./Login.css";
 import { useEmail } from "./EmailContext";
 
 export const Login = () => {
-    const [email, setEmail] = useState(localStorage.getItem(null) || '');
+    const [email, setEmail] = useState(localStorage.getItem('email') || '');
     const [pass, setPass] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { setEmail: setEmailContext } = useEmail();
     const navigate = useNavigate();
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
