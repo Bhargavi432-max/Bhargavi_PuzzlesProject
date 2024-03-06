@@ -10,7 +10,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     setSelectedPuzzle(clickedPuzzle);
 
     // Make a POST request to the backend
-    fetch('http://127.0.0.1:8000/api/get_ids/', {
+    fetch('http://127.0.0.1:8000/api/get_puzzle_access/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
