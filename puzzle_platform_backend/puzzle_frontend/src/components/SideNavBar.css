@@ -1,0 +1,100 @@
+.sidenavbar {
+    height: 100%;
+    width: 180px; 
+    position: fixed;
+    z-index: 1;
+    top: 4;
+    left: 0;
+    align-items: center;
+    background-color: #f9f8ff;
+    overflow-x: hidden;
+    padding-top: 20px;
+    padding-left: 10px; /* Little space on the left side */
+    overflow-y: auto;
+    border-radius: 15px;
+    margin-left: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .sidenavbar::-webkit-scrollbar {
+    width: 3px;
+    height: 100%;
+  }
+  
+  .sidenavbar::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
+    box-shadow: inset 0 0 6px rgba(27, 27, 27, 0.3);
+    height:20px;
+  }
+  
+  .sidenavbar::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background-color: #7c7c7c; /* Thumb color */
+    height:20px;
+  }
+  
+  .sidenavbar::-webkit-scrollbar-thumb:hover {
+    background: #5c5c5c; /* Thumb color on hover */
+  }
+  
+  .sidenavbar button {
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(61, 61, 61);
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    border: none;
+    width: 90%;
+    cursor: pointer;
+    width: calc(100% - 15px); /* Adjust width to accommodate scrollbar and space */
+    margin-bottom: 10px;
+    height: 33px;
+    position: relative; /* Required for absolute positioning of pseudo-element */
+  }
+  
+  .sidenavbar button.active {
+    background-color: #596FB7;
+    border: 2px solid rgb(16, 16, 173);
+    color: white;
+    text-align: center;
+  }
+  
+  .sidenavbar button:hover {
+    background-color: #a5a5a5;
+  }
+  
+  /* Pseudo-element for the circle */
+  .sidenavbar button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Adjust the distance of the circle from the button's right edge */
+    transform: translateY(-50%);
+    width: 12px; /* Diameter of the circle */
+    height: 12px; /* Diameter of the circle */
+    background-color: #333; /* Color of the circle */
+    border-radius: 50%; /* Make it a circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Nested pseudo-element for the arrow */
+  .sidenavbar button::after {
+    content: '\003E'; /* Unicode for right arrow */
+    color: white;
+    font-size: 8px; /* Adjust the size of the arrow */
+    text-align: center;
+  }
+  .sidenavbar button.active::after {
+    background-color: white;
+    color: #1033a3;
+    font-size:13px; /* Change circle color to white */
+  }
+  

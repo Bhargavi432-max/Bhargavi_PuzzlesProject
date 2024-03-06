@@ -1,0 +1,156 @@
+.difficulty-container {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  width: 100%;
+}
+
+.difficulty-title {
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  font-family:'popins', sans-serif;
+}
+
+.difficulty-box-container {
+  width: 27%;
+  margin-right: 20px;
+}
+
+.difficulty-box {
+  border: 1px solid #ccc;
+  padding: 13px;
+  cursor: pointer;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f4f4;
+  height:180px;
+}
+
+.difficulty-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.active-difficulty-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.difficulty-button {
+  border: none;
+  justify-content: center;
+  padding: 2px 4px;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  background-color: #b6b5b5;
+  font-size: 11px;
+  font-weight: 770;
+}
+
+.difficulty-button:hover {
+  background-color: #e9ecef;
+  color: #000;
+}
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 17px; /* Adjust the gap between buttons */
+}
+.puzzle-details {
+  display: flex;
+  padding-top: 30px;
+  height: 300px;
+}
+
+.question-container, .video-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+.video-container{
+  width:40%;
+  margin-right: 40px;
+  border-radius: 8px;
+}
+
+.question-container {
+  margin-right: 20px; 
+  margin-left: 30px;
+  border-radius: 8px;
+}
+
+.question-container h2 {
+  text-align: center;
+}
+
+.react-player {
+  width: 100%; /* Make the video player responsive */
+  height: 100%; /* Ensure aspect ratio is maintained */
+  max-width: 100%; /* Set maximum width for the video player */
+  max-height: 100%;
+}
+.question-container,
+.video-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.video-container {
+  width: 50%; /* Adjust width as needed */
+  margin-right: 20px; /* Add margin between question and video containers */
+}
+
+.question-container {
+  position: relative; /* Ensure position relative for absolute positioning */
+  width: 50%; /* Adjust width as needed */
+  margin-left: 20px; /* Add margin between question and video containers */
+}
+
+.question-Name {
+  position: absolute;
+  top: 10px; /* Adjust top position as needed */
+  left: 10px; /* Adjust left position as needed */
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.question-Name {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.question-Box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.question-Box h2 {
+  text-align: center;
+}
+
+.puzzle-details {
+  display: flex;
+  padding-top: 30px;
+  height: 100%;
+}
