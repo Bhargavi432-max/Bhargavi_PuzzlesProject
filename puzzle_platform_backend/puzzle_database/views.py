@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import make_password,check_password
+from django.contrib.auth import authenticate, login
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import CustomUser,Admin,Subscription,DataTable,UserDataTableStatus,FAQ,UserProfile
@@ -66,6 +67,7 @@ def user_login(request):
             if user.is_active:
                 user.login_status = True
                 user.save()
+                # login(request, user)
                 return JsonResponse({'message': 'User login successful', 'login_status': user.login_status})
             else:
                 return JsonResponse({'message': 'User account is not active', 'login_status': False})
@@ -233,18 +235,12 @@ def get_puzzle_details(request):
             user = CustomUser.objects.get(email=email)
             subscription = Subscription.objects.get(user=user)
             plan_type = subscription.sub_plan_type
-            
-            # Check if the task exists
             task = DataTable.objects.filter(task_no=task_id).first()
             if task is None:
                 return HttpResponse("Task not found")
-
-            # Check if the puzzle exists for the given task
             puzzle = DataTable.objects.filter(puzzle_no=puzzle_id, task_no=task_id).first()
             if puzzle is None:
                 return HttpResponse("Puzzle not found")
-
-            # Check the user's subscription plan and grant access accordingly
             if plan_type == 'Free':
                 if task_id == 1 and puzzle_id <= 5:
                     return HttpResponse("Accept")
@@ -409,7 +405,7 @@ def mark_puzzle_completed(request):
         except UserDataTableStatus.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'UserDataTableStatus not found'})
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+        return JsonResponse({'error': 'Only POST requests are allowed'})
     
 @csrf_exempt
 def get_subscription_details(request):
@@ -426,4 +422,63 @@ def get_subscription_details(request):
         except Subscription.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'Subscription not found'})
     else:
-        return JsonResponse({'error': 'Only GET requests are allowed'}, status=400)
+        return JsonResponse({'error': 'Only GET requests are allowed'})
+    
+@csrf_exempt
+def get_puzzle_access(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            puzzle_id = data.get('puzzle_id')
+            task_id = data.get('task_id')
+            print(user_email,puzzle_id,task_id)
+
+            user = CustomUser.objects.get(email=user_email)
+            puzzle = DataTable.objects.get(puzzle_no=puzzle_id, task_no=task_id)
+
+            # Check user subscription type
+            subscription_type = Subscription.objects.get(user=user).sub_plan_type
+
+            if subscription_type == 'Free':
+                # Free users have access to limited puzzles
+                if task_id == 1 and int(puzzle_id) <= 5:
+                    return JsonResponse({'status': True, 'message': 'User has access to the puzzle'})
+                else:
+                    return JsonResponse({'status': False, 'message': 'User does not have access. Upgrade your plan.'})
+
+            elif subscription_type == 'Basic':
+                # Basic users can access puzzles sequentially
+                prev_puzzle_id = int(puzzle_id) - 1
+                prev_puzzle = DataTable.objects.filter(puzzle_no=prev_puzzle_id, task_no=task_id).first()
+                
+                if prev_puzzle is None:
+                    return JsonResponse({'status': False, 'message': 'Invalid puzzle_id'})
+
+                prev_puzzle_status = UserDataTableStatus.objects.get(user=user, data_table=prev_puzzle).status
+
+                if prev_puzzle_status == 'completed':
+                    return JsonResponse({'status': True, 'message': 'User has access to the puzzle'})
+                else:
+                    return JsonResponse({'status': False, 'message': 'Complete previous puzzles to access this puzzle.'})
+
+            elif subscription_type == 'Premium':
+                # Premium users have access to all puzzles
+                return JsonResponse({'status': True, 'message': 'User has access to the puzzle'})
+
+            else:
+                return JsonResponse({'status': False, 'message': 'Invalid subscription type'})
+
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except DataTable.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Puzzle not found'})
+        except UserDataTableStatus.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'UserDataTableStatus not found'})
+        except Subscription.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Subscription not found'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'})
+
+
+
