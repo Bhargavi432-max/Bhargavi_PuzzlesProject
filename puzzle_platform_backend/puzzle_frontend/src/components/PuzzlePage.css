@@ -15,4 +15,21 @@
     flex: 1; /* Take remaining space */
     margin-left: 230px;
   }
-  
+  .welcome-image{
+    padding-top: 100px;
+    padding-left: 500px;
+  }
+  .welcome-message{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 20px;
+    font-weight: 770;
+    font-family: Georgia, serif;
+    transform: translate(-50%, -50%);
+    opacity: 0; /* Initially hide the welcome message */
+    transition: opacity 0.5s ease;
+  }
+  .show-welcome-message .welcome-message {
+    opacity: 1; /* Show the welcome message when the class is applied */
+  }
