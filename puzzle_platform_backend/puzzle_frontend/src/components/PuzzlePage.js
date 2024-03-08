@@ -47,9 +47,9 @@ const PuzzlePage = () => {
     }
   };
 
-  useEffect(() => {
-    handleSidebarButtonClick(); 
-  }, [email]);
+  // useEffect(() => {
+  //   handleSidebarButtonClick(); 
+  // }, [email]);
 
   return (
     authenticated && (
