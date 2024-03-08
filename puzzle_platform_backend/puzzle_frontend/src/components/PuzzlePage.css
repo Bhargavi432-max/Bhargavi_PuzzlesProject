@@ -1,5 +1,6 @@
 .puzzlepage {
     display: flex;
+    background-color: rgb(245, 245, 245);
     flex-direction: row;
     height: 100%;
     width:100% ;/* Ensure full height of the viewport */

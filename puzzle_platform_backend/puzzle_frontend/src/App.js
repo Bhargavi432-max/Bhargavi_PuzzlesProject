@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import './App.css';
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
@@ -16,22 +17,21 @@ function App() {
     <Router>
       <div className="App">
         <EmailProvider>
-        <Routes>
-        <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/otp" element={<OTPVerification />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
-          <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-          <Route path="/checkotp" element={<CheckOTPPage />} />
-          <Route path="/resetpassword" element={<ResetPasswordPage />} />
-          <Route path="/puzzlepage" element={<PuzzlePage />} />
-
-        </Routes>
+          <Navbar className='nav' /> {/* Include the Navbar component */}
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/otp" element={<OTPVerification />} />
+            <Route path="/changepassword" element={<ChangePassword />} />
+            <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+            <Route path="/checkotp" element={<CheckOTPPage />} />
+            <Route path="/resetpassword" element={<ResetPasswordPage />} />
+            <Route path="/puzzlepage" element={<PuzzlePage />} />
+          </Routes>
         </EmailProvider>
       </div>
     </Router>
-    
   );
 }
 

@@ -44,19 +44,29 @@ const Content = ({ selectedTask, puzzleData }) => {
       const buttonRows = [];
       for (let i = 0; i < puzzles.length; i += 6) {
         const rowPuzzles = puzzles.slice(i, i + 6);
-        const rowButtons = rowPuzzles.map((puzzle) => (
-          <button
-            key={puzzle.id}
-            onClick={() => handleDifficultyBoxButtonClick(puzzle.id)}
-            className={
-              selectedPuzzle?.id === puzzle.id
-                ? "active-difficulty-button difficulty-button"
-                : "difficulty-button"
+        const rowButtons = rowPuzzles.map((puzzle) => {
+          let buttonClass = "difficulty-button";
+          if (selectedPuzzle?.id === puzzle.id) {
+            buttonClass += ` current-${puzzle.level.toLowerCase()}`;
+          } else {
+            if (puzzle.user_status === 'completed') {
+                buttonClass += ` completed-${puzzle.level.toLowerCase()}`;
+            } else if (puzzle.user_status === 'incompleted') {
+              buttonClass += ` incompleted`;
+            } else if (puzzle.user_status === 'notstarted') {
+              buttonClass += ` notstarted`;
             }
-          >
-            {puzzle.id}
-          </button>
-        ));
+        }
+          return (
+            <button
+              key={puzzle.id}
+              onClick={() => handleDifficultyBoxButtonClick(puzzle.id)}
+              className={buttonClass}
+            >
+              {puzzle.id}
+            </button>
+          );
+        });
         buttonRows.push(
           <div key={`row-${i / 6}`} className="button-row">
             {rowButtons}
@@ -65,6 +75,7 @@ const Content = ({ selectedTask, puzzleData }) => {
       }
       return buttonRows;
     };
+    
 
     return (
       <div className="difficulty-container">

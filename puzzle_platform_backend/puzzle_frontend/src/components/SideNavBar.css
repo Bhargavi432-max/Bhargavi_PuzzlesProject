@@ -1,5 +1,5 @@
 .sidenavbar {
-    height: 100%;
+    height: 83%;
     width: 180px; 
     position: fixed;
     z-index: 1;
@@ -82,6 +82,7 @@
     border-radius: 50%; /* Make it a circle */
     display: flex;
     justify-content: center;
+    text-align: center;
     align-items: center;
   }
   
@@ -91,10 +92,13 @@
     color: white;
     font-size: 8px; /* Adjust the size of the arrow */
     text-align: center;
+    align-items: center;
   }
   .sidenavbar button.active::after {
     background-color: white;
     color: #1033a3;
-    font-size:13px; /* Change circle color to white */
+    font-size:13px; 
+    text-align: center;
+    align-items: center;
   }
   

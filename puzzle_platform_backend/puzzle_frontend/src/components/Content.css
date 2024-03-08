@@ -7,14 +7,18 @@
 
 .difficulty-title {
   text-align: left;
+  height:14px;
+  width:104px;
+  letter-spacing: 0.24px;
+  line-height:17.4px;
   margin-bottom: 10px;
-  font-size: 11px;
-  font-weight: 800;
-  font-family:'popins', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Inter-Medium', Helvetica;
 }
 
 .difficulty-box-container {
-  width: 27%;
+  width: 30%;
   margin-right: 20px;
 }
 
@@ -23,10 +27,11 @@
   padding: 13px;
   cursor: pointer;
   box-sizing: border-box;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  background-color: #f5f4f4;
-  height:180px;
+  border-radius: 7px;
+  box-shadow: 4px 4px 15px #00000040;
+  background-color: #f4f4f4;
+  height: 200px;
+  border-color: #c6c6c6;
 }
 
 .difficulty-buttons {
@@ -36,40 +41,39 @@
   gap: 10px;
 }
 
-.active-difficulty-button {
-  background-color: #007bff;
-  color: #fff;
-}
 
-.difficulty-button {
+.difficulty-buttons .difficulty-button {
   border: none;
   justify-content: center;
   padding: 2px 4px;
   border-radius: 50%;
   cursor: pointer;
-  width: 30px;
-  height: 30px;
-  background-color: #b6b5b5;
+  width: 35px;
+  height: 35px;
+  background-color: #ebebeb;
   font-size: 11px;
   font-weight: 770;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3); /* Add top inner shadow effect */
 }
 
-.difficulty-button:hover {
+.difficulty-buttons .difficulty-button:hover {
   background-color: #e9ecef;
   color: #000;
 }
+
 .button-row {
   display: flex;
   justify-content: center;
-  gap: 17px; /* Adjust the gap between buttons */
+  gap: 17px; 
 }
 .puzzle-details {
   display: flex;
-  padding-top: 30px;
+  padding-top: 15px;
   height: 300px;
 }
 
-.question-container, .video-container {
+.question-container,
+.video-container {
   flex: 1;
   display: flex;
   align-items: center;
@@ -77,16 +81,18 @@
   padding: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
-.video-container{
-  width:40%;
+
+.video-container {
+  width: 40%;
   margin-right: 40px;
   border-radius: 8px;
 }
 
 .question-container {
-  margin-right: 20px; 
+  margin-right: 20px;
   margin-left: 30px;
   border-radius: 8px;
+  
 }
 
 .question-container h2 {
@@ -94,9 +100,9 @@
 }
 
 .react-player {
-  width: 100%; /* Make the video player responsive */
-  height: 100%; 
-  max-width: 100%; 
+  width: 100%; 
+  height: 100%;
+  max-width: 100%;
   max-height: 100%;
 }
 .question-container,
@@ -111,20 +117,23 @@
 }
 
 .video-container {
-  width: 50%; 
-  margin-right: 20px; 
+  width: 40%;
+  margin-right: 40px;
+  border-radius: 8px;
 }
 
 .question-container {
-  position: relative; 
-  width: 50%; 
-  margin-left: 20px; 
+  position: relative;
+  width: 50%;
+  margin-right: 20px;
+  margin-left: 30px;
+  border-radius: 8px;
 }
 
 .question-Name {
   position: absolute;
-  top: 10px; 
-  left: 10px; 
+  top: 5px;
+  left: 10px;
   font-size: 14px;
   font-weight: bold;
 }
@@ -134,7 +143,7 @@
   top: 0;
   left: 0;
   padding: 10px;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: bold;
 }
 
@@ -143,14 +152,144 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-color: #eeecec;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 99.5%;
+  height: 85%;
+  margin-top: 35px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .question-Box h2 {
   text-align: center;
 }
+/* Easy Level */
+.difficulty-buttons .difficulty-button.current-easy {
+  -webkit-backdrop-filter: blur(48.36px) brightness(100%);
+  backdrop-filter: blur(48.36px) brightness(100%);
+  background-color: #66ff096b;
+  border: 2px solid;
+  border-color: #349407;
+  border-radius: 48.36px;
+  box-shadow: inset -1.61px 1.61px 1.61px #ffffff99, inset 1.61px -1.61px 1.61px #75757599;
+  height: 35px;
+  position: relative;
+  width: 35px;
+  color:black;
+  font-size: 14px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 770;
+}
 
-.puzzle-details {
-  display: flex;
-  padding-top: 30px;
-  height: 100%;
+.difficulty-buttons .difficulty-button.completed-easy {
+  background: linear-gradient(180deg, rgb(69.19, 161.06, 12.88) 0%, rgb(189.13, 255, 148.75) 100%);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 38.36px;
+  box-shadow: inset 5.22e-16px 8.52px 8.52px #5bd70f, inset -5.22e-16px -8.52px 8.52px #608946;
+  height: 35px;
+  position: relative;
+  width: 35px;
+  color:white;
+  font-size: 14px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 770;
+}
+
+/* Medium Level */
+.difficulty-buttons .difficulty-button.current-medium {
+  -webkit-backdrop-filter: blur(48.36px) brightness(100%);
+  backdrop-filter: blur(48.36px) brightness(100%);
+  background-color: #ca97ff;
+  border: 2px solid;
+  border-color: #8a15ff;
+  border-radius: 48.36px;
+  box-shadow: inset -1.61px 1.61px 1.61px #ffffff99, inset 1.61px -1.61px 1.61px #75757599;
+  height: 35px;
+  position: relative;
+  width: 35px;
+  color:black;
+  font-size: 14px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 770;
+}
+
+.difficulty-buttons .difficulty-button.completed-medium {
+  background: linear-gradient(180deg, rgb(138.3, 21.6, 255) 0%, rgb(215.31, 175.95, 255) 100%);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 38.36px;
+  box-shadow: inset 5.22e-16px 8.52px 8.52px #d2a5ff, inset -5.22e-16px -8.52px 8.52px #7e55a7;
+  height: 35px;
+  position: relative;
+  width: 35px;
+  color:white;
+  font-size: 14px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 770;
+}
+
+/* Hard Level */
+.difficulty-buttons .difficulty-button.current-hard {
+  -webkit-backdrop-filter: blur(48.36px) brightness(100%);
+  backdrop-filter: blur(48.36px) brightness(100%);
+  background-color: #fe5f5f82;
+  border: 2px solid;
+  border-color: #ff0404;
+  border-radius: 48.36px;
+  box-shadow: inset -1.61px 1.61px 1.61px #ffffff99, inset 1.61px -1.61px 1.61px #75757599;
+  height: 35px;
+  position: relative;
+  width: 35px;
+  color:black;
+  font-size: 14px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 770;
+}
+
+.difficulty-buttons .difficulty-button.completed-hard {
+  background: linear-gradient(180deg, rgb(223.11, 45.04, 5.95) 0%, rgb(255, 180, 175.95) 100%);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 38.36px;
+  box-shadow: inset 5.22e-16px 8.52px 8.52px #ffa497, inset -5.22e-16px -8.52px 8.52px #de381e;
+  height: 35px;
+  position: relative;
+  width: 35px;
+  color:white;
+  font-size: 14px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 770;
+}
+
+/* Incompleted Puzzle Buttons */
+.difficulty-buttons .difficulty-button.incompleted {
+  -webkit-backdrop-filter: blur(48.36px) brightness(100%);
+  backdrop-filter: blur(48.36px) brightness(100%);
+  background: linear-gradient(180deg, rgba(255, 137.7, 0, 0.7) 0%, rgba(255, 214.74, 3.4, 0.7) 100%);
+  border-radius: 48.36px;
+  box-shadow: inset -1.61px 1.61px 1.61px #f49f1f, inset 1.61px -1.61px 1.61px #d58e24;
+  height: 35px;
+  position: relative;
+  width: 35px;
+  color:white;
+  font-size: 14px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 500;
+}
+.difficulty-buttons .difficulty-button.notstarted {
+  -webkit-backdrop-filter: blur(48.36px) brightness(100%);
+  backdrop-filter: blur(48.36px) brightness(100%);
+  background: linear-gradient(180deg, rgba(77.35, 77.35,77.35, 0.2) 0%, rgba(202.3, 202.3, 202.3, 0.2) 100%);
+  border-radius: 48.36px;
+  box-shadow: inset -1.61px 1.61px 1.61px #ffffff99, inset 1.61px -1.61px 1.61px #75757599;
+  height: 35px;
+  position: relative;
+  width: 35px;
+  color:#000000;
+  font-size: 15px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 770;  
+
+
+
+
 }
