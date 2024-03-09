@@ -60,7 +60,7 @@ const PuzzlePage = () => {
             <SideNavbar
               tasks={tasks}
               handleSidebarButtonClick={handleSidebarButtonClick}
-              selectedPuzzleId={selectedTask?.id}
+              selectedTaskId={selectedTask?.id}
             />
           </div>
           <div className="content-box">
