@@ -1,11 +1,9 @@
-from django.contrib.auth.hashers import make_password,check_password
-from django.contrib.auth import authenticate, login
+
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CustomUser,Admin,Subscription,DataTable,UserDataTableStatus,FAQ,UserProfile
+from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,FAQ,UserProfile
 import json
-from django.core.mail import send_mail
-from django.conf import settings
+
     
 @csrf_exempt
 def get_puzzle_details(request):
@@ -162,7 +160,7 @@ def get_user_statistics(request):
             return JsonResponse({'status': False, 'message': 'UserProfile not found'})
     else:
         return JsonResponse({'error': 'Only GET requests are allowed'}, status=400)
-    
+
 @csrf_exempt
 def mark_puzzle_completed(request):
     if request.method == 'POST':
@@ -171,6 +169,7 @@ def mark_puzzle_completed(request):
             user_email = data.get('email')
             task_id = data.get('task_id')
             puzzle_id = data.get('puzzle_id')
+            
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(task_id=task_id, puzzle_id=puzzle_id)
             status = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
@@ -180,8 +179,31 @@ def mark_puzzle_completed(request):
 
             status.status = 'completed'
             status.save()
+            task_puzzles_count = DataTable.objects.filter(task_id=task_id).count()
+            print(task_puzzles_count)
+
+            completed_puzzles_count = UserDataTableStatus.objects.filter(
+                user=user, data_table__task_id=task_id, puzzle_status='completed'
+            ).count()
+            print(completed_puzzles_count)
+
+            if completed_puzzles_count == task_puzzles_count:
+                task_statuses = UserDataTableStatus.objects.filter(
+                    user=user, data_table__task_id=task_id
+                )
+                for task_status in task_statuses:
+                    task_status.task_status = 'completed'
+                    task_status.save()
+            else:
+                task_statuses = UserDataTableStatus.objects.filter(
+                    user=user, data_table__task_id=task_id
+                ).exclude(puzzle_status='completed')
+                for task_status in task_statuses:
+                    task_status.task_status = 'incompleted'
+                    task_status.save()
 
             return JsonResponse({'status': True, 'message': 'Puzzle marked as completed'})
+        
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
         except DataTable.DoesNotExist:
@@ -190,6 +212,7 @@ def mark_puzzle_completed(request):
             return JsonResponse({'status': False, 'message': 'UserDataTableStatus not found'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'})
+
     
 @csrf_exempt
 def get_subscription_details(request):
@@ -269,13 +292,12 @@ def get_puzzle_access(request):
         return JsonResponse({'error': 'Only POST requests are allowed'})
 
 
-
-
 @csrf_exempt
-def get_task_statuses(request):
-    if request.method == 'GET':
+def get_task_status(request):
+    if request.method == 'POST':
         try:
-            user_email = 'uday80022@gmail.com'
+            data = json.loads(request.body)
+            user_email = data.get('email')
             user = CustomUser.objects.get(email=user_email)
             task_statuses = {}
 
@@ -290,7 +312,7 @@ def get_task_statuses(request):
                 except Exception as e:
                     task_statuses[task_id] = 'error'
 
-            return JsonResponse({'status': True, 'task_statuses': task_statuses})
+            return JsonResponse({'status': True, 'task_status': task_statuses})
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
         except Exception as e:
