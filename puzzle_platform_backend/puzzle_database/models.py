@@ -27,10 +27,9 @@ class Admin(models.Model):
     
 class DataTable(models.Model):
     id = models.AutoField(primary_key=True)
-    full_id=models.CharField(max_length=50)
     admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE)
-    task_no = models.IntegerField()
-    puzzle_no = models.CharField(max_length=100)
+    task_id = models.IntegerField()
+    puzzle_id = models.CharField(max_length=100)
     puzzle_name = models.CharField(max_length=255)
     puzzle_video = models.URLField()
     puzzle_question = models.TextField()
@@ -65,7 +64,7 @@ class Subscription(models.Model):
     def __str__(self):
         return f"Subscription {self.sub_id} for {self.user.user_id}"
     
-class Report(models.Model):
+class LogReport(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     task_no = models.IntegerField()
@@ -86,6 +85,7 @@ class Plan(models.Model):
     id = models.AutoField(primary_key=True)
     plan_type = models.CharField(max_length=100)
     plan_price = models.DecimalField(max_digits=10, decimal_places=2)
+    benefits = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -100,7 +100,10 @@ class UserDataTableStatus(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     data_table = models.ForeignKey(DataTable, on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+    puzzle_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='notstarted')
+    task_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='notstarted')
+    time_spent = models.DurationField(null=True, blank=True)   
+
 
     class Meta:
         unique_together = ['user', 'data_table']

@@ -9,7 +9,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-
 @csrf_exempt
 def register_user(request):
     if request.method == 'POST':
@@ -122,7 +121,7 @@ def forgot_password(request):
         user.save()
 
         subject = 'Password Reset OTP'
-        message = f'Your OTP for password reset is: {otp}'
+        message = f'Your OTP for password reset is: {otp}'  
         email_from = settings.DEFAULT_FROM_EMAIL
         recipient_list = [email]
         send_mail(subject, message, email_from, recipient_list)
@@ -235,7 +234,7 @@ def get_puzzle_details(request):
             user = CustomUser.objects.get(email=email)
             subscription = Subscription.objects.get(user=user)
             plan_type = subscription.sub_plan_type
-            task = DataTable.objects.filter(task_no=task_id).first()
+            task = DataTable.objects.filter(task_id=task_id).first()
             if task is None:
                 return HttpResponse("Task not found")
             puzzle = DataTable.objects.filter(puzzle_no=puzzle_id, task_no=task_id).first()
@@ -330,16 +329,20 @@ def get_all_full_ids(request):
             data = json.loads(request.body)
             email = data.get('email')
             task_id = data.get('taskId')
+            
             user = CustomUser.objects.get(email=email)
+            print('Enter 1')
             status_objects = UserDataTableStatus.objects.filter(user=user)
-            data_table_objects = DataTable.objects.filter(task_no=task_id)
-            status_dict = {status.data_table_id: status.status for status in status_objects}
+            print('Enter 2')
+            data_table_objects = DataTable.objects.filter(task_id=task_id)
+            print('Enter 3')
+            status_dict = {status.data_table_id: status.puzzle_status for status in status_objects}
+            print('Enter 4')
             data_list = [
                 {
                     'id': obj.id,
-                    'full_id': obj.full_id,
-                    'task_no': obj.task_no,
-                    'puzzle_no': obj.puzzle_no,
+                    'task_no': obj.task_id,
+                    'puzzle_no': obj.puzzle_id,
                     'puzzle_name': obj.puzzle_name,
                     'puzzle_video': obj.puzzle_video,
                     'puzzle_question': obj.puzzle_question,
@@ -430,27 +433,28 @@ def get_puzzle_access(request):
         try:
             data = json.loads(request.body)
             user_email = data.get('email')
-            puzzle_id = data.get('puzzle_id')
+            # puzzle_id = data.get('puzzle_id')
+            puzzle_id = 'T01-T01-ST01-01'
             task_id = data.get('task_id')
             print(user_email,puzzle_id,task_id)
-
             user = CustomUser.objects.get(email=user_email)
-            puzzle = DataTable.objects.get(puzzle_no=puzzle_id, task_no=task_id)
-
-            # Check user subscription type
+            puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
             subscription_type = Subscription.objects.get(user=user).sub_plan_type
-
+            print(subscription_type)
             if subscription_type == 'Free':
-                # Free users have access to limited puzzles
-                if task_id == 1 and int(puzzle_id) <= 5:
-                    return JsonResponse({'status': True, 'message': 'User has access to the puzzle'})
+                if task_id == 1 and int(puzzle_id[-2:]) <= 5:
+                    puzzle_data = {
+                        'video': puzzle.puzzle_video,
+                        'question': puzzle.puzzle_question,
+                        'status': 'User has access to the puzzle'
+                    }
+                    print(puzzle_data)
+                    return JsonResponse({'status': True, 'data': puzzle_data})
                 else:
                     return JsonResponse({'status': False, 'message': 'User does not have access. Upgrade your plan.'})
-
             elif subscription_type == 'Basic':
-                # Basic users can access puzzles sequentially
-                prev_puzzle_id = int(puzzle_id) - 1
-                prev_puzzle = DataTable.objects.filter(puzzle_no=prev_puzzle_id, task_no=task_id).first()
+                prev_puzzle_id = puzzle_id[:-2]+str(int(puzzle_id[-2]) - 1)
+                prev_puzzle = DataTable.objects.filter(puzzle_id=prev_puzzle_id, task_id=task_id).first()
                 
                 if prev_puzzle is None:
                     return JsonResponse({'status': False, 'message': 'Invalid puzzle_id'})
