@@ -129,8 +129,9 @@ def get_all_full_ids(request):
                     'level': obj.level,
                     'puzzle_price': str(obj.puzzle_price),
                     'user_status': status_dict.get(obj.id),
+                    'task_status': status.task_status,
                 }
-                for obj in data_table_objects
+                for obj, status in zip(data_table_objects, status_objects)
             ]
             print(data_list)
             return JsonResponse({'status': True, 'full_ids': data_list})
@@ -270,3 +271,29 @@ def get_puzzle_access(request):
 
 
 
+@csrf_exempt
+def get_task_statuses(request):
+    if request.method == 'GET':
+        try:
+            user_email = 'uday80022@gmail.com'
+            user = CustomUser.objects.get(email=user_email)
+            task_statuses = {}
+
+            for task_id in range(1, 26):
+                try:
+                    status_objects = UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id)
+                    if status_objects.exists():
+                        status_object = status_objects.first()
+                        task_statuses[task_id] = status_object.task_status
+                    else:
+                        task_statuses[task_id] = 'notstarted'
+                except Exception as e:
+                    task_statuses[task_id] = 'error'
+
+            return JsonResponse({'status': True, 'task_statuses': task_statuses})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except Exception as e:
+            return JsonResponse({'status': False, 'message': 'Error fetching task statuses'})
+
+    return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})

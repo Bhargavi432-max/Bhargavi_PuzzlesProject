@@ -21,5 +21,6 @@ urlpatterns = [
     path('mark_puzzle_completed/', views.mark_puzzle_completed, name='mark_puzzle_completed'),
     path('get_subscription_details/', views.get_subscription_details, name='get_subscription_details'),
     path('get_puzzle_access/', views.get_puzzle_access, name='get_puzzle_access'),
+    path('get_task_statuses/', views.get_task_statuses, name='get_task_statuses'),
 
 ]
