@@ -4,12 +4,12 @@ import "./Content.css";
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
+  const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
   const email = localStorage.getItem('email');
 
   const handleDifficultyBoxButtonClick = async (puzzleId) => {
-    const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
+    const clickedPuzzle = puzzleData.find((puzzle) => puzzle.puzzle_id === puzzleId);
     setSelectedPuzzle(clickedPuzzle);
-
     try {
       const response = await fetch('http://127.0.0.1:8000/api/get_puzzle_access/', {
         method: 'POST',
@@ -22,9 +22,12 @@ const Content = ({ selectedTask, puzzleData }) => {
           puzzle_id: puzzleId,
         }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
+        setSelectedPuzzleDetails(data, () => {
+          console.log(selectedPuzzleDetails); // Log the updated state here
+        });
         console.log(data);
         console.log('Request successful');
       } else {
@@ -38,17 +41,16 @@ const Content = ({ selectedTask, puzzleData }) => {
   const renderButtons = (puzzles) => {
     return puzzles.map((puzzle) => {
       let buttonClass = "difficulty-button";
-
-      if (selectedPuzzle?.id === puzzle.id) {
+      if (selectedPuzzle && selectedPuzzle.id === puzzle.id) {
         buttonClass += ` current-${puzzle.level.toLowerCase()}`;
       } else {
-        buttonClass += ` ${puzzle.user_status.toLowerCase()}`;
+        buttonClass += ` ${puzzle.user_status?.toLowerCase() ?? 'unknown'}`;
       }
-
+  
       return (
         <button
           key={puzzle.id}
-          onClick={() => handleDifficultyBoxButtonClick(puzzle.id)}
+          onClick={() => handleDifficultyBoxButtonClick(puzzle.puzzle_id)}
           className={buttonClass}
         >
           {puzzle.id}
@@ -85,24 +87,26 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
 
   const renderPuzzleDetails = () => {
-    if (!selectedPuzzle) {
-      return null;
-    }
-
-    if (!selectedPuzzle.puzzle_question || !selectedPuzzle.puzzle_video) {
+    if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
       return <p>No data found for this puzzle</p>;
     }
-
+  
+    const { video, question } = selectedPuzzleDetails.data;
+  
+    if (!question || !video) {
+      return <p>No data found for this puzzle</p>;
+    }
+  
     return (
       <div className="puzzle-details">
         <div className="question-container">
-          <h2 className="question-Name">Puzzle No: {selectedPuzzle.puzzle_no}</h2>
+          <h2 className="question-Name">Puzzle No: {selectedPuzzleDetails.puzzle_id}</h2>
           <div className="question-Box">
-            <h2>{selectedPuzzle.puzzle_question}</h2>
+            <h2>{question}</h2>
           </div>
         </div>
         <div className="video-container">
-          <ReactPlayer className="react-player" url={selectedPuzzle.puzzle_video} />
+          <ReactPlayer className="react-player" url={video} />
         </div>
       </div>
     );
