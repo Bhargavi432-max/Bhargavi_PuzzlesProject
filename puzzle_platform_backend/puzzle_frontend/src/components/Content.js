@@ -1,44 +1,48 @@
 import React, { useState } from "react";
-import ReactPlayer from 'react-player/youtube';
+import ReactPlayer from "react-player/youtube";
 import "./Content.css";
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
-  const email = localStorage.getItem('email');
+  const email = localStorage.getItem("email");
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
-    setSelectedPuzzle(clickedPuzzle); 
-    
-    fetch('http://127.0.0.1:8000/api/get_puzzle_access/', {
-      method: 'POST',
+    setSelectedPuzzle(clickedPuzzle);
+
+    fetch("http://127.0.0.1:8000/api/get_puzzle_access/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: email,
         task_id: selectedTask ? selectedTask.id : null,
         puzzle_id: puzzleId,
       }),
-
     })
-    
-    .then(response => {
-      if (response.ok) {
-        console.log('Request successful');
-      } else {
-        console.error('Request failed');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then((response) => {
+        if (response.ok) {
+          console.log("Request successful");
+        } else {
+          console.error("Request failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const renderDifficultyBoxButtons = () => {
-    const easyPuzzles = puzzleData.filter((puzzle) => puzzle.level.toLowerCase() === "easy");
-    const mediumPuzzles = puzzleData.filter((puzzle) => puzzle.level.toLowerCase() === "medium");
-    const hardPuzzles = puzzleData.filter((puzzle) => puzzle.level.toLowerCase() === "hard");
+    const easyPuzzles = puzzleData.filter(
+      (puzzle) => puzzle.level.toLowerCase() === "easy"
+    );
+    const mediumPuzzles = puzzleData.filter(
+      (puzzle) => puzzle.level.toLowerCase() === "medium"
+    );
+    const hardPuzzles = puzzleData.filter(
+      (puzzle) => puzzle.level.toLowerCase() === "hard"
+    );
 
     const renderButtons = (puzzles) => {
       const buttonRows = [];
@@ -46,17 +50,21 @@ const Content = ({ selectedTask, puzzleData }) => {
         const rowPuzzles = puzzles.slice(i, i + 6);
         const rowButtons = rowPuzzles.map((puzzle) => {
           let buttonClass = "difficulty-button";
-          if (selectedPuzzle?.id === puzzle.id) {
-            buttonClass += ` current-${puzzle.level.toLowerCase()}`;
+          if (selectedPuzzle && selectedPuzzle.id === puzzle.id) {
+            buttonClass += ` current-${
+              puzzle.level && puzzle.level.toLowerCase()
+            }`;
           } else {
-            if (puzzle.user_status === 'completed') {
-                buttonClass += ` completed-${puzzle.level.toLowerCase()}`;
-            } else if (puzzle.user_status === 'incompleted') {
+            if (puzzle.user_status === "completed") {
+              buttonClass += ` completed-${
+                puzzle.level && puzzle.level.toLowerCase()
+              }`;
+            } else if (puzzle.user_status === "incompleted") {
               buttonClass += ` incompleted`;
-            } else if (puzzle.user_status === 'notstarted') {
+            } else if (puzzle.user_status === "notstarted") {
               buttonClass += ` notstarted`;
             }
-        }
+          }
           return (
             <button
               key={puzzle.id}
@@ -75,7 +83,6 @@ const Content = ({ selectedTask, puzzleData }) => {
       }
       return buttonRows;
     };
-    
 
     return (
       <div className="difficulty-container">
@@ -119,13 +126,18 @@ const Content = ({ selectedTask, puzzleData }) => {
     return (
       <div className="puzzle-details">
         <div className="question-container">
-          <h2 className="question-Name">Puzzle No: {selectedPuzzle.puzzle_no}</h2>
+          <h2 className="question-Name">
+            Puzzle No: {selectedPuzzle.puzzle_no}
+          </h2>
           <div className="question-Box">
             <h2>{selectedPuzzle.puzzle_question}</h2>
           </div>
         </div>
         <div className="video-container">
-          <ReactPlayer className="react-player" url={selectedPuzzle.puzzle_video} />
+          <ReactPlayer
+            className="react-player"
+            url={selectedPuzzle.puzzle_video}
+          />
         </div>
       </div>
     );

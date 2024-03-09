@@ -1,7 +1,12 @@
 import React from "react";
 import "./SideNavBar.css";
 
-const SideNavbar = ({ tasks, handleSidebarButtonClick, selectedPuzzleId }) => {
+const SideNavbar = ({
+  tasks,
+  handleSidebarButtonClick,
+  selectedPuzzleId,
+  taskStatus,
+}) => {
   const handleClick = (id) => {
     handleSidebarButtonClick(id);
   };
@@ -13,7 +18,7 @@ const SideNavbar = ({ tasks, handleSidebarButtonClick, selectedPuzzleId }) => {
           <button
             key={task.id}
             onClick={() => handleClick(task.id)}
-            className={selectedPuzzleId === task.id ? "active" : ""}
+            className={`task-button ${selectedPuzzleId === task.id ? "active" : ""} ${taskStatus && taskStatus[task.id] ? taskStatus[task.id] : "notstarted"}`}
           >
             {`Task ${task.id}`}
             <span className="arrow"></span>

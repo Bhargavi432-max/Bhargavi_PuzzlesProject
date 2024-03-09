@@ -3,7 +3,6 @@ import SideNavbar from "./SideNavbar";
 import Content from "./Content";
 import { useNavigate } from "react-router-dom";
 import WelcomImage from "./Images/WelcomImage.png";
-import CloudImage from"./Images/CloudImage.png";
 import "./PuzzlePage.css";
 
 const PuzzlePage = () => {
@@ -68,7 +67,7 @@ const PuzzlePage = () => {
               <div className={`cloud-message-container ${showWelcomeMessage ? 'show-welcome-message' : ''}`}>
                 <div className="welcome-message">{welcomeMessage}</div>
                 {/* <img src={CloudImage} alt="cloud Image" /> */}
-                <img src={WelcomImage} alt="Welcome Image" className="welcome-image"/>
+                <img src={WelcomImage} alt="Welcome" className="welcome-image"/>
               </div>
             ) : (
               <Content
