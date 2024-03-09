@@ -3,7 +3,7 @@ import SideNavbar from "./SideNavbar";
 import Content from "./Content";
 import { useNavigate } from "react-router-dom";
 import WelcomImage from "./Images/WelcomImage.png";
-import CloudImage from"./Images/CloudImage.png";
+import CloudImage from "./Images/CloudImage.png";
 import "./PuzzlePage.css";
 
 const PuzzlePage = () => {
@@ -18,10 +18,18 @@ const PuzzlePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/get_task_statuses/");
+        const response = await fetch("http://127.0.0.1:8000/api/get_task_statuses/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email }),
+        });
+
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
         }
+
         const data = await response.json();
         setTasks(data.tasks); 
         console.log(data);
