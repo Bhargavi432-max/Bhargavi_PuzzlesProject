@@ -329,26 +329,21 @@ def get_all_full_ids(request):
             data = json.loads(request.body)
             email = data.get('email')
             task_id = data.get('taskId')
-            
             user = CustomUser.objects.get(email=email)
-            print('Enter 1')
             status_objects = UserDataTableStatus.objects.filter(user=user)
-            print('Enter 2')
             data_table_objects = DataTable.objects.filter(task_id=task_id)
-            print('Enter 3')
             status_dict = {status.data_table_id: status.puzzle_status for status in status_objects}
-            print('Enter 4')
             data_list = [
                 {
                     'id': obj.id,
                     'task_no': obj.task_id,
                     'puzzle_no': obj.puzzle_id,
                     'puzzle_name': obj.puzzle_name,
-                    'puzzle_video': obj.puzzle_video,
-                    'puzzle_question': obj.puzzle_question,
+                    # 'puzzle_video': obj.puzzle_video,
+                    # 'puzzle_question': obj.puzzle_question,
                     'level': obj.level,
                     'puzzle_price': str(obj.puzzle_price),
-                    'user_status': status_dict.get(obj.id, 'notstarted'),
+                    'user_status': status_dict.get(obj.id),
                 }
                 for obj in data_table_objects
             ]
@@ -391,7 +386,7 @@ def mark_puzzle_completed(request):
             task_id = data.get('task_id')
             puzzle_id = data.get('puzzle_id')
             user = CustomUser.objects.get(email=user_email)
-            puzzle = DataTable.objects.get(task_no=task_id, puzzle_no=puzzle_id)
+            puzzle = DataTable.objects.get(task_id=task_id, puzzle_id=puzzle_id)
             status = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
             
             if status.status == 'completed':
@@ -433,42 +428,45 @@ def get_puzzle_access(request):
         try:
             data = json.loads(request.body)
             user_email = data.get('email')
-            # puzzle_id = data.get('puzzle_id')
-            puzzle_id = 'T01-T01-ST01-01'
+            puzzle_id = data.get('puzzle_id')
             task_id = data.get('task_id')
-            print(user_email,puzzle_id,task_id)
+            print(user_email, puzzle_id, task_id)
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
             subscription_type = Subscription.objects.get(user=user).sub_plan_type
             print(subscription_type)
+
+            puzzle_data = {
+                'video': puzzle.puzzle_video,
+                'question': puzzle.puzzle_question,
+                'status': 'User has access to the puzzle'
+            }
+
             if subscription_type == 'Free':
                 if task_id == 1 and int(puzzle_id[-2:]) <= 5:
-                    puzzle_data = {
-                        'video': puzzle.puzzle_video,
-                        'question': puzzle.puzzle_question,
-                        'status': 'User has access to the puzzle'
-                    }
                     print(puzzle_data)
                     return JsonResponse({'status': True, 'data': puzzle_data})
                 else:
                     return JsonResponse({'status': False, 'message': 'User does not have access. Upgrade your plan.'})
+
             elif subscription_type == 'Basic':
-                prev_puzzle_id = puzzle_id[:-2]+str(int(puzzle_id[-2]) - 1)
+                prev_puzzle_id = puzzle_id[:-2] + str(int(puzzle_id[-2]) - 1)
                 prev_puzzle = DataTable.objects.filter(puzzle_id=prev_puzzle_id, task_id=task_id).first()
-                
+
                 if prev_puzzle is None:
                     return JsonResponse({'status': False, 'message': 'Invalid puzzle_id'})
 
                 prev_puzzle_status = UserDataTableStatus.objects.get(user=user, data_table=prev_puzzle).status
 
                 if prev_puzzle_status == 'completed':
-                    return JsonResponse({'status': True, 'message': 'User has access to the puzzle'})
+                    print(puzzle_data)
+                    return JsonResponse({'status': True, 'data': puzzle_data})
                 else:
                     return JsonResponse({'status': False, 'message': 'Complete previous puzzles to access this puzzle.'})
 
             elif subscription_type == 'Premium':
-                # Premium users have access to all puzzles
-                return JsonResponse({'status': True, 'message': 'User has access to the puzzle'})
+                print(puzzle_data)
+                return JsonResponse({'status': True, 'data': puzzle_data})
 
             else:
                 return JsonResponse({'status': False, 'message': 'Invalid subscription type'})
@@ -483,6 +481,7 @@ def get_puzzle_access(request):
             return JsonResponse({'status': False, 'message': 'Subscription not found'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'})
+
 
 
 
