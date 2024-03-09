@@ -1,23 +1,27 @@
 import React from "react";
+import "./SideNavBar.css";
 
-const Sidebar = ({ puzzles, handleSidebarButtonClick, selectedPuzzleId }) => {
+const SideNavbar = ({ tasks, handleSidebarButtonClick, selectedPuzzleId }) => {
   const handleClick = (id) => {
     handleSidebarButtonClick(id);
   };
 
   return (
-    <div className="sidenavbar">
-      {puzzles.map((puzzle) => (
-        <button
-          key={puzzle.id}
-          onClick={() => handleClick(puzzle.id)}
-          className={selectedPuzzleId === puzzle.id ? "active" : ""}
-        >
-          {puzzle.id}
-        </button>
-      ))}
+    <div className="Sidebar-container">
+      <div className="sidenavbar" id="Scrollbar">
+        {tasks.map((task) => (
+          <button
+            key={task.id}
+            onClick={() => handleClick(task.id)}
+            className={selectedPuzzleId === task.id ? "active" : ""}
+          >
+            {`Task ${task.id} - ${task.task_status[task.id]}`}
+            <span className="arrow"></span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default Sidebar;
+export default SideNavbar;
