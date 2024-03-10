@@ -102,6 +102,7 @@ class UserDataTableStatus(models.Model):
     data_table = models.ForeignKey(DataTable, on_delete=models.CASCADE)
     puzzle_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='notstarted')
     task_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='notstarted')
+    puzzle_locked = models.BooleanField(default=False)
     time_spent = models.DurationField(null=True, blank=True)   
 
 
