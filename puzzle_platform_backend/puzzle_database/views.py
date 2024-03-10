@@ -81,7 +81,6 @@ def feedback(request):
         return JsonResponse({'status': True, 'message': 'Feedback form submitted successfully'})
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
-    
 
 @csrf_exempt
 def add_faq(request):
@@ -112,9 +111,13 @@ def get_all_full_ids(request):
             data = json.loads(request.body)
             email = data.get('email')
             task_id = data.get('taskId')
+            print(email,task_id)
             user = CustomUser.objects.get(email=email)
+            print(user)
             status_objects = UserDataTableStatus.objects.filter(user=user)
+            print(status_objects)
             data_table_objects = DataTable.objects.filter(task_id=task_id)
+            print(data_table_objects)
             status_dict = {status.data_table_id: status.puzzle_status for status in status_objects}
             puzzle_locked_dict = {status.data_table_id: status.puzzle_locked for status in status_objects}
             data_list = [
@@ -242,16 +245,21 @@ def get_puzzle_access(request):
             print(user_email, puzzle_id, task_id)
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
+            print(puzzle)
             subscription_type = Subscription.objects.get(user=user).sub_plan_type
-            puzzle_locked = UserDataTableStatus.objects.get(user=user).puzzle_locked
+            print(subscription_type)
+            puzzle_locked = UserDataTableStatus.objects.get(user=user , data_table=puzzle).puzzle_locked
+            print(puzzle_locked)
             wallet_balance = UserProfile.objects.get(user=user).wallet
             puzzle_price = puzzle.puzzle_price
             print(subscription_type)
 
+
             puzzle_data = {
                 'video': puzzle.puzzle_video,
                 'question': puzzle.puzzle_question,
-                'status': 'User has access to the puzzle'
+                'status': 'User has access to the puzzle',
+                'puzzle_locked': puzzle_locked,
             }
 
             if subscription_type == 'Free':
