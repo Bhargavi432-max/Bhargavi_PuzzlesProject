@@ -23,13 +23,23 @@ const PuzzlePage = () => {
 
     if (!isAuthenticated) {
       navigate('/login');
+    } else {
+      // Check if there's stored data for the current user in localStorage
+      const storedTask = JSON.parse(localStorage.getItem("selectedTask"));
+      const storedPuzzleData = JSON.parse(localStorage.getItem("puzzleData"));
+      if (storedTask && storedPuzzleData) {
+        setSelectedTask(storedTask);
+        setPuzzleData(storedPuzzleData);
+        setShowWelcomeMessage(false);
+      } else {
+        // Fetch data from the server and update localStorage
+        fetchDataFromServer();
+      }
     }
   }, [email, navigate]);
 
-  const welcomeMessage = "Welcome to the puzzle page. Let's begin!";
-
-  const handleSidebarButtonClick = async (id) => {
-    setShowWelcomeMessage(false); // Hide welcome message when a task is clicked
+  const fetchDataFromServer = async (id) => {
+    // Fetch data from the server
     try {
       const response = await fetch("http://127.0.0.1:8000/api/get_ids/", {
         method: "POST",
@@ -46,9 +56,20 @@ const PuzzlePage = () => {
       console.log(data);
       setSelectedTask({ id });
       setPuzzleData(data.full_ids);
+
+      // Update localStorage with fetched data
+      localStorage.setItem("selectedTask", JSON.stringify({ id }));
+      localStorage.setItem("puzzleData", JSON.stringify(data.full_ids));
     } catch (error) {
-      console.error("Error sending task ID and email to backend", error);
+      console.error("Error fetching data from the server", error);
     }
+  };
+
+  const welcomeMessage = "Welcome to the puzzle page. Let's begin!";
+
+  const handleSidebarButtonClick = async (id) => {
+    setShowWelcomeMessage(false); // Hide welcome message when a task is clicked
+    fetchDataFromServer(id);
   };
 
   return (

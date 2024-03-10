@@ -31,7 +31,7 @@ const Content = ({ selectedTask, puzzleData }) => {
         }
       })
       .then((data) => {
-        if (data.status) {
+        if (data.data) {
           setSelectedPuzzleDetails(data);
           console.log("Selected puzzle details:", data.data);
         } else {
