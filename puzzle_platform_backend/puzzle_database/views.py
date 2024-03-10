@@ -116,18 +116,18 @@ def get_all_full_ids(request):
             status_objects = UserDataTableStatus.objects.filter(user=user)
             data_table_objects = DataTable.objects.filter(task_id=task_id)
             status_dict = {status.data_table_id: status.puzzle_status for status in status_objects}
+            puzzle_locked_dict = {status.data_table_id: status.puzzle_locked for status in status_objects}
             data_list = [
                 {
                     'id': obj.id,
                     'task_id': obj.task_id,
                     'puzzle_id': obj.puzzle_id,
                     'puzzle_name': obj.puzzle_name,
-                    # 'puzzle_video': obj.puzzle_video,
-                    # 'puzzle_question': obj.puzzle_question,
                     'level': obj.level,
                     'puzzle_price': str(obj.puzzle_price),
                     'user_status': status_dict.get(obj.id),
                     'task_status': status.task_status,
+                    'puzzle_locked': puzzle_locked_dict.get(obj.id),
                 }
                 for obj, status in zip(data_table_objects, status_objects)
             ]
@@ -243,6 +243,9 @@ def get_puzzle_access(request):
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
             subscription_type = Subscription.objects.get(user=user).sub_plan_type
+            puzzle_locked = UserDataTableStatus.objects.get(user=user).puzzle_locked
+            wallet_balance = UserProfile.objects.get(user=user).wallet
+            puzzle_price = puzzle.puzzle_price
             print(subscription_type)
 
             puzzle_data = {
@@ -252,7 +255,7 @@ def get_puzzle_access(request):
             }
 
             if subscription_type == 'Free':
-                if task_id == 1 and int(puzzle_id[-2:]) <= 5:
+                if (task_id == 1 and int(puzzle_id[-2:]) <= 5) or puzzle_locked:
                     print(puzzle_data)
                     return JsonResponse({'status': True, 'data': puzzle_data})
                 else:
