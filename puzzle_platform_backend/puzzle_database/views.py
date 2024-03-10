@@ -4,55 +4,56 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,FAQ,UserProfile
 import json
 
-    
-@csrf_exempt
-def get_puzzle_details(request):
-    if request.method == 'GET':
-        data = json.loads(request.body)
-        email = data.get('email')
-        task_id = data.get('task_id')
-        puzzle_id = data.get('puzzle_id')
+# This view function retrieves puzzle details based on user email, task ID, and puzzle ID.
+# @csrf_exempt
+# def get_puzzle_details(request):
+#     if request.method == 'GET':
+#         data = json.loads(request.body)
+#         email = data.get('email')
+#         task_id = data.get('task_id')
+#         puzzle_id = data.get('puzzle_id')
         
-        try:
-            user = CustomUser.objects.get(email=email)
-            subscription = Subscription.objects.get(user=user)
-            plan_type = subscription.sub_plan_type
-            task = DataTable.objects.filter(task_id=task_id).first()
-            if task is None:
-                return HttpResponse("Task not found")
-            puzzle = DataTable.objects.filter(puzzle_id=puzzle_id, task_id=task_id).first()
-            if puzzle is None:
-                return HttpResponse("Puzzle not found")
-            if plan_type == 'Free':
-                if task_id == 1 and puzzle_id <= 5:
-                    return HttpResponse("Accept")
-                else:
-                    return HttpResponse("Not Accept. Upgrade your plan.")
-            elif plan_type == 'Basic':
-                prev_puzzle_id = puzzle_id - 1
-                prev_puzzle = DataTable.objects.filter(puzzle_id=prev_puzzle_id, task_id=task_id).first()
-                if prev_puzzle is None:
-                    return HttpResponse("Invalid puzzle_id")
+#         try:
+#             user = CustomUser.objects.get(email=email)
+#             subscription = Subscription.objects.get(user=user)
+#             plan_type = subscription.sub_plan_type
+#             task = DataTable.objects.filter(task_id=task_id).first()
+#             if task is None:
+#                 return HttpResponse("Task not found")
+#             puzzle = DataTable.objects.filter(puzzle_id=puzzle_id, task_id=task_id).first()
+#             if puzzle is None:
+#                 return HttpResponse("Puzzle not found")
+#             if plan_type == 'Free':
+#                 if task_id == 1 and puzzle_id <= 5:
+#                     return HttpResponse("Accept")
+#                 else:
+#                     return HttpResponse("Not Accept. Upgrade your plan.")
+#             elif plan_type == 'Basic':
+#                 prev_puzzle_id = puzzle_id - 1
+#                 prev_puzzle = DataTable.objects.filter(puzzle_id=prev_puzzle_id, task_id=task_id).first()
+#                 if prev_puzzle is None:
+#                     return HttpResponse("Invalid puzzle_id")
 
-                prev_puzzle_status = UserDataTableStatus.objects.get(user=user, data_table=prev_puzzle)
-                if prev_puzzle_status.status != "completed":
-                    return HttpResponse("Complete Previous Puzzles")
+#                 prev_puzzle_status = UserDataTableStatus.objects.get(user=user, data_table=prev_puzzle)
+#                 if prev_puzzle_status.status != "completed":
+#                     return HttpResponse("Complete Previous Puzzles")
 
-                return HttpResponse("Accept")
-            elif plan_type == 'Premium':
-                return HttpResponse("Accept")
-        except CustomUser.DoesNotExist:
-            return HttpResponse("User not found")
-        except Subscription.DoesNotExist:
-            return HttpResponse("Subscription not found")
-        except DataTable.DoesNotExist:
-            return HttpResponse("DataTable not found")
-        except UserDataTableStatus.DoesNotExist:
-            return HttpResponse("UserDataTableStatus not found")
+#                 return HttpResponse("Accept")
+#             elif plan_type == 'Premium':
+#                 return HttpResponse("Accept")
+#         except CustomUser.DoesNotExist:
+#             return HttpResponse("User not found")
+#         except Subscription.DoesNotExist:
+#             return HttpResponse("Subscription not found")
+#         except DataTable.DoesNotExist:
+#             return HttpResponse("DataTable not found")
+#         except UserDataTableStatus.DoesNotExist:
+#             return HttpResponse("UserDataTableStatus not found")
 
-    return HttpResponse('Hello')
+#     return HttpResponse('Hello')
 
 
+# This function handles the contact form submission.
 @csrf_exempt
 def contact_us(request):
     if request.method == 'POST':
@@ -68,6 +69,8 @@ def contact_us(request):
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
 
+
+# This function handles the feedback submission form.
 @csrf_exempt
 def feedback(request):
     if request.method == 'POST':
@@ -82,6 +85,8 @@ def feedback(request):
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
 
+
+# This view function adds a new FAQ entry.
 @csrf_exempt
 def add_faq(request):
     if request.method == 'POST':
@@ -97,6 +102,8 @@ def add_faq(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
     
+    
+# This view function retrieves all FAQs.
 def retrieve_faqs(request):
     faqs = FAQ.objects.all()
     faq_list = [{'question': faq.question, 'answer': faq.answer} for faq in faqs]
@@ -111,13 +118,9 @@ def get_all_full_ids(request):
             data = json.loads(request.body)
             email = data.get('email')
             task_id = data.get('taskId')
-            print(email,task_id)
             user = CustomUser.objects.get(email=email)
-            print(user)
             status_objects = UserDataTableStatus.objects.filter(user=user)
-            print(status_objects)
             data_table_objects = DataTable.objects.filter(task_id=task_id)
-            print(data_table_objects)
             status_dict = {status.data_table_id: status.puzzle_status for status in status_objects}
             puzzle_locked_dict = {status.data_table_id: status.puzzle_locked for status in status_objects}
             data_list = [
@@ -134,7 +137,6 @@ def get_all_full_ids(request):
                 }
                 for obj, status in zip(data_table_objects, status_objects)
             ]
-            print(data_list)
             return JsonResponse({'status': True, 'full_ids': data_list})
         except Exception as e:
             return JsonResponse({'status': False, 'message': 'Error fetching full_ids'})
@@ -242,8 +244,9 @@ def get_puzzle_access(request):
             user_email = data.get('email')
             puzzle_id = data.get('puzzle_id')
             task_id = data.get('task_id')
-            print(user_email, puzzle_id, task_id)
+            print(user_email,task_id, puzzle_id)
             user = CustomUser.objects.get(email=user_email)
+            print(user)
             puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
             print(puzzle)
             subscription_type = Subscription.objects.get(user=user).sub_plan_type
@@ -330,3 +333,51 @@ def get_task_status(request):
             return JsonResponse({'status': False, 'message': 'Error fetching task statuses'})
 
     return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})
+
+
+from django.utils import timezone
+from .models import LogReport
+
+@csrf_exempt
+def log_operation(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            task_no = data.get('task_no')
+            puzzle_no = data.get('puzzle_no')
+            question_view_status = data.get('question_view_status')
+            video_view_status = data.get('video_view_status')
+            puzzle_status = data.get('puzzle_status')
+            task_status = data.get('task_status')
+            price_spend = data.get('price_spend')
+            start_time = data.get('start_time')
+            end_time = data.get('end_time')
+
+            # Fetch the user based on the provided email
+            user = CustomUser.objects.get(email=user_email)
+
+            # Create a LogReport object to store the operation log
+            log_entry = LogReport.objects.create(
+                user=user,
+                task_no=task_no,
+                puzzle_no=puzzle_no,
+                question_view_status=question_view_status,
+                video_view_status=video_view_status,
+                puzzle_status=puzzle_status,
+                task_status=task_status,
+                price_spend=price_spend,
+                start_time=start_time,
+                end_time=end_time,
+                timestamp=timezone.now()
+            )
+
+            return JsonResponse({'status': True, 'message': 'Operation logged successfully'})
+
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except Exception as e:
+            return JsonResponse({'status': False, 'message': str(e)})
+
+    else:
+        return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
