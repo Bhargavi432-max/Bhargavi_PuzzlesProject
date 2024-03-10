@@ -5,6 +5,7 @@ import "./Content.css";
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
   const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
+  const [popupMessage, setPopupMessage] = useState(null);
   const email = localStorage.getItem("email");
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
@@ -30,8 +31,12 @@ const Content = ({ selectedTask, puzzleData }) => {
         }
       })
       .then((data) => {
-        setSelectedPuzzleDetails(data);
-        console.log("Selected puzzle details:", data);
+        if (data.status) {
+          setSelectedPuzzleDetails(data);
+          console.log("Selected puzzle details:", data.data);
+        } else {
+          setPopupMessage(data.message);
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -118,6 +123,22 @@ const Content = ({ selectedTask, puzzleData }) => {
       </div>
     );
   };
+  const renderPopup = () => {
+    if (popupMessage) {
+      return (
+        <div className="popup-container">
+          <div className="popup">
+            <div className="popup-content">
+              <p className="pop-text">{popupMessage}</p>
+              <button className="close-button" onClick={() => setPopupMessage(null)}>Subscribe Now</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
 
   const renderPuzzleDetails = () => {
    if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
@@ -151,6 +172,7 @@ const Content = ({ selectedTask, puzzleData }) => {
 };
   return (
     <div className="content">
+      {renderPopup()}
       {selectedTask && renderDifficultyBoxButtons()}
       {renderPuzzleDetails()}
     </div>
