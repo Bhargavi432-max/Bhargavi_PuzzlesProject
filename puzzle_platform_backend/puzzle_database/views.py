@@ -257,22 +257,22 @@ def get_puzzle_access(request):
             puzzle_price = puzzle.puzzle_price
             print(subscription_type)
 
-
+            print('Hello')
             puzzle_data = {
-                'video': puzzle.puzzle_video,
+                'video': puzzle.puzzle_video.path,
                 'question': puzzle.puzzle_question,
                 'status': 'User has access to the puzzle',
                 'puzzle_locked': puzzle_locked,
             }
-
-            if subscription_type == 'Free':
+            print(puzzle_data)
+            if subscription_type == 'FREE':
+                print(task_id,puzzle_id[-2:])
                 if (task_id == 1 and int(puzzle_id[-2:]) <= 5) or puzzle_locked:
-                    print(puzzle_data)
                     return JsonResponse({'status': True, 'data': puzzle_data})
                 else:
                     return JsonResponse({'status': False, 'message': 'User does not have access. Upgrade your plan.'})
 
-            elif subscription_type == 'Basic':
+            elif subscription_type == 'BASIC':
                 prev_puzzle_id = puzzle_id[:-2] + str(int(puzzle_id[-2]) - 1)
                 prev_puzzle = DataTable.objects.filter(puzzle_id=prev_puzzle_id, task_id=task_id).first()
 
@@ -287,7 +287,7 @@ def get_puzzle_access(request):
                 else:
                     return JsonResponse({'status': False, 'message': 'Complete previous puzzles to access this puzzle.'})
 
-            elif subscription_type == 'Premium':
+            elif subscription_type == 'PREMIUM':
                 print(puzzle_data)
                 return JsonResponse({'status': True, 'data': puzzle_data})
 
