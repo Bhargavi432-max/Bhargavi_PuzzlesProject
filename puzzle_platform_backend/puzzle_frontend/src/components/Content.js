@@ -55,7 +55,7 @@ const Content = ({ selectedTask, puzzleData }) => {
         const rowPuzzles = puzzles.slice(i, i + 6);
         const rowButtons = rowPuzzles.map((puzzle) => {
           let buttonClass = "difficulty-button";
-          if (selectedPuzzle && selectedPuzzle.id === puzzle.id) {
+          if (selectedPuzzle && selectedPuzzle.id === puzzle.puzzle_id) {
             buttonClass += ` current-${
               puzzle.level && puzzle.level.toLowerCase()
             }`;

@@ -48,12 +48,18 @@
   padding: 2px 4px;
   border-radius: 50%;
   cursor: pointer;
-  width: 35px;
+  -webkit-backdrop-filter: blur(48.36px) brightness(100%);
+  backdrop-filter: blur(48.36px) brightness(100%);
+  background: linear-gradient(180deg, rgba(77.35, 77.35,77.35, 0.2) 0%, rgba(202.3, 202.3, 202.3, 0.2) 100%);
+  border-radius: 48.36px;
+  box-shadow: inset -1.61px 1.61px 1.61px #ffffff99, inset 1.61px -1.61px 1.61px #75757599;
   height: 35px;
-  background-color: #ebebeb;
-  font-size: 11px;
-  font-weight: 770;
-  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3); /* Add top inner shadow effect */
+  position: relative;
+  width: 35px;
+  color:#000000;
+  font-size: 15px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 770; 
 }
 
 .difficulty-buttons .difficulty-button:hover {
