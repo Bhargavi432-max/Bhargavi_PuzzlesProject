@@ -120,36 +120,35 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
 
   const renderPuzzleDetails = () => {
-    if (!selectedPuzzle) {
-      return null;
-    }
+   if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
+    return <p>No data found for this puzzle</p>;
+  }
 
-    if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
-      return <p>No data found for this puzzle</p>
-    }
-    // const { video, question } = selectedPuzzleDetails.data;
-    // if (!question || !video) {
-    //   return <p>No data found for this puzzle</p>;
-    // }
-    return (
-      <div className="puzzle-details">
-        <div className="question-container">
-          <h2 className="question-Name">
-            Puzzle No: {selectedPuzzleDetails.puzzle_id}
-          </h2>
-          <div className="question-Box">
-            <h2>{selectedPuzzle.question}</h2>
-          </div>
-        </div>
-        <div className="video-container">
-          <ReactPlayer
-            className="react-player"
-            url={selectedPuzzle.video}
-          />
+  const { video, question } = selectedPuzzleDetails.data;
+
+  if (!question || !video) {
+    return <p>No data found for this puzzle</p>;
+  }
+
+  return (
+    <div className="puzzle-details">
+      <div className="question-container">
+        <h2 className="question-Name">
+          Puzzle No: {selectedPuzzleDetails.puzzle_id}
+        </h2>
+        <div className="question-Box">
+          <h2>{question}</h2>
         </div>
       </div>
-    );
-  };
+      <div className="video-container">
+        <ReactPlayer
+          className="react-player"
+          url={video}
+        />
+      </div>
+    </div>
+  );
+};
   return (
     <div className="content">
       {selectedTask && renderDifficultyBoxButtons()}
