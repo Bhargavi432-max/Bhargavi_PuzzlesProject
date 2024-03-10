@@ -18,7 +18,13 @@ const SideNavbar = ({
           <button
             key={task.id}
             onClick={() => handleClick(task.id)}
-            className={`task-button ${selectedPuzzleId === task.id ? "active" : ""} ${taskStatus && taskStatus[task.id] ? taskStatus[task.id] : "notstarted"}`}
+            className={`task-button ${
+              selectedPuzzleId === task.id ? "active" : ""
+            } ${
+              taskStatus && taskStatus[task.id]
+                ? taskStatus[task.id]
+                : "notstarted"
+            } ${taskStatus && taskStatus[task.id] === "completed" ? "completed" : ""}`}
           >
             {`Task ${task.id}`}
             <span className="arrow"></span>
