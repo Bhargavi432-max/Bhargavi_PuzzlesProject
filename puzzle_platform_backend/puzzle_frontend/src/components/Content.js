@@ -4,6 +4,7 @@ import "./Content.css";
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
+  const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
   const email = localStorage.getItem("email");
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
@@ -23,10 +24,14 @@ const Content = ({ selectedTask, puzzleData }) => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log("Request successful");
+          return response.json();
         } else {
-          console.error("Request failed");
+          throw new Error("Request failed");
         }
+      })
+      .then((data) => {
+        setSelectedPuzzleDetails(data);
+        console.log("Selected puzzle details:", data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -68,7 +73,7 @@ const Content = ({ selectedTask, puzzleData }) => {
           return (
             <button
               key={puzzle.id}
-              onClick={() => handleDifficultyBoxButtonClick(puzzle.id)}
+              onClick={() => handleDifficultyBoxButtonClick(puzzle.puzzle_id)}
               className={buttonClass}
             >
               {puzzle.id}
@@ -115,34 +120,35 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
 
   const renderPuzzleDetails = () => {
-    if (!selectedPuzzle) {
-      return null;
-    }
+   if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
+    return <p>No data found for this puzzle</p>;
+  }
 
-    if (!selectedPuzzle.puzzle_question || !selectedPuzzle.puzzle_video) {
-      return <p>No data found for this puzzle</p>;
-    }
+  const { video, question } = selectedPuzzleDetails.data;
 
-    return (
-      <div className="puzzle-details">
-        <div className="question-container">
-          <h2 className="question-Name">
-            Puzzle No: {selectedPuzzle.puzzle_no}
-          </h2>
-          <div className="question-Box">
-            <h2>{selectedPuzzle.puzzle_question}</h2>
-          </div>
-        </div>
-        <div className="video-container">
-          <ReactPlayer
-            className="react-player"
-            url={selectedPuzzle.puzzle_video}
-          />
+  if (!question || !video) {
+    return <p>No data found for this puzzle</p>;
+  }
+
+  return (
+    <div className="puzzle-details">
+      <div className="question-container">
+        <h2 className="question-Name">
+          Puzzle No: {selectedPuzzleDetails.puzzle_id}
+        </h2>
+        <div className="question-Box">
+          <h2>{question}</h2>
         </div>
       </div>
-    );
-  };
-
+      <div className="video-container">
+        <ReactPlayer
+          className="react-player"
+          url={video}
+        />
+      </div>
+    </div>
+  );
+};
   return (
     <div className="content">
       {selectedTask && renderDifficultyBoxButtons()}

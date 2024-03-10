@@ -9,7 +9,7 @@
     background-color: #f9f8ff;
     overflow-x: hidden;
     padding-top: 17px;
-    padding-left: 10px; /* Little space on the left side */
+    padding-left: 10px; 
     overflow-y: auto;
     border-radius: 15px;
     margin-left: 20px;
@@ -31,7 +31,7 @@
   
   .sidenavbar::-webkit-scrollbar-thumb {
     border-radius: 15px;
-    background-color: #7c7c7c; /* Thumb color */
+    background-color: #7c7c7c; 
     height:20px;
   }
   
@@ -101,4 +101,36 @@
     text-align: center;
     align-items: center;
   }
-  
+  .sidenavbar button.completed {
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(61, 61, 61);
+    background-color: #dddcdc;
+    border-radius: 5px;
+    border: none;
+    width: 90%;
+    cursor: pointer;
+    width: calc(100% - 15px); /* Adjust width to accommodate scrollbar and space */
+    margin-bottom: 10px;
+    height: 33px;
+    position: relative; 
+  }
+  .sidenavbar button.completed::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Adjust the distance of the circle from the button's right edge */
+    transform: translateY(-50%);
+    width: 12px; /* Diameter of the circle */
+    height: 12px; /* Diameter of the circle */
+    background-color: #333; /* Color of the circle */
+    border-radius: 50%; /* Make it a circle */
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+  }
