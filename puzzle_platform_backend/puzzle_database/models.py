@@ -31,7 +31,7 @@ class DataTable(models.Model):
     task_id = models.IntegerField()
     puzzle_id = models.CharField(max_length=50)
     puzzle_name = models.CharField(max_length=255)
-    puzzle_video = models.FileField(upload_to='puzzle_videos/')
+    puzzle_video = models.FileField(upload_to='puzzle_frontend/src/videos')
     puzzle_question = models.TextField()
     puzzle_interview_code = models.CharField(max_length=100)
     level = models.CharField(max_length=50)

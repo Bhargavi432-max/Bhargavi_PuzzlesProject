@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import "./Content.css";
+// import video_path from "../videos/12.mp4"
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
@@ -164,8 +165,17 @@ const Content = ({ selectedTask, puzzleData }) => {
   
     // Extracting the video file name from the path
     const videoFileName = video;
+    const filePath = videoFileName;
+    console.log(filePath);
+    const filename = filePath.split('/').pop(); 
+    // const filename = video_path+'12.mp4'
+    // var videoName = "12.mp4"; // or any other video name you have
+    // var video_path = `../videos/${videoName}`;
+    // var name_data = require(video_path);
+    const videoPath = require('../videos/'+filename);
+    // console.log("filename",video_path);
     // const saveFolderPath = videoFileName.split('/').filter(part => part !== '').shift();
-    console.log("videoFileName",videoFileName);
+    console.log("Video_Puzzle_Platform\puzzle_platform_backend\puzzle_videos",videoFileName);
   
     return (
       <div className="puzzle-details">
@@ -184,7 +194,7 @@ const Content = ({ selectedTask, puzzleData }) => {
             controls={true}
           /> */}
           <video controls className="react-player">
-          <source src={`../../../${videoFileName}`} type="video/mp4" />
+          <source src={videoPath} type="video/mp4" />
           </video>
         </div>
       </div>
