@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react";
-import ReactPlayer from "react-player/youtube";
 import "./Content.css";
-// import video_path from "../videos/12.mp4"
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
   const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
   const [popupMessage, setPopupMessage] = useState(null);
+  const [videoPath, setVideoPath] = useState(null); // State to hold video path
+  const [key, setKey] = useState(0);
   const email = localStorage.getItem("email");
+
   useEffect(() => {
     // Load puzzle details from local storage if available
     const storedPuzzleDetails = JSON.parse(localStorage.getItem("selectedPuzzleDetails"));
     if (storedPuzzleDetails && storedPuzzleDetails.puzzle_id === selectedPuzzle?.puzzle_id) {
       setSelectedPuzzleDetails(storedPuzzleDetails);
+      const videoFileName = storedPuzzleDetails.data.video;
+      const filePath = videoFileName;
+      const filename = filePath.split('/').pop();
+      const path = require('../videos/' + filename);
+      setVideoPath(path);
+    } else {
+      setVideoPath(null); // Clear video path when new puzzle is selected
     }
   }, [selectedPuzzle]);
+
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
     setSelectedPuzzle(clickedPuzzle);
@@ -42,6 +51,13 @@ const Content = ({ selectedTask, puzzleData }) => {
           setSelectedPuzzleDetails(data);
           localStorage.setItem("selectedPuzzleDetails", JSON.stringify(data));
           console.log("Selected puzzle details:", data.data);
+          const videoFileName = data.data.video;
+          const filePath = videoFileName;
+          const filename = filePath.split('/').pop();
+          const path = require('../videos/' + filename);
+          setVideoPath(path);
+          setKey((prevKey) => prevKey + 1);
+          console.log("updated",path);
         } else {
           setPopupMessage(data.message);
         }
@@ -50,6 +66,7 @@ const Content = ({ selectedTask, puzzleData }) => {
         console.error("Error:", error);
       });
   };
+
   const renderDifficultyBoxButtons = () => {
     const easyPuzzles = puzzleData.filter(
       (puzzle) => puzzle.level.toLowerCase() === "easy"
@@ -128,7 +145,8 @@ const Content = ({ selectedTask, puzzleData }) => {
       </div>
     );
   };
-  const renderPopup = () => {
+
+   const renderPopup = () => {
     if (popupMessage) {
       return (
         <div className="popup-container">
@@ -143,30 +161,17 @@ const Content = ({ selectedTask, puzzleData }) => {
     }
     return null;
   };
+
   const renderPuzzleDetails = () => {
     if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
       return null;
     }
-  
-    const { video, question } = selectedPuzzleDetails.data;
-    
-    if (!question || !video) {
+
+    const { question } = selectedPuzzleDetails.data;
+
+    if (!question || !videoPath) {
       return <p>No data found for this puzzle</p>;
     }
-
-    // Extracting the video file name from the path
-    const videoFileName = video;
-    const filePath = videoFileName;
-    console.log(filePath);
-    const filename = filePath.split('/').pop(); 
-    // const filename = video_path+'12.mp4'
-    // var videoName = "12.mp4"; // or any other video name you have
-    // var video_path = `../videos/${videoName}`;
-    // var name_data = require(video_path);
-    const videoPath = require('../videos/'+filename);
-    // console.log("filename",video_path);
-    // const saveFolderPath = videoFileName.split('/').filter(part => part !== '').shift();
-    console.log("Video_Puzzle_Platform\puzzle_platform_backend\puzzle_videos",videoFileName);
 
     return (
       <div className="puzzle-details">
@@ -178,19 +183,15 @@ const Content = ({ selectedTask, puzzleData }) => {
             <h2>{question}</h2>
           </div>
         </div>
-        <div className="video-container">
-          {/* <ReactPlayer
-            className="react-player"
-            url={videoFileName}
-            controls={true}
-          /> */}
+        <div className="video-container" key={key}>
           <video controls className="react-player">
-          <source src={videoPath} type="video/mp4" />
+            <source src={videoPath} type="video/mp4" />
           </video>
         </div>
       </div>
     );
   };
+
   return (
     <div className="content">
       {renderPopup()}
@@ -199,4 +200,5 @@ const Content = ({ selectedTask, puzzleData }) => {
     </div>
   );
 };
+
 export default Content;
