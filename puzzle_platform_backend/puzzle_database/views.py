@@ -159,29 +159,28 @@ def get_user_statistics(request):
             return JsonResponse({'status': True, 'user_statistics': user_statistics})
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
-        except Subscription.DoesNotExist:
-            return JsonResponse({'status': False, 'message': 'Subscription not found'})
-        except UserProfile.DoesNotExist:
-            return JsonResponse({'status': False, 'message': 'UserProfile not found'})
+        except UserDataTableStatus.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'UserData TableStatus not found'})
     else:
         return JsonResponse({'error': 'Only GET requests are allowed'}, status=400)
 
 @csrf_exempt
-def mark_puzzle_completed(request):
+def mark_puzzle_status(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
             user_email = data.get('email')
             task_id = data.get('task_id')
             puzzle_id = data.get('puzzle_id')
+            puzzle_status = data.get('puzzle_status')
+            time_spent = data.get('time_spent')
             
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(task_id=task_id, puzzle_id=puzzle_id)
             status = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
             
-            if status.status == 'completed':
+            if status.puzzle_status == 'completed':
                 return JsonResponse({'status': False, 'message': 'Puzzle already completed'})
-
             status.status = 'completed'
             status.save()
             task_puzzles_count = DataTable.objects.filter(task_id=task_id).count()
@@ -191,7 +190,10 @@ def mark_puzzle_completed(request):
                 user=user, data_table__task_id=task_id, puzzle_status='completed'
             ).count()
             print(completed_puzzles_count)
-
+            incompleted_puzzles_count = UserDataTableStatus.objects.filter(
+                user=user, data_table__task_id=task_id, puzzle_status='completed'
+            ).count()
+            print(incompleted_puzzles_count)
             if completed_puzzles_count == task_puzzles_count:
                 task_statuses = UserDataTableStatus.objects.filter(
                     user=user, data_table__task_id=task_id
@@ -199,15 +201,15 @@ def mark_puzzle_completed(request):
                 for task_status in task_statuses:
                     task_status.task_status = 'completed'
                     task_status.save()
-            else:
+            elif incompleted_puzzles_count>0:
                 task_statuses = UserDataTableStatus.objects.filter(
                     user=user, data_table__task_id=task_id
-                ).exclude(puzzle_status='completed')
+                )
                 for task_status in task_statuses:
                     task_status.task_status = 'incompleted'
                     task_status.save()
 
-            return JsonResponse({'status': True, 'message': 'Puzzle marked as completed'})
+            return JsonResponse({'status': True, 'message': 'Puzzle and Task status are Updated'})
         
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
@@ -218,17 +220,18 @@ def mark_puzzle_completed(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'})
 
-    
 @csrf_exempt
 def get_subscription_details(request):
     if request.method == 'POST':
         try:
             user_email = request.POST.get('email')
             user = CustomUser.objects.get(email=user_email)
+            subscription_data = Subscription.objects.get(user=user).plan_data
             subscription_details = {
-                'plan_type': Subscription.objects.get(user=user).sub_plan_type,
-                'renewal_status': Subscription.objects.get(user=user).sub_renewal,
-                'next_renewal_date': Subscription.objects.get(user=user).timestamp,
+                'plan_type': subscription_data.plan_type,
+                'plan_price':subscription_data.plan_price,
+                'benefits':subscription_data.benefits,
+
             }
             return JsonResponse({'status': True, 'subscription_details': subscription_details})
         except Subscription.DoesNotExist:
@@ -246,24 +249,14 @@ def get_puzzle_access(request):
             task_id = data.get('task_id')
             print(user_email,task_id, puzzle_id)
             user = CustomUser.objects.get(email=user_email)
-            print(user)
             puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
-            print(puzzle)
-            subscription_type = Subscription.objects.get(user=user).sub_plan_type
-            print(subscription_type)
+            subscription_type = Subscription.objects.get(user=user).plan_data.plan_type
             puzzle_locked = UserDataTableStatus.objects.get(user=user , data_table=puzzle).puzzle_locked
-            print(puzzle_locked)
             wallet_balance = UserProfile.objects.get(user=user).wallet
             puzzle_price = puzzle.puzzle_price
-            print(subscription_type)
-            print(puzzle.puzzle_video)
             start_index = puzzle.puzzle_video.path.find('videos')
             relative_path = puzzle.puzzle_video.path[start_index:].replace('\\', '/')
 
-            print(relative_path)
-
-
-            print('Hello')
             puzzle_data = {
                 'video': relative_path,
                 'question': puzzle.puzzle_question,
