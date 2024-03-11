@@ -82,7 +82,7 @@ class LogReport(models.Model):
     def __str__(self):
         return f"Report {self.id} for User {self.user.user_id}"
     
-class Plan(models.Model):
+class PlanTable(models.Model):
     id = models.AutoField(primary_key=True)
     plan_type = models.CharField(max_length=100)
     plan_price = models.DecimalField(max_digits=10, decimal_places=2)
