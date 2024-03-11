@@ -170,6 +170,11 @@
 
 .question-Box h2 {
   text-align: center;
+  letter-spacing: 0.24px;
+  line-height:17.4px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Inter-Medium', Helvetica;
 }
 /* Easy Level */
 .difficulty-buttons .difficulty-button.current-easy {

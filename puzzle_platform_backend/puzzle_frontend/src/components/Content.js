@@ -152,35 +152,44 @@ const Content = ({ selectedTask, puzzleData }) => {
 
 
   const renderPuzzleDetails = () => {
-   if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
-    return null;
-  }
-
-  const { video, question } = selectedPuzzleDetails.data;
-
-  if (!question || !video) {
-    return <p>No data found for this puzzle</p>;
-  }
-
-  return (
-    <div className="puzzle-details">
-      <div className="question-container">
-        <h2 className="question-Name">
-          Puzzle No: {selectedPuzzleDetails.puzzle_id}
-        </h2>
-        <div className="question-Box">
-          <h2>{question}</h2>
+    if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
+      return null;
+    }
+  
+    const { video, question } = selectedPuzzleDetails.data;
+    
+    if (!question || !video) {
+      return <p>No data found for this puzzle</p>;
+    }
+  
+    // Extracting the video file name from the path
+    const videoFileName = video;
+    // const saveFolderPath = videoFileName.split('/').filter(part => part !== '').shift();
+    console.log("Video_Puzzle_Platform\puzzle_platform_backend\puzzle_videos",videoFileName);
+  
+    return (
+      <div className="puzzle-details">
+        <div className="question-container">
+          <h2 className="question-Name">
+            Puzzle No: {selectedPuzzleDetails.puzzle_id}
+          </h2>
+          <div className="question-Box">
+            <h2>{question}</h2>
+          </div>
+        </div>
+        <div className="video-container">
+          {/* <ReactPlayer
+            className="react-player"
+            url={videoFileName}
+            controls={true}
+          /> */}
+          <video controls className="react-player">
+          <source src={"C://Users//IIITS//Desktop//Puzzle Platfrom//Video_Puzzle_Platform//puzzle_platform_backend//puzzle_videos//Find_the_MID_value_among_3_Integers____Crack_the_Python_Coding_Interview___iawRzCG.mp4"} type="video/mp4" />
+          </video>
         </div>
       </div>
-      <div className="video-container">
-        <ReactPlayer
-          className="react-player"
-          url={video}
-        />
-      </div>
-    </div>
-  );
-};
+    );
+  };
   return (
     <div className="content">
       {renderPopup()}
