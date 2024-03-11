@@ -70,7 +70,6 @@ def log_puzzle_click(request):
             task_status = data.get('task_status')
             start_time = data.get('start_time')
             end_time = data.get('end_time')
-            start_time = data.get('start_time')
             action_item = data.get('action_item')
 
             user = CustomUser.objects.get(email=user_email)

@@ -73,19 +73,20 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f"Subscription {self.user.username} for {self.plan_data.plan_type}"
-    
+
 class LogReport(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    task_no = models.IntegerField()
-    puzzle_no = models.IntegerField()
-    question_view_status = models.BooleanField(default=False)
-    video_view_status = models.BooleanField(default=False)
-    puzzle_status = models.BooleanField(default=False)
-    task_status = models.BooleanField(default=False)
-    price_spend = models.DecimalField(max_digits=10, decimal_places=2)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    task_id = models.IntegerField(blank=True, null=True)
+    puzzle_id = models.IntegerField(blank=True, null=True)
+    question_view_status = models.BooleanField(blank=True)
+    video_view_status = models.BooleanField(blank=True)
+    puzzle_status = models.BooleanField(blank=True)
+    task_status = models.BooleanField(blank=True)
+    price_spend = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    action_item = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
