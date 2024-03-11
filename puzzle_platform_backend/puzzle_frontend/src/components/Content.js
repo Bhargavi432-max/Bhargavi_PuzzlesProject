@@ -183,7 +183,9 @@ const Content = ({ selectedTask, puzzleData }) => {
             url={videoFileName}
             controls={true}
           /> */}
-          <video controls className="react-player">
+          <video 
+          controls 
+          className="react-player">
           <source src={`../../../${videoFileName}`} type="video/mp4" />
           </video>
         </div>
