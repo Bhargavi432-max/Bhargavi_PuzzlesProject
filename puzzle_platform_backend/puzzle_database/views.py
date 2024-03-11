@@ -257,6 +257,12 @@ def get_puzzle_access(request):
             puzzle_price = puzzle.puzzle_price
             print(subscription_type)
 
+            start_index = puzzle.puzzle_video.path.find('Video_Puzzle_Platform')
+            relative_path = puzzle.puzzle_video.path[start_index:].replace('\\', '/')
+
+            print(relative_path)
+
+
             print('Hello')
             puzzle_data = {
                 'video': puzzle.puzzle_video.path,
