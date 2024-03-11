@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views,password_validation,user_validation,read_json_data
+from . import views,password_validation,user_validation,read_json_data,logreports
 
 urlpatterns = [
     path('register_user/', user_validation.register_user, name='register_user'),
@@ -25,4 +25,9 @@ urlpatterns = [
 
 
     path('read_json_file_view/', read_json_data.read_json_file_view, name='read_json_file_view'),
+
+    path('log_login_register_otp/', logreports.log_login_register_otp, name='log_login_register_otp'),
+    path('log_task_click/', logreports.log_task_click, name='log_task_click'),
+    path('log_puzzle_click/', logreports.log_puzzle_click, name='log_puzzle_click'),
+    path('log_wallet_spend/', logreports.log_wallet_spend, name='log_wallet_spend'),
 ]

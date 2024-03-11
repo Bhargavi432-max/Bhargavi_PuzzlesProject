@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import CustomUser
 from .authentication import authenticate_user,authenticate_admin
+import re
 
 
 @csrf_exempt
@@ -26,6 +27,8 @@ def register_user(request):
                 return JsonResponse({'status': False, 'message': 'Username already exists'})
             if CustomUser.objects.filter(email=email).exists():
                 return JsonResponse({'status': False, 'message': 'Email already exists'})
+            if not re.match(r'^[6-9]\d{9}$', mobile_number):
+                return JsonResponse({'status': False, 'message': 'Invalid mobile number format'})
 
             otp = str(random.randint(100000, 999999))
 
