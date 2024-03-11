@@ -165,7 +165,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     // Extracting the video file name from the path
     const videoFileName = video;
     // const saveFolderPath = videoFileName.split('/').filter(part => part !== '').shift();
-    console.log("Video_Puzzle_Platform\puzzle_platform_backend\puzzle_videos",videoFileName);
+    console.log("videoFileName",videoFileName);
   
     return (
       <div className="puzzle-details">
@@ -184,7 +184,7 @@ const Content = ({ selectedTask, puzzleData }) => {
             controls={true}
           /> */}
           <video controls className="react-player">
-          <source src={"C://Users//IIITS//Desktop//Puzzle Platfrom//Video_Puzzle_Platform//puzzle_platform_backend//puzzle_videos//Find_the_MID_value_among_3_Integers____Crack_the_Python_Coding_Interview___iawRzCG.mp4"} type="video/mp4" />
+          <source src={`../../../${videoFileName}`} type="video/mp4" />
           </video>
         </div>
       </div>
