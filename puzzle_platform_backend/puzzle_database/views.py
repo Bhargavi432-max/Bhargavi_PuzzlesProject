@@ -256,8 +256,8 @@ def get_puzzle_access(request):
             wallet_balance = UserProfile.objects.get(user=user).wallet
             puzzle_price = puzzle.puzzle_price
             print(subscription_type)
-
-            start_index = puzzle.puzzle_video.path.find('puzzle_videos')
+            print(puzzle.puzzle_video)
+            start_index = puzzle.puzzle_video.path.find('videos')
             relative_path = puzzle.puzzle_video.path[start_index:].replace('\\', '/')
 
             print(relative_path)

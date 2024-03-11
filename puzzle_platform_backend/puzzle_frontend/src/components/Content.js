@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import "./Content.css";
+// import video_path from "../videos/12.mp4"
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
   const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
   const [popupMessage, setPopupMessage] = useState(null);
   const email = localStorage.getItem("email");
-
   useEffect(() => {
     // Load puzzle details from local storage if available
     const storedPuzzleDetails = JSON.parse(localStorage.getItem("selectedPuzzleDetails"));
@@ -15,11 +15,9 @@ const Content = ({ selectedTask, puzzleData }) => {
       setSelectedPuzzleDetails(storedPuzzleDetails);
     }
   }, [selectedPuzzle]);
-
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
     setSelectedPuzzle(clickedPuzzle);
-
     fetch("http://127.0.0.1:8000/api/get_puzzle_access/", {
       method: "POST",
       headers: {
@@ -52,8 +50,6 @@ const Content = ({ selectedTask, puzzleData }) => {
         console.error("Error:", error);
       });
   };
-
-
   const renderDifficultyBoxButtons = () => {
     const easyPuzzles = puzzleData.filter(
       (puzzle) => puzzle.level.toLowerCase() === "easy"
@@ -64,7 +60,6 @@ const Content = ({ selectedTask, puzzleData }) => {
     const hardPuzzles = puzzleData.filter(
       (puzzle) => puzzle.level.toLowerCase() === "hard"
     );
-
     const renderButtons = (puzzles) => {
       const buttonRows = [];
       for (let i = 0; i < puzzles.length; i += 6) {
@@ -104,7 +99,6 @@ const Content = ({ selectedTask, puzzleData }) => {
       }
       return buttonRows;
     };
-
     return (
       <div className="difficulty-container">
         <div className="difficulty-box-container">
@@ -149,8 +143,6 @@ const Content = ({ selectedTask, puzzleData }) => {
     }
     return null;
   };
-
-
   const renderPuzzleDetails = () => {
     if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
       return null;
@@ -161,12 +153,21 @@ const Content = ({ selectedTask, puzzleData }) => {
     if (!question || !video) {
       return <p>No data found for this puzzle</p>;
     }
-  
+
     // Extracting the video file name from the path
     const videoFileName = video;
+    const filePath = videoFileName;
+    console.log(filePath);
+    const filename = filePath.split('/').pop(); 
+    // const filename = video_path+'12.mp4'
+    // var videoName = "12.mp4"; // or any other video name you have
+    // var video_path = `../videos/${videoName}`;
+    // var name_data = require(video_path);
+    const videoPath = require('../videos/'+filename);
+    // console.log("filename",video_path);
     // const saveFolderPath = videoFileName.split('/').filter(part => part !== '').shift();
-    console.log("videoFileName",videoFileName);
-  
+    console.log("Video_Puzzle_Platform\puzzle_platform_backend\puzzle_videos",videoFileName);
+
     return (
       <div className="puzzle-details">
         <div className="question-container">
@@ -183,10 +184,8 @@ const Content = ({ selectedTask, puzzleData }) => {
             url={videoFileName}
             controls={true}
           /> */}
-          <video 
-          controls 
-          className="react-player">
-          <source src={`../../../${videoFileName}`} type="video/mp4" />
+          <video controls className="react-player">
+          <source src={videoPath} type="video/mp4" />
           </video>
         </div>
       </div>
@@ -200,5 +199,4 @@ const Content = ({ selectedTask, puzzleData }) => {
     </div>
   );
 };
-
 export default Content;
