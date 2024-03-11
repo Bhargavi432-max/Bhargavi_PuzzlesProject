@@ -1,13 +1,28 @@
 from django.contrib import admin
 from .models import CustomUser, Admin, DataTable, UserProfile, Subscription, LogReport, Plan, UserDataTableStatus
 
+# Registering models with the Django admin site to manage them via the admin interface
 
+# Registering the CustomUser model
 admin.site.register(CustomUser)
-admin.site.register(Admin)
-admin.site.register(DataTable)
-admin.site.register(UserProfile)
-admin.site.register(Subscription)
-admin.site.register(LogReport)
-admin.site.register(Plan)
-admin.site.register(UserDataTableStatus)
 
+# Registering the Admin model
+admin.site.register(Admin)
+
+# Registering the DataTable model
+admin.site.register(DataTable)
+
+# Registering the UserProfile model
+admin.site.register(UserProfile)
+
+# Registering the Subscription model
+admin.site.register(Subscription)
+
+# Registering the LogReport model
+admin.site.register(LogReport)
+
+# Registering the Plan model
+admin.site.register(Plan)
+
+# Registering the UserDataTableStatus model
+admin.site.register(UserDataTableStatus)

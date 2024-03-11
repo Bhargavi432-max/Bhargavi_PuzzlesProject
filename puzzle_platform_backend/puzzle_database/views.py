@@ -3,8 +3,6 @@ from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,FAQ,UserProfile
 import json
-import os
-from django.conf import settings
 
 # This view function retrieves puzzle details based on user email, task ID, and puzzle ID.
 # @csrf_exempt
@@ -260,12 +258,8 @@ def get_puzzle_access(request):
             print(subscription_type)
 
             print('Hello')
-
-            protocol = 'https://' if request.is_secure() else 'http://'
-            domain = '127.0.0.1:8000'  # Change this to your actual domain
-            video_url = f"{protocol}{domain}{puzzle.puzzle_video.url}"
             puzzle_data = {
-                'video': video_url,
+                'video': puzzle.puzzle_video.path,
                 'question': puzzle.puzzle_question,
                 'status': 'User has access to the puzzle',
                 'puzzle_locked': puzzle_locked,
