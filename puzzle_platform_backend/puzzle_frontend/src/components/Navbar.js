@@ -6,6 +6,7 @@ import HomeIcon from "./Images/Homeicon.png"; // Import your custom home icon im
 import ProfileIcon from "./Images/Profileicon.png"; // Import your custom profile icon image here
 import AboutIcon from "./Images/Infoicon.png"; 
 import PuzzleIcon from "./Images/Puzzleicon.png";
+import LogoutIcon from"./Images/Logout.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -14,13 +15,13 @@ const Navbar = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("selectedTask");
     localStorage.removeItem("puzzleData");
-    // Add any additional relevant localStorage items to remove upon logout
+    localStorage.removeItem("selectedPuzzleDetails");
     navigate('/login');
   }
 
   return (
     <nav className="navbar">
-      <div className="logo" onClick={handleLogout}>
+      <div className="logo">
         <img src={Logo} alt="Logo" />
       </div>
       <ul>
@@ -43,6 +44,11 @@ const Navbar = () => {
           <Link to="/profile">
             <img src={ProfileIcon} alt="Profile" />
           </Link>
+        </li>
+        <li>
+          <div className="logout" onClick={handleLogout}>
+            <img src={LogoutIcon} alt="logout" />
+          </div>
         </li>
       </ul>
     </nav>

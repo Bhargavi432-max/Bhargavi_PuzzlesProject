@@ -16,7 +16,10 @@
   height: 50px;
   width: 180px;
 }
-
+.logout img{
+  height: 20px;
+  width:20px;
+}
 .navbar ul {
   list-style-type: none;
   display: flex;

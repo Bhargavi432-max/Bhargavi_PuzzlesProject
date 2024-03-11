@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import "./Content.css";
 
@@ -7,6 +7,14 @@ const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
   const [popupMessage, setPopupMessage] = useState(null);
   const email = localStorage.getItem("email");
+
+  useEffect(() => {
+    // Load puzzle details from local storage if available
+    const storedPuzzleDetails = JSON.parse(localStorage.getItem("selectedPuzzleDetails"));
+    if (storedPuzzleDetails && storedPuzzleDetails.puzzle_id === selectedPuzzle?.puzzle_id) {
+      setSelectedPuzzleDetails(storedPuzzleDetails);
+    }
+  }, [selectedPuzzle]);
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
@@ -31,8 +39,10 @@ const Content = ({ selectedTask, puzzleData }) => {
         }
       })
       .then((data) => {
+        console.log(data.data);
         if (data.data) {
           setSelectedPuzzleDetails(data);
+          localStorage.setItem("selectedPuzzleDetails", JSON.stringify(data));
           console.log("Selected puzzle details:", data.data);
         } else {
           setPopupMessage(data.message);
@@ -42,6 +52,7 @@ const Content = ({ selectedTask, puzzleData }) => {
         console.error("Error:", error);
       });
   };
+
 
   const renderDifficultyBoxButtons = () => {
     const easyPuzzles = puzzleData.filter(
@@ -142,7 +153,7 @@ const Content = ({ selectedTask, puzzleData }) => {
 
   const renderPuzzleDetails = () => {
    if (!selectedPuzzleDetails || !selectedPuzzleDetails.data) {
-    return <p>No data found for this puzzle</p>;
+    return null;
   }
 
   const { video, question } = selectedPuzzleDetails.data;
