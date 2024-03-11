@@ -265,7 +265,7 @@ def get_puzzle_access(request):
 
             print('Hello')
             puzzle_data = {
-                'video': puzzle.puzzle_video.path,
+                'video': relative_path,
                 'question': puzzle.puzzle_question,
                 'status': 'User has access to the puzzle',
                 'puzzle_locked': puzzle_locked,
