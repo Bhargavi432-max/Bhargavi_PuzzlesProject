@@ -78,19 +78,19 @@ class LogReport(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     task_id = models.IntegerField(blank=True, null=True)
-    puzzle_id = models.IntegerField(blank=True, null=True)
-    question_view_status = models.BooleanField(blank=True)
-    video_view_status = models.BooleanField(blank=True)
-    puzzle_status = models.BooleanField(blank=True)
-    task_status = models.BooleanField(blank=True)
+    puzzle_id = models.CharField(max_length=50, blank=True, null=True)
+    question_view_status = models.BooleanField(blank=True, null=True)
+    video_view_status = models.BooleanField(blank=True, null=True)
+    puzzle_status = models.CharField(max_length=20,blank=True, null=True)
+    task_status = models.CharField(max_length=20,blank=True, null=True)
     price_spend = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
-    action_item = models.TextField(blank=True)
+    action_item = models.TextField(blank=False) 
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Report {self.id} for User {self.user.username}"
+        return f"Report {self.user.username} for User {self.action_item}"
     
 
 class UserDataTableStatus(models.Model):

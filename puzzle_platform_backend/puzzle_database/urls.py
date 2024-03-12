@@ -30,4 +30,6 @@ urlpatterns = [
     path('log_task_click/', logreports.log_task_click, name='log_task_click'),
     path('log_puzzle_click/', logreports.log_puzzle_click, name='log_puzzle_click'),
     path('log_wallet_spend/', logreports.log_wallet_spend, name='log_wallet_spend'),
+    path('log_tester/', logreports.log_tester, name='log_tester'),
+    
 ]

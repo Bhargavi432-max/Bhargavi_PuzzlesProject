@@ -139,3 +139,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER ='finalproject565@gmail.com'
 EMAIL_HOST_PASSWORD ='nkbzlbngoxdkmxxi'
+
+RAZOR_KEY_ID = 'rzp_live_eSbRcu4kQn8Sm3'
+RAZOR_KEY_SECRET = 'AJcGwBS3OuidpfkPs5effJqW'
