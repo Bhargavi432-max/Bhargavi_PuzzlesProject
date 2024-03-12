@@ -75,13 +75,13 @@ const Content = ({ selectedTask, puzzleData }) => {
 
   const handleVideoStart = () => {
     const currentDateTime = new Date();
-    const startTime = currentDateTime.toLocaleTimeString([], { hour12: false });
+    const startTime = currentDateTime.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ' ' + currentDateTime.toLocaleTimeString('en-US', {hour12: false}); 
     setStartTime(startTime);
   };
 
   const handleVideoEnd = () => {
     const currentDateTime = new Date();
-    const endTime = currentDateTime.toLocaleTimeString([], { hour12: false });
+    const endTime = currentDateTime.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ' ' + currentDateTime.toLocaleTimeString('en-US', {hour12: false});
     const duration = (currentDateTime.getTime() - new Date(startTime).getTime()) / 1000;
     const puzzleStatus = "completed";
     const questionViewStatus = true;
@@ -142,7 +142,7 @@ const Content = ({ selectedTask, puzzleData }) => {
         const rowPuzzles = puzzles.slice(i, i + 6);
         const rowButtons = rowPuzzles.map((puzzle) => {
           let buttonClass = "difficulty-button";
-          if (selectedPuzzle && selectedPuzzle.id === puzzle.puzzle_id) {
+          if (selectedPuzzle && selectedPuzzle.puzzle_id === puzzle.puzzle_id) {
             buttonClass += ` current-${
               puzzle.level && puzzle.level.toLowerCase()
             }`;
