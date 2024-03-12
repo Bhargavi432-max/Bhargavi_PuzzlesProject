@@ -21,13 +21,20 @@
 .home-nav li {
   padding: 10px;
   cursor: pointer;
+  font-size: 13px;
+  font-family: "Poppins-semiBold",Helvetica;
 }
 
 .home-nav li:hover {
-  background-color: #555;
+  background-color: #ebebeb;
 }
 
 .home-nav li.active {
-  background-color: #555;
+  background-color: #3B4AB4;
   color: white;
+  border-radius: 10px;
+  width:150px;
+  margin-left: 14px;
+  font-size: 13px;
+  font-family: "Poppins-semiBold",Helvetica;
 }

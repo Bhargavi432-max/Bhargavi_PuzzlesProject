@@ -1,0 +1,71 @@
+.Head-tittle {
+    font-size: 20px;
+    font-family: "Inter-Bold", Helvetica;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+.sub-tittle {
+    font-size: 15px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+/* .faq {
+    margin-bottom: 30px; 
+}
+
+.question {
+    height: auto;
+    width: 90%;
+    border: 1px solid #353535;
+    border-radius: 10px;
+    padding: 10px; 
+    font-size: 14px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    margin-bottom: 10px; 
+} */
+
+.answer {
+    height: auto;
+    width: 90%;
+    border: 1px solid #353535;
+    border-radius: 10px;
+    padding: 10px; /* Adjust padding as needed */
+    font-size: 14px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    margin-left: 50px;
+}
+.faq {
+    margin-bottom: 10px; /* Adjust spacing between questions */
+}
+
+.faq-question {
+    position: relative;
+}
+
+.question {
+    height: auto;
+    width: calc(100% - 30px); /* Adjust width as needed */
+    border: 1px solid #353535;
+    border-radius: 10px;
+    padding: 10px; /* Adjust padding as needed */
+    font-size: 14px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 20px; /* Adjust right position as needed */
+    transform: translateY(-50%);
+}
