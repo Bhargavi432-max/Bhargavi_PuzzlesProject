@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import CustomUser,Subscription,FAQ,Feedback
+from django.core.mail import send_mail
 import json
+from django.conf import settings
 
 @csrf_exempt
 def get_subscription_details(request):
@@ -57,7 +59,7 @@ def add_feedback(request):
         if not (rating and review):
             return JsonResponse({'status': False, 'message': 'All fields are required'})
 
-        FAQ.objects.create(rating=rating, review=review)
+        Feedback.objects.create(rating=rating, review=review)
         
         return JsonResponse({'status': True, 'message': 'Feedback form submitted successfully'})
     else:
@@ -75,6 +77,12 @@ def contact_us(request):
         
         if not (name and email and mobile_number):
             return JsonResponse({'status': False, 'message': 'All fields are required'})
+        
+        subject = 'Contact Form Submission'
+        message = f'Name: {name}\nEmail: {email}\nMobile Number: {mobile_number}'
+        email_from = settings.DEFAULT_FROM_EMAIL
+        recipient_email = 'uday80022@example.com'
+        send_mail(subject, message, email_from, [recipient_email])
         
         return JsonResponse({'status': True, 'message': 'Contact form submitted successfully'})
     else:

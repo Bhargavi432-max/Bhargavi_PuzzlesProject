@@ -16,6 +16,7 @@ urlpatterns = [
     path('add_faq/', user_help_pages.add_faq, name='add_faq'),
     path('get_faq/', user_help_pages.retrieve_faqs, name='get_faq'),
     path('add_feedback/', user_help_pages.add_feedback, name='add_feedback'),
+    path('contact_us/', user_help_pages.contact_us, name='contact_us'),
     path('get_subscription_details/', user_help_pages.get_subscription_details, name='get_subscription_details'),
 
 

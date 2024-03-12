@@ -238,11 +238,9 @@ def get_task_status(request):
 def link_subscription_user(request):
     if request.method == 'GET':
         try:
-            # data = json.loads(request.body)
-            # user_email = data.get('email')
-            # user_subscription_type = data.get('user_subscription_type')
-            user_email = 'uday80022@gmail.com'
-            user_subscription_type = 'BASIC'
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            user_subscription_type = data.get('user_subscription_type')
 
             user = CustomUser.objects.get(email=user_email)
             plan = PlanTable.objects.get(plan_type=user_subscription_type)
