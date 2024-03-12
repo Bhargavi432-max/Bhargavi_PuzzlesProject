@@ -1,5 +1,7 @@
 from django.db import models
 
+
+# Model for storing user information
 class CustomUser(models.Model):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=150, unique=True)
@@ -14,6 +16,7 @@ class CustomUser(models.Model):
     def __str__(self):
         return self.username
 
+# Model for storing admin information
 class Admin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     admin_name = models.CharField(max_length=100)
@@ -25,6 +28,8 @@ class Admin(models.Model):
     def __str__(self):
         return self.admin_name
     
+
+# Model for storing puzzle data information
 class DataTable(models.Model):
     id = models.AutoField(primary_key=True)
     admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE)
@@ -40,7 +45,8 @@ class DataTable(models.Model):
 
     def __str__(self):
         return self.puzzle_id
-
+    
+# Model for storing user profile information
 class UserProfile(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -54,6 +60,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"User {self.user.username}"
     
+# Model for various Subscription plans information
 class PlanTable(models.Model):
     id = models.AutoField(primary_key=True)
     plan_type = models.CharField(max_length=100)
@@ -64,6 +71,7 @@ class PlanTable(models.Model):
     def __str__(self):
         return self.plan_type
 
+# Model for storing user subscription information
 class Subscription(models.Model):
     sub_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -74,6 +82,7 @@ class Subscription(models.Model):
     def __str__(self):
         return f"Subscription {self.user.username} for {self.plan_data.plan_type}"
 
+# Model for storing log reports
 class LogReport(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -92,7 +101,7 @@ class LogReport(models.Model):
     def __str__(self):
         return f"Report {self.user.username} for User {self.action_item}"
     
-
+# Model for storing puzzle task status
 class UserDataTableStatus(models.Model):
     STATUS_CHOICES = (
         ('notstarted', 'notstarted'),
@@ -114,13 +123,15 @@ class UserDataTableStatus(models.Model):
     def __str__(self):
         return f"Report {self.user.username} for User {self.data_table.puzzle_id}"
 
+# Model for storing frequently asked questions
 class FAQ(models.Model):
     question = models.CharField(max_length=255)
     answer = models.TextField()
 
     def __str__(self):
         return self.question
-    
+
+# Model for storing feedback
 class Feedback(models.Model):
     rating = models.IntegerField()
     review = models.TextField()

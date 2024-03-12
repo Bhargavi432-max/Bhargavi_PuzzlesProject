@@ -6,6 +6,8 @@ from .models import LogReport, CustomUser
 import json
 from django.utils import timezone
 
+
+# This function enter login,register,otp log reports.
 @csrf_exempt
 def log_login_register_otp(request):
     if request.method == 'POST':
@@ -33,6 +35,7 @@ def log_login_register_otp(request):
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
     
+# This function enter task click log reports.
 @csrf_exempt
 def log_task_click(request):
     if request.method == 'POST':
@@ -63,7 +66,7 @@ def log_task_click(request):
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
 
-
+# This function enter puzzle data log reports.
 @csrf_exempt
 def log_puzzle_click(request):
     if request.method == 'POST':
@@ -108,7 +111,7 @@ def log_puzzle_click(request):
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
 
-
+# This function enter wallet log reports.
 @csrf_exempt
 def log_wallet_spend(request):
     if request.method == 'POST':
@@ -141,7 +144,8 @@ def log_wallet_spend(request):
 
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
-    
+
+# This function enter subscription log reports.
 @csrf_exempt
 def log_subscrition(request):
     if request.method == 'POST':
@@ -171,6 +175,7 @@ def log_subscrition(request):
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
 
+# This function enter feedback contact form and faq log reports.
 @csrf_exempt
 def log_feedback_contact_faq(request):
     if request.method == 'POST':
@@ -196,14 +201,3 @@ def log_feedback_contact_faq(request):
 
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
-
-
-def log_tester(request):
-    data = LogReport.objects.get(id=4)
-    print(data.start_time)
-    data.video_view_status=False
-    data.question_view_status = True
-    data.start_time = timezone.make_aware(timezone.datetime(2024, 1, 13, 9, 15, 30))
-    data.end_time = timezone.make_aware(timezone.datetime(2024, 3, 13, 9, 15, 30))
-    data.save()
-    return HttpResponse(data.video_view_status)

@@ -9,6 +9,7 @@ from .models import CustomUser
 from .authentication import authenticate_user
 
 
+# View for changing user password.
 @csrf_exempt
 def change_password(request):
     if request.method == 'POST':
@@ -32,6 +33,8 @@ def change_password(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
+
+# View for handling forgot password functionality.
 @csrf_exempt
 def forgot_password(request):
     if request.method == 'POST':
@@ -58,6 +61,7 @@ def forgot_password(request):
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
 
+# View for checking OTP during password reset.
 @csrf_exempt
 def check_otp(request):
     if request.method == 'POST':
@@ -77,7 +81,7 @@ def check_otp(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
-
+# View for resetting user password.
 @csrf_exempt
 def reset_password(request):
     if request.method == 'POST':
@@ -106,7 +110,7 @@ def reset_password(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
-
+# View for verifying OTP during account activation.
 @csrf_exempt
 def verify_otp(request):
     if request.method == 'POST':

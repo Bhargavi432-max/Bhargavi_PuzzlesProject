@@ -10,6 +10,7 @@ from .authentication import authenticate_user,authenticate_admin
 import re
 
 
+# This function handles the user registration.
 @csrf_exempt
 def register_user(request):
     if request.method == 'POST':
@@ -97,6 +98,7 @@ def register_user(request):
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
 
 
+# This function handles the user login.
 @csrf_exempt
 def user_login(request):
     if request.method == 'POST':

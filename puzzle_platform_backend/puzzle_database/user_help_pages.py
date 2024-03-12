@@ -4,7 +4,10 @@ from .models import CustomUser,Subscription,FAQ,Feedback
 from django.core.mail import send_mail
 import json
 from django.conf import settings
+import re
 
+
+# This function gets all subscription details.
 @csrf_exempt
 def get_subscription_details(request):
     if request.method == 'POST':
@@ -24,7 +27,7 @@ def get_subscription_details(request):
         return JsonResponse({'error': 'Only GET requests are allowed'})
     
 
-# This view function adds a new FAQ entry.
+# This function adds a new FAQ entry.
 @csrf_exempt
 def add_faq(request):
     if request.method == 'POST':
@@ -74,9 +77,12 @@ def contact_us(request):
         name = data.get('name')
         email = data.get('email')
         mobile_number = data.get('mobile_number')
+        print(name,email,mobile_number)
         
         if not (name and email and mobile_number):
             return JsonResponse({'status': False, 'message': 'All fields are required'})
+        if not re.match(r'^[6-9]\d{9}$', mobile_number):
+                return JsonResponse({'status': False, 'message': 'Invalid mobile number format'})
         
         subject = 'Contact Form Submission'
         message = f'Name: {name}\nEmail: {email}\nMobile Number: {mobile_number}'

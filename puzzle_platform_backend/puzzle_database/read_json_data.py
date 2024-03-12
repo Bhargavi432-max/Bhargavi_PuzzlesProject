@@ -3,6 +3,7 @@ from django.conf import settings
 import os
 import json
 
+# View for reading data in the json file.
 def read_json_file_view(request):
     try:
         file_path = os.path.join(settings.BASE_DIR, 'puzzle_data.json')

@@ -4,6 +4,7 @@ from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,UserPr
 import json
 from datetime import timedelta
 
+# View for retrieving all data of puzzle of the task along with their statuses.
 @csrf_exempt
 def get_all_full_ids(request):
     print(request.method)
@@ -37,7 +38,7 @@ def get_all_full_ids(request):
 
     return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})
 
-
+# View for retrieving user puzzle statistics.
 @csrf_exempt
 def get_user_statistics(request):
     if request.method == 'POST':
@@ -58,6 +59,8 @@ def get_user_statistics(request):
     else:
         return JsonResponse({'error': 'Only GET requests are allowed'}, status=400)
     
+
+#  View for retrieving user puzzle statistics task-wise.
 @csrf_exempt
 def get_user_taskwise_statistics(request):
     if request.method == 'POST':
@@ -81,6 +84,7 @@ def get_user_taskwise_statistics(request):
     else:
         return JsonResponse({'error': 'Only GET requests are allowed'}, status=400)
 
+# View for marking puzzle status.
 @csrf_exempt
 def mark_puzzle_status(request):
     if request.method == 'POST':
@@ -168,7 +172,7 @@ def mark_puzzle_status(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'})
 
-
+# View for sending puzzle video question.
 @csrf_exempt
 def get_puzzle_access(request):
     if request.method == 'POST':
@@ -206,7 +210,7 @@ def get_puzzle_access(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'})
 
-
+# View for sending task status.
 @csrf_exempt
 def get_task_status(request):
     if request.method == 'POST':
@@ -235,6 +239,7 @@ def get_task_status(request):
 
     return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})
 
+# View for linking user with it subscription.
 def link_subscription_user(request):
     if request.method == 'GET':
         try:
