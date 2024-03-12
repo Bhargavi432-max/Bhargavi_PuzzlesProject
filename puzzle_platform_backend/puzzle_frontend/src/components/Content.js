@@ -195,17 +195,16 @@ const Content = ({ selectedTask, puzzleData }) => {
             }
           }
           // If puzzle is locked, add lock icon below the button
-          const lockIcon = puzzle.puzzle_locked ? <img src={LockIcon} className="lock-icon" alt="Locked" /> : null;
           return (
             <div key={puzzle.id} className="button-container" style={{ position: "relative" }}>
               <button
-                onClick={() => handleDifficultyBoxButtonClick(puzzle.puzzle_id)}
+                onClick={() => handleButtonClick(puzzle)} // Modified onClick handler
                 className={buttonClass}
-                disabled={puzzle.puzzle_locked} // Disable button if puzzle is locked
+                // disabled={puzzle.puzzle_locked} // Disable button if puzzle is locked
               >
                 {puzzle.id}
               </button>
-              {lockIcon}
+              {puzzle.puzzle_locked && <img src={LockIcon} className="lock-icon" alt="Locked" />}
             </div>
           );
         });
@@ -216,6 +215,14 @@ const Content = ({ selectedTask, puzzleData }) => {
         );
       }
       return buttonRows;
+    };
+    
+    const handleButtonClick = (puzzle) => {
+      if (puzzle.puzzle_locked) {
+        setPopupMessage("This puzzle is locked!.please upgrade your plan.");
+      } else {
+        handleDifficultyBoxButtonClick(puzzle.puzzle_id);
+      }
     };
     return (
       <div className="difficulty-container">
