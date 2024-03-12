@@ -5,26 +5,18 @@ function ContactUsPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    mobile_number: ''
+    phoneNumber: ''
   });
 
   const [submissionStatus, setSubmissionStatus] = useState(null);
 
   const handleChange = (e) => {
-  const { name, value } = e.target;
-  if (name === 'phoneNumber') {
-    setFormData({
-      ...formData,
-      mobile_number: value // Map phoneNumber to mobile_number key
-    });
-  } else {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value
     });
-  }
-};
-  console.log(formData);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,13 +35,14 @@ function ContactUsPage() {
       setFormData({
         name: '',
         email: '',
-        mobile_number: ''
+        phoneNumber: ''
       });
       // Set submission status
       setSubmissionStatus('success');
     })
     .catch(error => {
       console.error('Error submitting form:', error);
+      // Set submission status
       setSubmissionStatus('error');
     });
   };
@@ -96,7 +89,7 @@ function ContactUsPage() {
                 placeholder='mobile number'
                 onChange={handleChange}
                 required
-                />
+              />
             </div>
             <button type="submit">Submit</button>
           </form>

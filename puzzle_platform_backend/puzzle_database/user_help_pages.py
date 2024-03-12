@@ -55,7 +55,7 @@ def retrieve_faqs(request):
 @csrf_exempt
 def add_feedback(request):
     if request.method == 'POST':
-        data = request.POST
+        data = json.loads(request.body)
         rating = data.get('rating')
         review = data.get('review')
 
@@ -73,11 +73,10 @@ def add_feedback(request):
 @csrf_exempt
 def contact_us(request):
     if request.method == 'POST':
-        data = request.POST
+        data = json.loads(request.body)
         name = data.get('name')
         email = data.get('email')
-        mobile_number = data.get('mobile_number')
-        print(name,email,mobile_number)
+        mobile_number = data.get('phoneNumber')
         
         if not (name and email and mobile_number):
             return JsonResponse({'status': False, 'message': 'All fields are required'})
