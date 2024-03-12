@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Admin, DataTable, UserProfile, Subscription, LogReport, PlanTable, UserDataTableStatus,FAQ
+from .models import CustomUser, Admin, DataTable, UserProfile, Subscription, LogReport, PlanTable, UserDataTableStatus,FAQ,Feedback
 
 # Registering models with the Django admin site to manage them via the admin interface
 
@@ -29,3 +29,6 @@ admin.site.register(UserDataTableStatus)
 
 # Registering the FAQ model
 admin.site.register(FAQ)
+
+# Registering the Feedback model
+admin.site.register(Feedback)

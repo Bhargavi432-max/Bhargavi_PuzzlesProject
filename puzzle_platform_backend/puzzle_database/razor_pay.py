@@ -12,7 +12,7 @@ razorpay_client = razorpay.Client(
 
 def homepage(request):
 	currency = 'INR'
-	amount = 100 # Rs. 200
+	amount = 100	# 100 represents 1 rupee which is minimum value
 
 	# Create a Razorpay Order
 	razorpay_order = razorpay_client.order.create(dict(amount=amount,

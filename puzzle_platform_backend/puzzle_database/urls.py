@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views,password_validation,user_validation,read_json_data,logreports
+from . import views,password_validation,user_validation,read_json_data,logreports,user_help_pages
 
 urlpatterns = [
     path('register_user/', user_validation.register_user, name='register_user'),
@@ -13,13 +13,16 @@ urlpatterns = [
     path('verify_otp/', password_validation.verify_otp, name='verify_otp'),
 
 
-    # path('get_puzzle_details/', views.get_puzzle_details, name='get_puzzle_details'),
-    path('add_faq/', views.add_faq, name='add_faq'),
-    path('get_faq/', views.retrieve_faqs, name='get_faq'),
+    path('add_faq/', user_help_pages.add_faq, name='add_faq'),
+    path('get_faq/', user_help_pages.retrieve_faqs, name='get_faq'),
+    path('add_feedback/', user_help_pages.add_feedback, name='add_feedback'),
+    path('get_subscription_details/', user_help_pages.get_subscription_details, name='get_subscription_details'),
+
+
     path('get_ids/', views.get_all_full_ids, name='get_ids'),
     path('get_user_statistics/', views.get_user_statistics, name='get_user_statistics'),
+    path('get_user_taskwise_statistics/', views.get_user_taskwise_statistics, name='get_user_taskwise_statistics'),
     path('mark_puzzle_status/', views.mark_puzzle_status, name='mark_puzzle_status'),
-    path('get_subscription_details/', views.get_subscription_details, name='get_subscription_details'),
     path('get_puzzle_access/', views.get_puzzle_access, name='get_puzzle_access'),
     path('get_task_status/', views.get_task_status, name='get_task_statuses'),
 

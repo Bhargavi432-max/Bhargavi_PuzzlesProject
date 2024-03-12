@@ -1,114 +1,7 @@
-
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,FAQ,UserProfile
+from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,UserProfile
 import json
-
-# This view function retrieves puzzle details based on user email, task ID, and puzzle ID.
-# @csrf_exempt
-# def get_puzzle_details(request):
-#     if request.method == 'GET':
-#         data = json.loads(request.body)
-#         email = data.get('email')
-#         task_id = data.get('task_id')
-#         puzzle_id = data.get('puzzle_id')
-        
-#         try:
-#             user = CustomUser.objects.get(email=email)
-#             subscription = Subscription.objects.get(user=user)
-#             plan_type = subscription.sub_plan_type
-#             task = DataTable.objects.filter(task_id=task_id).first()
-#             if task is None:
-#                 return HttpResponse("Task not found")
-#             puzzle = DataTable.objects.filter(puzzle_id=puzzle_id, task_id=task_id).first()
-#             if puzzle is None:
-#                 return HttpResponse("Puzzle not found")
-#             if plan_type == 'Free':
-#                 if task_id == 1 and puzzle_id <= 5:
-#                     return HttpResponse("Accept")
-#                 else:
-#                     return HttpResponse("Not Accept. Upgrade your plan.")
-#             elif plan_type == 'Basic':
-#                 prev_puzzle_id = puzzle_id - 1
-#                 prev_puzzle = DataTable.objects.filter(puzzle_id=prev_puzzle_id, task_id=task_id).first()
-#                 if prev_puzzle is None:
-#                     return HttpResponse("Invalid puzzle_id")
-
-#                 prev_puzzle_status = UserDataTableStatus.objects.get(user=user, data_table=prev_puzzle)
-#                 if prev_puzzle_status.status != "completed":
-#                     return HttpResponse("Complete Previous Puzzles")
-
-#                 return HttpResponse("Accept")
-#             elif plan_type == 'Premium':
-#                 return HttpResponse("Accept")
-#         except CustomUser.DoesNotExist:
-#             return HttpResponse("User not found")
-#         except Subscription.DoesNotExist:
-#             return HttpResponse("Subscription not found")
-#         except DataTable.DoesNotExist:
-#             return HttpResponse("DataTable not found")
-#         except UserDataTableStatus.DoesNotExist:
-#             return HttpResponse("UserDataTableStatus not found")
-
-#     return HttpResponse('Hello')
-
-
-# This function handles the contact form submission.
-@csrf_exempt
-def contact_us(request):
-    if request.method == 'POST':
-        data = request.POST
-        name = data.get('name')
-        email = data.get('email')
-        mobile_number = data.get('mobile_number')
-        
-        if not (name and email and mobile_number):
-            return JsonResponse({'status': False, 'message': 'All fields are required'})
-        
-        return JsonResponse({'status': True, 'message': 'Contact form submitted successfully'})
-    else:
-        return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
-
-
-# This function handles the feedback submission form.
-@csrf_exempt
-def feedback(request):
-    if request.method == 'POST':
-        data = request.POST
-        rating = data.get('rating')
-        review = data.get('review')
-        
-        if not (rating and review):
-            return JsonResponse({'status': False, 'message': 'All fields are required'})
-        
-        return JsonResponse({'status': True, 'message': 'Feedback form submitted successfully'})
-    else:
-        return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
-
-
-# This view function adds a new FAQ entry.
-@csrf_exempt
-def add_faq(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        question = data.get('question')
-        answer = data.get('answer')
-
-        if not (question and answer):
-            return JsonResponse({'status': False, 'message': 'Both question and answer are required'})
-
-        FAQ.objects.create(question=question, answer=answer)
-        return JsonResponse({'status': True, 'message': 'FAQ added successfully'})
-    else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
-    
-    
-# This view function retrieves all FAQs.
-def retrieve_faqs(request):
-    faqs = FAQ.objects.all()
-    faq_list = [{'question': faq.question, 'answer': faq.answer} for faq in faqs]
-
-    return JsonResponse({'status': True, 'faqs': faq_list})
 
 @csrf_exempt
 def get_all_full_ids(request):
@@ -146,17 +39,40 @@ def get_all_full_ids(request):
 
 @csrf_exempt
 def get_user_statistics(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
         try:
             data = json.loads(request.body)
             user_email = data.get('email')
             user = CustomUser.objects.get(email=user_email)
             user_statistics = {
-                'completed_puzzles': UserDataTableStatus.objects.filter(user=user, status='completed').count(),
-                'incompleted_puzzles': UserDataTableStatus.objects.filter(user=user, status='incompleted').count(),
-                'notstarted_puzzles': UserDataTableStatus.objects.filter(user=user, status='notstarted').count(),
+                'completed_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='completed').count(),
+                'incompleted_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='incompleted').count(),
+                'notstarted_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='notstarted').count(),
             }
             return JsonResponse({'status': True, 'user_statistics': user_statistics})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except UserDataTableStatus.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'UserData TableStatus not found'})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed'}, status=400)
+    
+@csrf_exempt
+def get_user_taskwise_statistics(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            task_id = data.get('task_id')
+
+            user = CustomUser.objects.get(email=user_email)
+            task_statistics  = {
+                'completed_puzzles': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed').count(),
+                'incompleted_puzzles': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='incompleted').count(),
+                'notstarted_puzzles': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='notstarted').count(),
+            }
+            print(task_statistics)
+            return JsonResponse({'status': True, 'user_statistics': task_statistics })
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
         except UserDataTableStatus.DoesNotExist:
@@ -172,28 +88,29 @@ def mark_puzzle_status(request):
             user_email = data.get('email')
             task_id = data.get('task_id')
             puzzle_id = data.get('puzzle_id')
-            puzzle_status = data.get('puzzle_status')
+            puzzle_status = data.get('puzzle_status').lower()
             time_spent = data.get('time_spent')
+            print(user_email,task_id,puzzle_id,puzzle_status,time_spent)
             
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(task_id=task_id, puzzle_id=puzzle_id)
             status = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
-            
+            print(status.puzzle_status)
             if status.puzzle_status == 'completed':
                 return JsonResponse({'status': False, 'message': 'Puzzle already completed'})
-            status.status = 'completed'
+            status.puzzle_status = puzzle_status
             status.save()
             task_puzzles_count = DataTable.objects.filter(task_id=task_id).count()
-            print(task_puzzles_count)
+            print("puzzlecount:",task_puzzles_count)
 
             completed_puzzles_count = UserDataTableStatus.objects.filter(
                 user=user, data_table__task_id=task_id, puzzle_status='completed'
             ).count()
-            print(completed_puzzles_count)
+            print("completedpuzzlecount:",completed_puzzles_count)
             incompleted_puzzles_count = UserDataTableStatus.objects.filter(
                 user=user, data_table__task_id=task_id, puzzle_status='completed'
             ).count()
-            print(incompleted_puzzles_count)
+            print("incompletedpuzzlecount:",incompleted_puzzles_count)
             if completed_puzzles_count == task_puzzles_count:
                 task_statuses = UserDataTableStatus.objects.filter(
                     user=user, data_table__task_id=task_id
@@ -220,25 +137,7 @@ def mark_puzzle_status(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'})
 
-@csrf_exempt
-def get_subscription_details(request):
-    if request.method == 'POST':
-        try:
-            user_email = request.POST.get('email')
-            user = CustomUser.objects.get(email=user_email)
-            subscription_data = Subscription.objects.get(user=user).plan_data
-            subscription_details = {
-                'plan_type': subscription_data.plan_type,
-                'plan_price':subscription_data.plan_price,
-                'benefits':subscription_data.benefits,
 
-            }
-            return JsonResponse({'status': True, 'subscription_details': subscription_details})
-        except Subscription.DoesNotExist:
-            return JsonResponse({'status': False, 'message': 'Subscription not found'})
-    else:
-        return JsonResponse({'error': 'Only GET requests are allowed'})
-    
 @csrf_exempt
 def get_puzzle_access(request):
     if request.method == 'POST':
@@ -261,37 +160,11 @@ def get_puzzle_access(request):
                 'video': relative_path,
                 'question': puzzle.puzzle_question,
                 'status': 'User has access to the puzzle',
-                # 'puzzle_locked': puzzle_locked,
             }
-            # print(puzzle_data)
-            if subscription_type == 'FREE':
-                # print(task_id,puzzle_id[-2:])
-                if (task_id == 1 and int(puzzle_id[-2:]) <= 5) or puzzle_locked:
-                    return JsonResponse({'status': True, 'data': puzzle_data})
-                else:
-                    return JsonResponse({'status': False, 'message': 'User does not have access. Upgrade your plan.'})
-
-            elif subscription_type == 'BASIC':
-                prev_puzzle_id = puzzle_id[:-2] + str(int(puzzle_id[-2]) - 1)
-                prev_puzzle = DataTable.objects.filter(puzzle_id=prev_puzzle_id, task_id=task_id).first()
-
-                if prev_puzzle is None:
-                    return JsonResponse({'status': False, 'message': 'Invalid puzzle_id'})
-
-                prev_puzzle_status = UserDataTableStatus.objects.get(user=user, data_table=prev_puzzle).status
-
-                if prev_puzzle_status == 'completed':
-                    # print(puzzle_data)
-                    return JsonResponse({'status': True, 'data': puzzle_data})
-                else:
-                    return JsonResponse({'status': False, 'message': 'Complete previous puzzles to access this puzzle.'})
-
-            elif subscription_type == 'PREMIUM':
-                # print(puzzle_data)
+            if not puzzle_locked:
                 return JsonResponse({'status': True, 'data': puzzle_data})
-
             else:
-                return JsonResponse({'status': False, 'message': 'Invalid subscription type'})
+                return JsonResponse({'status': False, 'message': 'User does not have access to puzzle. Upgrade your plan.'})
 
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})

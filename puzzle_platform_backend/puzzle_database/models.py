@@ -120,3 +120,10 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
+    
+class Feedback(models.Model):
+    rating = models.IntegerField()
+    review = models.TextField()
+
+    def __str__(self):
+        return self.question
