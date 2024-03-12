@@ -29,6 +29,18 @@ function ChangePassword() {
             if (response.ok && data.status === true) {
                 // Redirect to login page if password change successful
                 navigate('/login');
+
+                // Send post request for logging change password request
+                await fetch('http://127.0.0.1:8000/api/log_login_register_otp/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        action_item: 'change password request'
+                    })
+                });
             }
         } catch (error) {
             setMessage('Failed to change password');

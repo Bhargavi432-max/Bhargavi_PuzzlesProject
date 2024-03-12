@@ -5,7 +5,7 @@ import "./Login.css";
 import { useEmail } from "./EmailContext";
 
 export const Login = () => {
-    const [email, setEmail] = useState(null || '');
+    const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -38,6 +38,19 @@ export const Login = () => {
                 setEmailContext(email);
                 localStorage.setItem('email', email);
                 navigate('/puzzlepage');
+                
+                // Send post request for logging login/register OTP
+                await fetch('http://127.0.0.1:8000/api/log_login_register_otp/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        action_item: 'logged in'
+                    })
+                });
+                console.log("succesful");
             } else {
                 throw new Error('Login failed');
             }

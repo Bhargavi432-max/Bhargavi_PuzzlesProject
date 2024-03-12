@@ -7,8 +7,30 @@ const SideNavbar = ({
   selectedPuzzleId,
   taskStatus,
 }) => {
-  const handleClick = (id) => {
+  const email = localStorage.getItem('email');
+
+  const handleClick = async (id) => {
     handleSidebarButtonClick(id);
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/log_task_click/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          task_id: id,
+          action_item: 'Clicked on task'
+        })
+      });
+      console.log("sucess");
+      if (!response.ok) {
+        throw new Error('Failed to log task click');
+      }
+    } catch (error) {
+      console.error('Error logging task click:', error);
+    }
   };
 
   return (

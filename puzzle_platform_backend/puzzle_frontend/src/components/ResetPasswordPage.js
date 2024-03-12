@@ -25,6 +25,18 @@ const ResetPasswordPage = () => {
             setMessage(data.message);
             if (response.ok && data.status) {
                 navigate('/login');
+
+                // Send post request for logging password reset
+                await fetch('http://127.0.0.1:8000/api/log_login_register_otp/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        action_item: 'reseted password'
+                    })
+                });
             }
         } catch (error) {
             console.error('Error:', error);

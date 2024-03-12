@@ -22,6 +22,19 @@ const ForgotPasswordPage = () => {
             setMessage(data.message);
             if (response.ok && data.status) {
                 navigate('/checkotp', { state: { email } });
+
+                // Send post request for logging forgot password request
+                await fetch('http://127.0.0.1:8000/api/log_login_register_otp/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        action_item: 'forgot password request'
+                    })
+                });
+                console.log("sucess");
             }
         } catch (error) {
             console.error('Error:', error);

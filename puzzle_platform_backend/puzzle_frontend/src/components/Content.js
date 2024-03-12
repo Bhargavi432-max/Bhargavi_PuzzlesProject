@@ -8,6 +8,8 @@ const Content = ({ selectedTask, puzzleData }) => {
   const [videoPath, setVideoPath] = useState(null); // State to hold video path
   const [key, setKey] = useState(0);
   const email = localStorage.getItem("email");
+  const [startTime, setStartTime] = useState(null);
+  const [nextPuzzleId, setNextPuzzleId] = useState(null); // State to hold the id of the next puzzle
 
   useEffect(() => {
     // Load puzzle details from local storage if available
@@ -23,6 +25,10 @@ const Content = ({ selectedTask, puzzleData }) => {
       setVideoPath(null); // Clear video path when new puzzle is selected
     }
   }, [selectedPuzzle]);
+
+  const handleVideoMouseDown = (e) => {
+    e.preventDefault();
+  };
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
@@ -58,8 +64,60 @@ const Content = ({ selectedTask, puzzleData }) => {
           setVideoPath(path);
           setKey((prevKey) => prevKey + 1);
           console.log("updated",path);
+          setNextPuzzleId(data.next_puzzle_id); // Set the next puzzle id
         } else {
           setPopupMessage(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const handleVideoStart = () => {
+    const currentTime = new Date().toLocaleTimeString();
+    setStartTime(currentTime);
+  };
+
+  const handleVideoEnd = () => {
+    const endTime = new Date().toLocaleTimeString();
+    const duration = (new Date().getTime() - new Date(startTime).getTime()) / 1000;
+    const puzzleStatus = "completed";
+    const questionViewStatus = "completed";
+    const videoViewStatus = "completed";
+    const taskStatus = "incomplete";
+    const actionItem = "puzzle completed";
+
+    fetch("http://127.0.0.1:8000/api/log_puzzle_click/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        task_id: selectedTask ? selectedTask.id : null,
+        puzzle_id: selectedPuzzle ? selectedPuzzle.id : null,
+        question_view_status: questionViewStatus,
+        video_view_status: videoViewStatus,
+        puzzle_status: puzzleStatus,
+        task_status: taskStatus,
+        start_time: startTime,
+        end_time: endTime,
+        action_item: actionItem,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Request failed");
+        }
+      })
+      .then((data) => {
+        console.log(data); // Log the response from the backend
+        // Move to the next puzzle if the nextPuzzleId is set
+        if (nextPuzzleId) {
+          handleDifficultyBoxButtonClick(nextPuzzleId);
         }
       })
       .catch((error) => {
@@ -184,7 +242,16 @@ const Content = ({ selectedTask, puzzleData }) => {
           </div>
         </div>
         <div className="video-container" key={key}>
-          <video controls className="react-player">
+          <video
+            controls
+            controlsList="nodownload noremoteplayback"
+            disableRemotePlayback
+            onContextMenu={(e) => e.preventDefault()}
+            onMouseDown={handleVideoMouseDown}
+            onEnded={handleVideoEnd}
+            onPlay={handleVideoStart}
+            className="react-player"
+          >
             <source src={videoPath} type="video/mp4" />
           </video>
         </div>

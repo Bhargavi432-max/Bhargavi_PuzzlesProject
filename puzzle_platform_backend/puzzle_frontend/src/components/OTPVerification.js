@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import VerificationImage from"./Images/Enter OTP-cuate.svg";
+import VerificationImage from "./Images/Enter OTP-cuate.svg";
 import "./OTPVerification.css";
 
 const OTPVerification = () => {
@@ -36,6 +36,19 @@ const OTPVerification = () => {
                 setMessage(data.message); // Update message state
                 if (data.status) {
                     navigateToLogin();
+
+                    // Send post request for logging OTP verification
+                    await fetch('http://127.0.0.1:8000/api/log_login_register_otp/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            action_item: 'OTP verification successful'
+                        })
+                    });
+                    console.log("succes");
                 }
             } else {
                 setMessage('OTP verification failed. Please try again.'); // Update message state

@@ -38,6 +38,19 @@ export const Register = () => {
                 console.log(data.status)
                 setError(data.message);
                 navigate('/otp', { state: { email } });
+
+                // Send post request for logging login/register OTP
+                await fetch('http://127.0.0.1:8000/api/log_login_register_otp/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        action_item: 'registered'
+                    })
+                });
+                console.log("register sucse");
             } else {
                 setError(data.message);
             }
