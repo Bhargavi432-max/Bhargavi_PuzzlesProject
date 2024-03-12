@@ -85,7 +85,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     const duration = (currentDateTime.getTime() - new Date(startTime).getTime()) / 1000;
     const puzzleStatus = "completed";
     const questionViewStatus = true;
-    const videoViewStatus = "completed";
+    const videoViewStatus = true;
     const taskStatus = "incomplete";
     const actionItem = "puzzle completed";
     fetch("http://127.0.0.1:8000/api/log_puzzle_click/", {
