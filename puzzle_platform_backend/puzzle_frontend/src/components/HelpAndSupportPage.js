@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import './HelpAndSupportPAge.css';
 import FAQSection from "./FAQsPage";
 import ContactUsPage from "./ContactUsPage";
+import FeedbackPage from "./FeedbackPage";
 
 function Helpandsupport() {
   const [showFAQ, setShowFAQ] = useState(false);
   const [showContactUs, setShowContactUs] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [activeButton, setActiveButton] = useState(null);
 
   const handleButtonClick = (buttonName) => {
@@ -13,12 +15,19 @@ function Helpandsupport() {
     if (buttonName === 'FAQs') {
       setShowFAQ(true);
       setShowContactUs(false);
+      setShowFeedback(false);
     } else if (buttonName === 'Contact Us') {
       setShowFAQ(false);
       setShowContactUs(true);
+      setShowFeedback(false);
+    } else if (buttonName === 'Feedback') {
+      setShowFAQ(false);
+      setShowContactUs(false);
+      setShowFeedback(true);
     } else {
       setShowFAQ(false);
       setShowContactUs(false);
+      setShowFeedback(false);
     }
   };
 
@@ -47,6 +56,7 @@ function Helpandsupport() {
         </div>
         {showFAQ && <FAQSection />}
         {showContactUs && <ContactUsPage />}
+        {showFeedback && <FeedbackPage />}
       </div>
     </div>
   );
