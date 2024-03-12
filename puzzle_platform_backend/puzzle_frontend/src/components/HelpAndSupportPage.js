@@ -1,15 +1,25 @@
-// Helpandsupport.js
 import React, { useState } from 'react';
 import './HelpAndSupportPAge.css';
 import FAQSection from "./FAQsPage";
+import ContactUsPage from "./ContactUsPage";
 
 function Helpandsupport() {
   const [showFAQ, setShowFAQ] = useState(false);
+  const [showContactUs, setShowContactUs] = useState(false);
   const [activeButton, setActiveButton] = useState(null);
 
   const handleButtonClick = (buttonName) => {
-    setShowFAQ(buttonName === 'FAQs');
     setActiveButton(buttonName);
+    if (buttonName === 'FAQs') {
+      setShowFAQ(true);
+      setShowContactUs(false);
+    } else if (buttonName === 'Contact Us') {
+      setShowFAQ(false);
+      setShowContactUs(true);
+    } else {
+      setShowFAQ(false);
+      setShowContactUs(false);
+    }
   };
 
   return (
@@ -36,6 +46,7 @@ function Helpandsupport() {
           </button>
         </div>
         {showFAQ && <FAQSection />}
+        {showContactUs && <ContactUsPage />}
       </div>
     </div>
   );

@@ -1,0 +1,67 @@
+.contact-main {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 81%; /* Adjust width as needed */
+    background-color: #ffffff; /* Adjust background color */
+    padding: 20px;
+    height:67%;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 8px;
+    text-align: center;
+    align-items: center;
+  }
+  
+  .text-contact {
+    font-size: 13px;
+    font-family: "Inter-Regular", Helvetica;
+    font-weight: 400;
+    text-align: center;
+    width: 80%;
+    margin-bottom: 20px; 
+    margin-left: 100px;
+  }
+  
+  .contact-container {
+    width: 40%; /* Adjust the width as needed */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px; /* Add padding to the container */
+    background-color: #EAEAEA; /* Background color of the container */
+    border-radius: 10px; 
+  }
+  
+  
+  .input-container {
+    margin-bottom: 15px; /* Add spacing between input fields */
+  }
+  
+  label {
+    display: block; /* Display labels as block elements */
+    margin-bottom: 5px; 
+    text-align: left;
+    font-size: small;
+    font-weight: 600;
+    color:rgb(41, 41, 41);
+  }
+  
+  input {
+    width: 100%; /* Make input fields take up full width of their container */
+    padding: 10px; /* Add padding to input fields */
+    border: 1px solid #ccc; /* Add border to input fields */
+    border-radius: 5px; /* Add rounded corners to input fields */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+  }
+  
+  button {
+    /* Add styles for the submit button */
+    background-color: #274A99;
+    color:white;
+    font-size: 15px;
+    border: 1px solid;
+    border-color: #274A99;
+    border-radius: 5px;
+    height: 35px;
+    width:100px;
+  }
+  

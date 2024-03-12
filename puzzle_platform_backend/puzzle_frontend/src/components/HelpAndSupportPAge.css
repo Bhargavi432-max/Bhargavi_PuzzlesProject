@@ -27,6 +27,9 @@
     height: 35px; /* Increase the height */
     width: 100px;
     border-radius: 25px;
+    font-size: small;
+    background-color: #dbdbdb;
+    color:rgb(51, 51, 51);
   }
   .faq-section {
     position: absolute;
