@@ -261,11 +261,11 @@ def get_puzzle_access(request):
                 'video': relative_path,
                 'question': puzzle.puzzle_question,
                 'status': 'User has access to the puzzle',
-                'puzzle_locked': puzzle_locked,
+                # 'puzzle_locked': puzzle_locked,
             }
-            print(puzzle_data)
+            # print(puzzle_data)
             if subscription_type == 'FREE':
-                print(task_id,puzzle_id[-2:])
+                # print(task_id,puzzle_id[-2:])
                 if (task_id == 1 and int(puzzle_id[-2:]) <= 5) or puzzle_locked:
                     return JsonResponse({'status': True, 'data': puzzle_data})
                 else:
@@ -281,13 +281,13 @@ def get_puzzle_access(request):
                 prev_puzzle_status = UserDataTableStatus.objects.get(user=user, data_table=prev_puzzle).status
 
                 if prev_puzzle_status == 'completed':
-                    print(puzzle_data)
+                    # print(puzzle_data)
                     return JsonResponse({'status': True, 'data': puzzle_data})
                 else:
                     return JsonResponse({'status': False, 'message': 'Complete previous puzzles to access this puzzle.'})
 
             elif subscription_type == 'PREMIUM':
-                print(puzzle_data)
+                # print(puzzle_data)
                 return JsonResponse({'status': True, 'data': puzzle_data})
 
             else:
@@ -332,51 +332,3 @@ def get_task_status(request):
             return JsonResponse({'status': False, 'message': 'Error fetching task statuses'})
 
     return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})
-
-
-from django.utils import timezone
-from .models import LogReport
-
-@csrf_exempt
-def log_operation(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            user_email = data.get('email')
-            task_no = data.get('task_no')
-            puzzle_no = data.get('puzzle_no')
-            question_view_status = data.get('question_view_status')
-            video_view_status = data.get('video_view_status')
-            puzzle_status = data.get('puzzle_status')
-            task_status = data.get('task_status')
-            price_spend = data.get('price_spend')
-            start_time = data.get('start_time')
-            end_time = data.get('end_time')
-
-            # Fetch the user based on the provided email
-            user = CustomUser.objects.get(email=user_email)
-
-            # Create a LogReport object to store the operation log
-            log_entry = LogReport.objects.create(
-                user=user,
-                task_no=task_no,
-                puzzle_no=puzzle_no,
-                question_view_status=question_view_status,
-                video_view_status=video_view_status,
-                puzzle_status=puzzle_status,
-                task_status=task_status,
-                price_spend=price_spend,
-                start_time=start_time,
-                end_time=end_time,
-                timestamp=timezone.now()
-            )
-
-            return JsonResponse({'status': True, 'message': 'Operation logged successfully'})
-
-        except CustomUser.DoesNotExist:
-            return JsonResponse({'status': False, 'message': 'User not found'})
-        except Exception as e:
-            return JsonResponse({'status': False, 'message': str(e)})
-
-    else:
-        return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
