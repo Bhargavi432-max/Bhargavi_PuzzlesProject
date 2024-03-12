@@ -14,7 +14,6 @@ def get_subscription_details(request):
                 'plan_type': subscription_data.plan_type,
                 'plan_price':subscription_data.plan_price,
                 'benefits':subscription_data.benefits,
-
             }
             return JsonResponse({'status': True, 'subscription_details': subscription_details})
         except Subscription.DoesNotExist:

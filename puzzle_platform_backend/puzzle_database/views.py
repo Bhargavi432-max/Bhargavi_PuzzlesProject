@@ -1,7 +1,8 @@
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,UserProfile
+from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,UserProfile,PlanTable
 import json
+from datetime import timedelta
 
 @csrf_exempt
 def get_all_full_ids(request):
@@ -90,27 +91,57 @@ def mark_puzzle_status(request):
             puzzle_id = data.get('puzzle_id')
             puzzle_status = data.get('puzzle_status').lower()
             time_spent = data.get('time_spent')
-            print(user_email,task_id,puzzle_id,puzzle_status,time_spent)
             
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(task_id=task_id, puzzle_id=puzzle_id)
             status = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
-            print(status.puzzle_status)
+            user_subscription_type = Subscription.objects.get(user=user).plan_data.plan_type
+
             if status.puzzle_status == 'completed':
                 return JsonResponse({'status': False, 'message': 'Puzzle already completed'})
+            hours, minutes, seconds_with_milliseconds = time_spent.split(":")
+            seconds, milliseconds = seconds_with_milliseconds.split(".")
+            duration = timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds), milliseconds=int(milliseconds))
             status.puzzle_status = puzzle_status
+            status.time_spent = duration
             status.save()
+
+            if user_subscription_type=='BASIC':
+                next_puzzles_part = str(int(puzzle_id[-2:])+1)
+                if len(next_puzzles_part)==1:
+                    next_puzzles_part = '0'+next_puzzles_part
+
+                next_puzzle_id = puzzle_id[:-2]+next_puzzles_part
+                data = DataTable.objects.filter(puzzle_id=next_puzzle_id).exists()
+                if not data:
+                    next_puzzles_part = str(int(puzzle_id[5:7])+1)
+                    if len(next_puzzles_part)==1:
+                        next_puzzles_part = '0'+next_puzzles_part
+                    next_puzzle_id = puzzle_id[:5]+next_puzzles_part +'-01'
+                    print([puzzle_id,next_puzzle_id])
+                    data = DataTable.objects.filter(puzzle_id=next_puzzle_id).exists()
+                    if data:
+                        next_puzzle_data = DataTable.objects.get(puzzle_id=next_puzzle_id)
+                        status = UserDataTableStatus.objects.get(user=user, data_table=next_puzzle_data)
+                        status.puzzle_locked = False
+                        status.save()
+                else:
+                    next_puzzle_data = DataTable.objects.get(puzzle_id=next_puzzle_id)
+                    status = UserDataTableStatus.objects.get(user=user, data_table=next_puzzle_data)
+                    status.puzzle_locked = False
+                    status.save()
+
             task_puzzles_count = DataTable.objects.filter(task_id=task_id).count()
-            print("puzzlecount:",task_puzzles_count)
+           
 
             completed_puzzles_count = UserDataTableStatus.objects.filter(
                 user=user, data_table__task_id=task_id, puzzle_status='completed'
             ).count()
-            print("completedpuzzlecount:",completed_puzzles_count)
+           
             incompleted_puzzles_count = UserDataTableStatus.objects.filter(
-                user=user, data_table__task_id=task_id, puzzle_status='completed'
+                user=user, data_table__task_id=task_id, puzzle_status='incompleted'
             ).count()
-            print("incompletedpuzzlecount:",incompleted_puzzles_count)
+
             if completed_puzzles_count == task_puzzles_count:
                 task_statuses = UserDataTableStatus.objects.filter(
                     user=user, data_table__task_id=task_id
@@ -146,10 +177,8 @@ def get_puzzle_access(request):
             user_email = data.get('email')
             puzzle_id = data.get('puzzle_id')
             task_id = data.get('task_id')
-            print(user_email,task_id, puzzle_id)
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
-            subscription_type = Subscription.objects.get(user=user).plan_data.plan_type
             puzzle_locked = UserDataTableStatus.objects.get(user=user , data_table=puzzle).puzzle_locked
             wallet_balance = UserProfile.objects.get(user=user).wallet
             puzzle_price = puzzle.puzzle_price
@@ -205,3 +234,56 @@ def get_task_status(request):
             return JsonResponse({'status': False, 'message': 'Error fetching task statuses'})
 
     return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})
+
+def link_subscription_user(request):
+    if request.method == 'GET':
+        try:
+            # data = json.loads(request.body)
+            # user_email = data.get('email')
+            # user_subscription_type = data.get('user_subscription_type')
+            user_email = 'uday80022@gmail.com'
+            user_subscription_type = 'BASIC'
+
+            user = CustomUser.objects.get(email=user_email)
+            plan = PlanTable.objects.get(plan_type=user_subscription_type)
+            user_subscription = Subscription.objects.get(user=user)
+            user_subscription.plan_data = plan
+            user_subscription.save()
+            puzzle_status_data = UserDataTableStatus.objects.filter(user=user)
+
+            easy_puzzles = list(DataTable.objects.filter(task_id=1,level='EASY').order_by('puzzle_id')[:5])
+            medium_puzzles = list(DataTable.objects.filter(task_id=1,level='MEDIUM').order_by('puzzle_id')[:5])
+            hard_puzzles = list(DataTable.objects.filter(task_id=1,level='HARD').order_by('puzzle_id')[:5])
+            print(hard_puzzles)
+            need_puzzle_data = easy_puzzles + medium_puzzles + hard_puzzles
+
+            if user_subscription_type=='PREMIUM':
+                for puzzle in puzzle_status_data:
+                    puzzle.puzzle_locked = False
+                    puzzle.save()
+            elif user_subscription_type == 'BASIC':
+                for puzzle in puzzle_status_data:
+                    puzzle.puzzle_locked = True
+                    puzzle.save()
+                for puzzle in need_puzzle_data:
+                    puzzle_lock = UserDataTableStatus.objects.get(user=user,data_table=puzzle)
+                    puzzle_lock.puzzle_locked = False
+                    puzzle_lock.save()
+            else:
+                print("Enter")
+                for puzzle in puzzle_status_data:
+                    puzzle.puzzle_locked = True
+                    puzzle.save()
+                for puzzle in need_puzzle_data:
+                    puzzle_lock = UserDataTableStatus.objects.get(user=user,data_table=puzzle)
+                    puzzle_lock.puzzle_locked = False
+                    puzzle_lock.save()
+            
+            return JsonResponse({'status': True, 'message': 'Puzzles Updated'})
+
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except PlanTable.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Puzzle not found'})
+        except Subscription.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Subscription not found'})

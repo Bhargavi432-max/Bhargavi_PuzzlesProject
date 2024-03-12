@@ -25,6 +25,7 @@ urlpatterns = [
     path('mark_puzzle_status/', views.mark_puzzle_status, name='mark_puzzle_status'),
     path('get_puzzle_access/', views.get_puzzle_access, name='get_puzzle_access'),
     path('get_task_status/', views.get_task_status, name='get_task_statuses'),
+    path('link_subscription_user/', views.link_subscription_user, name='link_subscription_user'),
 
 
     path('read_json_file_view/', read_json_data.read_json_file_view, name='read_json_file_view'),
