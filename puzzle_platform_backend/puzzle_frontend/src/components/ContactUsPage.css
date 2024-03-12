@@ -67,6 +67,7 @@
   .submission-message {
     color: rgb(51, 51, 51); /* Color for success message */
     margin-top: 10px; /* Add spacing above the message */
-    font-size: 14px;
-    margin-bottom: 100px; /* Adjust font size as needed */
+    font-size: 20px;
+    margin-bottom: 80px; /* Adjust font size as needed */
+    margin-top: 150px; 
   }
