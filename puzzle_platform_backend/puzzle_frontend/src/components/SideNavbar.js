@@ -24,7 +24,7 @@ const SideNavbar = ({
           action_item: 'Clicked on task'
         })
       });
-      console.log("sucess");
+      console.log({email,id});
       if (!response.ok) {
         throw new Error('Failed to log task click');
       }

@@ -11,6 +11,7 @@ import CheckOTPPage from "./components/CheckOTPPage";
 import ResetPasswordPage from "./components/ResetPasswordPage";
 import PuzzlePage from "./components/PuzzlePage";
 import { EmailProvider } from "./components/EmailContext";
+import Helpandsupport from "./components/HelpAndSupportPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/checkotp" element={<CheckOTPPage />} />
             <Route path="/resetpassword" element={<ResetPasswordPage />} />
             <Route path="/puzzlepage" element={<PuzzlePage />} />
+            <Route path ="/helpandsupport" element={<Helpandsupport/>} />
           </Routes>
         </EmailProvider>
       </div>

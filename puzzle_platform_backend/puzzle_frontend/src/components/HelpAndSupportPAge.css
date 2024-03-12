@@ -1,0 +1,62 @@
+.help-container {
+    display: flex;
+    height:545px;
+  }
+  
+  .help-nav {
+    width: 200px;
+    background-color: #f6f3ff;
+    color: rgb(100, 100, 100);
+  }
+  
+  .help-nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .help-nav li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .help-nav li:hover {
+    background-color: #555;
+  }
+  
+  .content-help {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  .buttons-help {
+    margin-bottom: 20px;
+    position: absolute;
+    top: 80px;
+    left: 300px;
+    display: flex;
+  }
+  .buttons-help button.active {
+    background-color: navy; /* Active button color */
+    color: #fff; /* Text color for active button */
+  }
+  .buttons-help button {
+    margin-bottom: 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 30px;
+    height: 35px; /* Increase the height */
+    width: 100px;
+    border-radius: 25px;
+  }
+  .faq-section {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 81%; /* Adjust width as needed */
+    background-color: #ffffff; /* Adjust background color */
+    padding: 20px;
+    height:67%;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 8px;
+  }

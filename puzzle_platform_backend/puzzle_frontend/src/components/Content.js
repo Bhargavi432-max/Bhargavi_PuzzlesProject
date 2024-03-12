@@ -31,7 +31,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
-    const clickedPuzzle = puzzleData.find((puzzle) => puzzle.id === puzzleId);
+    const clickedPuzzle = puzzleData.find((puzzle) => puzzle.puzzle_id === puzzleId);
     setSelectedPuzzle(clickedPuzzle);
     fetch("http://127.0.0.1:8000/api/get_puzzle_access/", {
       method: "POST",
@@ -54,16 +54,15 @@ const Content = ({ selectedTask, puzzleData }) => {
       .then((data) => {
         console.log(data.data);
         if (data.data) {
+          setSelectedPuzzle(clickedPuzzle);
           setSelectedPuzzleDetails(data);
           localStorage.setItem("selectedPuzzleDetails", JSON.stringify(data));
-          console.log("Selected puzzle details:", data.data);
           const videoFileName = data.data.video;
           const filePath = videoFileName;
           const filename = filePath.split('/').pop();
           const path = require('../videos/' + filename);
           setVideoPath(path);
           setKey((prevKey) => prevKey + 1);
-          console.log("updated",path);
           setNextPuzzleId(data.next_puzzle_id); // Set the next puzzle id
         } else {
           setPopupMessage(data.message);
@@ -75,19 +74,20 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
 
   const handleVideoStart = () => {
-    const currentTime = new Date().toLocaleTimeString();
-    setStartTime(currentTime);
+    const currentDateTime = new Date();
+    const startTime = currentDateTime.toLocaleTimeString([], { hour12: false });
+    setStartTime(startTime);
   };
 
   const handleVideoEnd = () => {
-    const endTime = new Date().toLocaleTimeString();
-    const duration = (new Date().getTime() - new Date(startTime).getTime()) / 1000;
+    const currentDateTime = new Date();
+    const endTime = currentDateTime.toLocaleTimeString([], { hour12: false });
+    const duration = (currentDateTime.getTime() - new Date(startTime).getTime()) / 1000;
     const puzzleStatus = "completed";
-    const questionViewStatus = "completed";
+    const questionViewStatus = true;
     const videoViewStatus = "completed";
     const taskStatus = "incomplete";
     const actionItem = "puzzle completed";
-
     fetch("http://127.0.0.1:8000/api/log_puzzle_click/", {
       method: "POST",
       headers: {
@@ -96,7 +96,7 @@ const Content = ({ selectedTask, puzzleData }) => {
       body: JSON.stringify({
         email,
         task_id: selectedTask ? selectedTask.id : null,
-        puzzle_id: selectedPuzzle ? selectedPuzzle.id : null,
+        puzzle_id: selectedPuzzle.puzzle_id,
         question_view_status: questionViewStatus,
         video_view_status: videoViewStatus,
         puzzle_status: puzzleStatus,
@@ -107,6 +107,7 @@ const Content = ({ selectedTask, puzzleData }) => {
       }),
     })
       .then((response) => {
+        console.log({email,selectedTask,selectedPuzzle,questionViewStatus,videoViewStatus,endTime,startTime});
         if (response.ok) {
           return response.json();
         } else {
