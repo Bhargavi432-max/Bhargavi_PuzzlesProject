@@ -349,3 +349,14 @@
   font-size: 15px;
   font-weight: 600;
 }
+.lock-icom img{
+  width: 10px;
+  height:10px;
+}
+.lock-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px; /* Adjust the size of the lock icon as needed */
+  height: 10px;
+}

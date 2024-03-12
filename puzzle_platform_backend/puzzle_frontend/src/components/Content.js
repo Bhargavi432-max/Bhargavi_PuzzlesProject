@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LockIcon from "./Images/Vector.png";
 import "./Content.css";
 
 const Content = ({ selectedTask, puzzleData }) => {
@@ -183,28 +184,29 @@ const Content = ({ selectedTask, puzzleData }) => {
         const rowButtons = rowPuzzles.map((puzzle) => {
           let buttonClass = "difficulty-button";
           if (selectedPuzzle && selectedPuzzle.puzzle_id === puzzle.puzzle_id) {
-            buttonClass += ` current-${
-              puzzle.level && puzzle.level.toLowerCase()
-            }`;
+            buttonClass += ` current-${puzzle.level && puzzle.level.toLowerCase()}`;
           } else {
             if (puzzle.user_status === "completed") {
-              buttonClass += ` completed-${
-                puzzle.level && puzzle.level.toLowerCase()
-              }`;
+              buttonClass += ` completed-${puzzle.level && puzzle.level.toLowerCase()}`;
             } else if (puzzle.user_status === "incompleted") {
               buttonClass += ` incompleted`;
             } else if (puzzle.user_status === "notstarted") {
               buttonClass += ` notstarted`;
             }
           }
+          // If puzzle is locked, add lock icon below the button
+          const lockIcon = puzzle.puzzle_locked ? <img src={LockIcon} className="lock-icon" alt="Locked" /> : null;
           return (
-            <button
-              key={puzzle.id}
-              onClick={() => handleDifficultyBoxButtonClick(puzzle.puzzle_id)}
-              className={buttonClass}
-            >
-              {puzzle.id}
-            </button>
+            <div key={puzzle.id} className="button-container" style={{ position: "relative" }}>
+              <button
+                onClick={() => handleDifficultyBoxButtonClick(puzzle.puzzle_id)}
+                className={buttonClass}
+                disabled={puzzle.puzzle_locked} // Disable button if puzzle is locked
+              >
+                {puzzle.id}
+              </button>
+              {lockIcon}
+            </div>
           );
         });
         buttonRows.push(
