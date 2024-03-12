@@ -78,16 +78,56 @@ const Content = ({ selectedTask, puzzleData }) => {
     const startTime = currentDateTime.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ' ' + currentDateTime.toLocaleTimeString('en-US', {hour12: false}); 
     setStartTime(startTime);
   };
-
+  const formatDuration = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+  
+    return [hours, minutes, seconds]
+      .map((val) => val < 10 ? `0${val}` : val)
+      .join(":");
+  };
   const handleVideoEnd = () => {
     const currentDateTime = new Date();
     const endTime = currentDateTime.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ' ' + currentDateTime.toLocaleTimeString('en-US', {hour12: false});
-    const duration = (currentDateTime.getTime() - new Date(startTime).getTime()) / 1000;
+    const elapsedTimeInSeconds = (currentDateTime.getTime() - new Date(startTime).getTime()) / 1000;
+    const duration = formatDuration(elapsedTimeInSeconds);
     const puzzleStatus = "completed";
     const questionViewStatus = true;
     const videoViewStatus = true;
     const taskStatus = "incomplete";
     const actionItem = "puzzle completed";
+
+    // Fetch request to mark puzzle status
+    fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        task_id: selectedTask ? selectedTask.id : null,
+        puzzle_id: selectedPuzzle.puzzle_id,
+        puzzle_status: puzzleStatus,
+        time_spent: duration,
+      }),
+    })
+    .then((response) => {
+      if (response.ok) {
+        console.log({email,selectedTask,selectedPuzzle,puzzleStatus,duration});
+        return response.json();
+      } else {
+        throw new Error("Request failed");
+      }
+    })
+    .then((data) => {
+      console.log(data); // Log the response from the backend
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
+    // Fetch request to log puzzle click
     fetch("http://127.0.0.1:8000/api/log_puzzle_click/", {
       method: "POST",
       headers: {
@@ -106,24 +146,24 @@ const Content = ({ selectedTask, puzzleData }) => {
         action_item: actionItem,
       }),
     })
-      .then((response) => {
-        console.log({email,selectedTask,selectedPuzzle,questionViewStatus,videoViewStatus,endTime,startTime});
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Request failed");
-        }
-      })
-      .then((data) => {
-        console.log(data); // Log the response from the backend
-        // Move to the next puzzle if the nextPuzzleId is set
-        if (nextPuzzleId) {
-          handleDifficultyBoxButtonClick(nextPuzzleId);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    .then((response) => {
+      console.log({email, selectedTask, selectedPuzzle, questionViewStatus, videoViewStatus, endTime, startTime});
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Request failed");
+      }
+    })
+    .then((data) => {
+      console.log(data); // Log the response from the backend
+      // Move to the next puzzle if the nextPuzzleId is set
+      if (nextPuzzleId) {
+        handleDifficultyBoxButtonClick(nextPuzzleId);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   };
 
   const renderDifficultyBoxButtons = () => {
