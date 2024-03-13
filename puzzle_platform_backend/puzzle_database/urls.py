@@ -19,6 +19,9 @@ urlpatterns = [
     path('add_feedback/', user_help_pages.add_feedback, name='add_feedback'),
     path('contact_us/', user_help_pages.contact_us, name='contact_us'),
     path('get_subscription_details/', user_help_pages.get_subscription_details, name='get_subscription_details'),
+    path('get_all_plans/', user_help_pages.get_all_plans, name='get_all_plans'),
+
+    
 
     # Puzzle data and statistics URLs
     path('get_ids/', views.get_all_full_ids, name='get_ids'),
