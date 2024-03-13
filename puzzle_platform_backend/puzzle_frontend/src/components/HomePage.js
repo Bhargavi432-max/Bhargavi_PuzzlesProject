@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import "./HomePage.css";
 import Helpandsupport from "./HelpAndSupportPage";
+import Wallet from "./SubscriptionPage";
 
 function HomePage() {
   const [activePage, setActivePage] = useState('Dashboard');
@@ -37,7 +38,7 @@ function HomePage() {
       case 'Help and Support':
         return <Helpandsupport />;
       case 'Wallet':
-        return <div>Wallet Page</div>;
+        return <Wallet/>;
       case 'Settings':
         return <div>Settings Page</div>;
       case 'Sign Out':

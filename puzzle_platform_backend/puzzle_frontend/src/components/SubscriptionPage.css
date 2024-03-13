@@ -1,0 +1,84 @@
+.wallet-container {
+    margin-top: 10px;
+    padding: 20px;
+}
+  
+.wallet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 100px;
+    width: 1000px;
+    border-radius: 10px;
+    background-color: #D3D8F9;
+    margin-left: 40px;
+}
+
+.prof-image img {
+    height: 90px;
+    width: 90px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-details {
+    margin-right: 20px;
+    margin-left: 15px;
+}
+
+.username {
+    color: #3B4AB4;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 27.1px;
+    font-weight: 600;
+}
+
+.wallet-balance,
+.subscription {
+    color: #686464;
+    font-size: 25px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 500;
+}
+
+.text {
+    color: #3B4AB4;
+    font-size: 15px;
+    font-family: "Inter-SemiBold", Helvetica;
+}
+
+.message-con {
+    padding-top: 15px;
+    height: 96px;
+    width: 100px;
+    text-align: right;
+}
+
+.message {
+    color: #3B4AB4;
+    font-size: 30px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 700;
+}
+
+.subscription-plans {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.plan {
+    width: 30%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.plan button {
+    margin-top: 10px;
+}

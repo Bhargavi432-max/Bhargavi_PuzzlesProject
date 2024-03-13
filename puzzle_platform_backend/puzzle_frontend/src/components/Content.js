@@ -64,7 +64,7 @@ const Content = ({ selectedTask, puzzleData }) => {
           const path = require('../videos/' + filename);
           setVideoPath(path);
           setKey((prevKey) => prevKey + 1);
-          setNextPuzzleId(data.next_puzzle_id); // Set the next puzzle id
+          // setNextPuzzleId(data.next_puzzle_id); // Set the next puzzle id
         } else {
           setPopupMessage(data.message);
         }
@@ -123,6 +123,10 @@ const Content = ({ selectedTask, puzzleData }) => {
     })
     .then((data) => {
       console.log(data); // Log the response from the backend
+      setNextPuzzleId(data.next_puzzle_id)
+      if (nextPuzzleId) {
+        handleDifficultyBoxButtonClick(nextPuzzleId);
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -158,9 +162,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     .then((data) => {
       console.log(data); // Log the response from the backend
       // Move to the next puzzle if the nextPuzzleId is set
-      if (nextPuzzleId) {
-        handleDifficultyBoxButtonClick(nextPuzzleId);
-      }
+      
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -261,7 +263,7 @@ const Content = ({ selectedTask, puzzleData }) => {
           <div className="popup">
             <div className="popup-content">
               <p className="pop-text">{popupMessage}</p>
-              <button className="close-button" onClick={() => setPopupMessage(null)}>Subscribe Now</button>
+              <button className="close-button" onClick={() => setPopupMessage(null)}>Subscribe</button>
             </div>
           </div>
         </div>
