@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import "./SubscriptionPage.css";
+
+import useRazorpay from "react-razorpay";
 import ProfileImage from "./Images/Profile photo.svg";
 
 function Wallet() {
+  const [Razorpay] = useRazorpay();
   const [userData, setUserData] = useState(null);
   const [plans, setPlans] = useState([]);
   const [error, setError] = useState(null);
@@ -73,7 +76,7 @@ function Wallet() {
       });
   };
 
-  const handleSubscribe = (planType, planPrice) => {
+  const handleSubscribe = async (planType, planPrice) => {
     // Logic to handle subscription redirection
     console.log(`Subscribing to ${planType} plan`);
     // Redirect to payment page
@@ -89,13 +92,51 @@ function Wallet() {
   
     // Now you can store the user's email and the plan price in variables or state
     // For example:
-    const subscriptionData = {
+    const subscriptionData  = {
       email: userEmail,
       planType: planType,
       planPrice: planPrice
-    };
-    console.log(subscriptionData);
-  };
+    }
+    console.log(subscriptionData.planPrice);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/order_create/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              amount: subscriptionData.planPrice,
+              email:subscriptionData.email
+          }),
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch Razorpay payment details');
+      }
+
+      const paymentDetails = await response.json();
+
+      if (!window.Razorpay) {
+          throw new Error('Razorpay library not loaded');
+      }
+
+      const options = {
+          key: paymentDetails.razorpay_merchant_key,
+          amount: paymentDetails.razorpay_amount,
+          currency: paymentDetails.currency,
+          name: "Dj Razorpay",
+          order_id: paymentDetails.razorpay_order_id,
+          callback_url: paymentDetails.callback_url,
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+  } catch (error) {
+      console.error('Error:', error);
+      setError('An error occurred while processing the donation.');
+  }
+};
+
 
   if (error) {
     return <div>Error: {error}</div>;

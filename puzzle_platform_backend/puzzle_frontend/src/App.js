@@ -12,6 +12,8 @@ import ResetPasswordPage from "./components/ResetPasswordPage";
 import PuzzlePage from "./components/PuzzlePage";
 import { EmailProvider } from "./components/EmailContext";
 import HomePage from "./components/HomePage";
+import PaymentFailPage from "./components/PaymentFailPage";
+import PaymentSuccessPage from "./components/PaymentSuccessPage";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
             <Route path="/resetpassword" element={<ResetPasswordPage />} />
             <Route path="/puzzlepage" element={<PuzzlePage />} />
             <Route path ="/home" element={<HomePage/>} />
+            <Route path="/fail" element={<PaymentFailPage />} />
+            <Route path ="/success" element={<PaymentSuccessPage/>} />
           </Routes>
         </EmailProvider>
       </div>

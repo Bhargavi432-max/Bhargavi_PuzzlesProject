@@ -114,7 +114,7 @@ class UserDataTableStatus(models.Model):
     puzzle_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='notstarted')
     task_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='notstarted')
     puzzle_locked = models.BooleanField(default=False)
-    time_spent = models.DurationField(null=True, blank=True)   
+    time_spent = models.IntegerField(default=0) 
 
 
     class Meta:

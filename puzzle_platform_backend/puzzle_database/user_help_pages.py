@@ -31,7 +31,10 @@ def get_subscription_details(request):
 # This function gets all plan details.
 @csrf_exempt
 def get_all_plans(request):
+    
+    print("request.method")
     if request.method == 'POST':
+        print('Enter')
         plans = PlanTable.objects.all()
         plan_list = []
         for plan in plans:
@@ -41,6 +44,7 @@ def get_all_plans(request):
                 'benefits': plan.benefits,
             }
             plan_list.append(plan_dict)
+        print(plan_list)
         return JsonResponse({'status': True, 'plans': plan_list})
     else:
         return JsonResponse({'error': 'Only GET requests are allowed'})

@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views,password_validation,user_validation,read_json_data,logreports,user_help_pages
+from . import views,password_validation,user_validation,read_json_data,logreports,user_help_pages,razor_pay
 
 urlpatterns = [
      # User authentication related URLs
@@ -41,6 +41,9 @@ urlpatterns = [
     path('log_login_register_otp/', logreports.log_login_register_otp, name='log_login_register_otp'),
     path('log_task_click/', logreports.log_task_click, name='log_task_click'),
     path('log_puzzle_click/', logreports.log_puzzle_click, name='log_puzzle_click'),
-    path('log_wallet_spend/', logreports.log_wallet_spend, name='log_wallet_spend')
-    
+    path('log_wallet_spend/', logreports.log_wallet_spend, name='log_wallet_spend'),
+
+    # Payment Handle URLs
+    path('order_create/', razor_pay.order_create, name='order_create'),
+    path('paymenthandler/<str:email>/', razor_pay.paymenthandler, name='paymenthandler')
 ]

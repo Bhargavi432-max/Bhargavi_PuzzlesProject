@@ -45,12 +45,61 @@ def get_user_statistics(request):
         try:
             data = json.loads(request.body)
             user_email = data.get('email')
+
             user = CustomUser.objects.get(email=user_email)
+            user_data_statuses = UserDataTableStatus.objects.filter(user=user)
+
+            # Calculate the time spent on the puzzles
+            total_time_spent_seconds = 0
+
+            for status in user_data_statuses:
+                total_time_spent_seconds += status.time_spent
+
+            # Convert total time spent to hours, minutes, and seconds
+            total_time_spent = timedelta(seconds=total_time_spent_seconds)
+            total_hours = total_time_spent.seconds // 3600
+            total_minutes = (total_time_spent.seconds % 3600) // 60
+            total_seconds = total_time_spent.seconds % 60
+
+            completed_puzzles_by_level = {
+                'EASY': 0,
+                'MEDIUM': 0,
+                'HARD': 0
+            }
+            total_puzzles_by_level = {
+                'EASY': DataTable.objects.filter(level='EASY').count(),
+                'MEDIUM': DataTable.objects.filter(level='MEDIUM').count(),
+                'HARD': DataTable.objects.filter(level='HARD').count()
+            }
+            print(total_puzzles_by_level)
+
+            for status in user_data_statuses:
+                if status.puzzle_status == 'completed':
+                    level = status.data_table.level
+                    completed_puzzles_by_level[level] += 1
+
+            # Calculate the percentage of completed puzzles for each level
+            percentage_completed_by_level = {}
+            for level in completed_puzzles_by_level:
+                total_puzzles = total_puzzles_by_level[level]
+                if total_puzzles > 0:
+                    percentage_completed = (completed_puzzles_by_level[level] / total_puzzles) * 100
+                    percentage_completed_by_level[level] = round(percentage_completed, 2)
+                else:
+                    percentage_completed_by_level[level] = 0
+
             user_statistics = {
                 'completed_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='completed').count(),
                 'incompleted_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='incompleted').count(),
                 'notstarted_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='notstarted').count(),
+                'total_time_spent': {
+                    'hours': total_hours,
+                    'minutes': total_minutes,
+                    'seconds': total_seconds
+                },
+                'percentage_completed_by_level': percentage_completed_by_level
             }
+            print(user_statistics)
             return JsonResponse({'status': True, 'user_statistics': user_statistics})
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
@@ -70,10 +119,41 @@ def get_user_taskwise_statistics(request):
             task_id = data.get('task_id')
 
             user = CustomUser.objects.get(email=user_email)
+
+            easy_time_taken = sum(status.time_spent for status in UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed', data_table__level='EASY'))
+            medium_time_taken = sum(status.time_spent for status in UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed', data_table__level='MEDIUM'))
+            hard_time_taken = sum(status.time_spent for status in UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed', data_table__level='HARD'))
+
+            easy_time_taken = timedelta(seconds=easy_time_taken)
+            easy_hours = easy_time_taken.seconds // 3600
+            easy_minutes = (easy_time_taken.seconds % 3600) // 60
+            easy_seconds = easy_time_taken.seconds % 60
+
+            medium_time_taken = timedelta(seconds=medium_time_taken)
+            medium_hours = medium_time_taken.seconds // 3600
+            medium_minutes = (medium_time_taken.seconds % 3600) // 60
+            medium_seconds = medium_time_taken.seconds % 60
+
+            hard_time_taken = timedelta(seconds=hard_time_taken)
+            hard_hours = hard_time_taken.seconds // 3600
+            hard_minutes = (hard_time_taken.seconds % 3600) // 60
+            hard_seconds = hard_time_taken.seconds % 60
+
+            completed_puzzles_by_level = {
+                'EASY': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed', data_table__level='EASY').count(),
+                'MEDIUM': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed', data_table__level='MEDIUM').count(),
+                'HARD': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed', data_table__level='HARD').count(),
+            }
             task_statistics  = {
                 'completed_puzzles': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed').count(),
                 'incompleted_puzzles': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='incompleted').count(),
                 'notstarted_puzzles': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='notstarted').count(),
+                'completed_puzzles_by_level': completed_puzzles_by_level,
+                'time_taken': {
+                    'EASY': {'hours': easy_hours, 'minutes': easy_minutes, 'seconds': easy_seconds},
+                    'MEDIUM': {'hours': medium_hours, 'minutes': medium_minutes, 'seconds': medium_seconds},
+                    'HARD': {'hours': hard_hours, 'minutes': hard_minutes, 'seconds': hard_seconds}
+                }
             }
             print(task_statistics)
             return JsonResponse({'status': True, 'user_statistics': task_statistics })
@@ -95,6 +175,7 @@ def mark_puzzle_status(request):
             puzzle_id = data.get('puzzle_id')
             puzzle_status = data.get('puzzle_status').lower()
             time_spent = data.get('time_spent')
+            print(time_spent)
             
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(task_id=task_id, puzzle_id=puzzle_id)
@@ -122,9 +203,12 @@ def mark_puzzle_status(request):
                 return JsonResponse({'status': False, 'message': 'Puzzle already completed','next_puzzle_id':next_puzzle_id})
             hours, minutes, seconds_with_milliseconds = time_spent.split(":")
             seconds, milliseconds = seconds_with_milliseconds.split(".")
-            duration = timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds), milliseconds=int(milliseconds))
+            hours = int(hours)
+            minutes = int(minutes)
+            seconds = int(seconds)
+            total_seconds = (hours * 3600) + (minutes * 60) + seconds
             status.puzzle_status = puzzle_status
-            status.time_spent = duration
+            status.time_spent = total_seconds
             status.save()
 
             if user_subscription_type=='BASIC':
