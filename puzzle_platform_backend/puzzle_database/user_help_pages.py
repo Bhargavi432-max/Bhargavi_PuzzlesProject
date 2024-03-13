@@ -58,8 +58,9 @@ def add_feedback(request):
         data = json.loads(request.body)
         user_email = data.get('email')
         rating = data.get('rating')
+        print(type(rating))
         review = data.get('review')
-        print(rating,review)
+        print(user_email,rating,review)
 
         if not (rating and review and user_email):
             return JsonResponse({'status': False, 'message': 'All fields are required'})

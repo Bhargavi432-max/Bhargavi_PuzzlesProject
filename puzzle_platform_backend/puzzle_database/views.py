@@ -101,8 +101,25 @@ def mark_puzzle_status(request):
             status = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
             user_subscription_type = Subscription.objects.get(user=user).plan_data.plan_type
 
+            next_puzzles_part = str(int(puzzle_id[-2:])+1)
+            if len(next_puzzles_part)==1:
+                next_puzzles_part = '0'+next_puzzles_part
+
+            next_puzzle_id = puzzle_id[:-2]+next_puzzles_part
+            data = DataTable.objects.filter(puzzle_id=next_puzzle_id).exists()
+            if not data:
+                next_puzzles_part = str(int(puzzle_id[5:7])+1)
+                if len(next_puzzles_part)==1:
+                    next_puzzles_part = '0'+next_puzzles_part
+                next_puzzle_id = puzzle_id[:5]+next_puzzles_part +'-01'
+                print([puzzle_id,next_puzzle_id])
+                data = DataTable.objects.filter(puzzle_id=next_puzzle_id).exists()
+                if data:
+                    next_puzzle_data = DataTable.objects.get(puzzle_id=next_puzzle_id)
+            print(next_puzzle_id)
+
             if status.puzzle_status == 'completed':
-                return JsonResponse({'status': False, 'message': 'Puzzle already completed'})
+                return JsonResponse({'status': False, 'message': 'Puzzle already completed','next_puzzle_id':next_puzzle_id})
             hours, minutes, seconds_with_milliseconds = time_spent.split(":")
             seconds, milliseconds = seconds_with_milliseconds.split(".")
             duration = timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds), milliseconds=int(milliseconds))
@@ -160,8 +177,9 @@ def mark_puzzle_status(request):
                 for task_status in task_statuses:
                     task_status.task_status = 'incompleted'
                     task_status.save()
+            
 
-            return JsonResponse({'status': True, 'message': 'Puzzle and Task status are Updated'})
+            return JsonResponse({'status': True, 'message': 'Puzzle and Task status are Updated','next_puzzle_id':next_puzzle_id})
         
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
@@ -290,3 +308,42 @@ def link_subscription_user(request):
             return JsonResponse({'status': False, 'message': 'Puzzle not found'})
         except Subscription.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'Subscription not found'})
+
+# View for buying puzzle
+@csrf_exempt
+def buy_puzzle(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            puzzle_id = data.get('puzzle_id')
+            task_id = data.get('task_id')
+            
+            user = CustomUser.objects.get(email=user_email)
+            puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
+            puzzle_locked = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
+            wallet_balance = UserProfile.objects.get(user=user)
+            puzzle_price = puzzle.puzzle_price
+            
+            if puzzle_locked.puzzle_locked:
+                if puzzle_price <= wallet_balance.wallet:
+                    wallet_balance.wallet -= puzzle_price
+                    puzzle_locked.puzzle_locked = False
+                    wallet_balance.save()
+                    puzzle_locked.save()
+                    return JsonResponse({'status': True, 'message': 'Puzzle purchased successfully'})
+                else:
+                    return JsonResponse({'status': False, 'message': 'Insufficient balance in wallet'})
+            else:
+                return JsonResponse({'status': False, 'message': 'Puzzle is already unlocked'})
+        
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except DataTable.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Puzzle not found'})
+        except UserDataTableStatus.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Puzzle status not found'})
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User profile not found'})
+        except Exception as e:
+            return JsonResponse({'status': False, 'message': str(e)})  # Handle other exceptions

@@ -28,6 +28,8 @@ urlpatterns = [
     path('get_puzzle_access/', views.get_puzzle_access, name='get_puzzle_access'),
     path('get_task_status/', views.get_task_status, name='get_task_statuses'),
     path('link_subscription_user/', views.link_subscription_user, name='link_subscription_user'),
+    path('buy_puzzle/', views.buy_puzzle, name='buy_puzzle'),
+    
 
     # Json File Reading URLs
     path('read_json_file_view/', read_json_data.read_json_file_view, name='read_json_file_view'),
