@@ -56,8 +56,9 @@ function ContactUsPage() {
         ) : (
           <form className="contact-form" onSubmit={handleSubmit}>
             <div className="input-container">
-              <label htmlFor="name">Name</label>
+              <label className="contact-lable" htmlFor="name">Name</label>
               <input
+              className='contact-input'
                 type="text"
                 id="name"
                 name="name"
@@ -68,8 +69,9 @@ function ContactUsPage() {
               />
             </div>
             <div className="input-container">
-              <label htmlFor="email">Email</label>
+              <label className="contact-lable" htmlFor="email">Email</label>
               <input
+                className='contact-input'
                 type="email"
                 id="email"
                 name="email"
@@ -80,8 +82,9 @@ function ContactUsPage() {
               />
             </div>
             <div className="input-container">
-              <label htmlFor="phoneNumber">Phone Number</label>
+              <label className="contact-lable" htmlFor="phoneNumber">Phone Number</label>
               <input
+                className='contact-input'
                 type="tel"
                 id="phoneNumber"
                 name="phoneNumber"

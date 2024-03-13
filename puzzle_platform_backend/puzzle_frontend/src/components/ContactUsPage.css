@@ -24,7 +24,7 @@
   }
   
   .contact-container {
-    width: 40%; /* Adjust the width as needed */
+    width: 30%; /* Adjust the width as needed */
     margin: 0 auto; /* Center the container horizontally */
     padding: 20px; /* Add padding to the container */
     background-color: #EAEAEA; /* Background color of the container */
@@ -36,7 +36,7 @@
     margin-bottom: 15px; /* Add spacing between input fields */
   }
   
-  label {
+  .contact-form label {
     display: block; /* Display labels as block elements */
     margin-bottom: 5px; 
     text-align: left;
@@ -45,12 +45,14 @@
     color:rgb(41, 41, 41);
   }
   
-  input {
-    width: 100%; /* Make input fields take up full width of their container */
-    padding: 10px; /* Add padding to input fields */
-    border: 1px solid #ccc; /* Add border to input fields */
-    border-radius: 5px; /* Add rounded corners to input fields */
-    box-sizing: border-box; /* Ensure padding and border are included in the width */
+  .contact-form input {
+    padding: 10px;  
+    border-radius: 5px; 
+    box-sizing: border-box; 
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+    height: 30px;
+    border: 1px solid white; 
   }
   
   button {

@@ -4,6 +4,7 @@ import './FeedbackPage.css';
 function FeedbackPage() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  const email = localStorage.getItem("email");
 
   const handleStarClick = (value) => {
     setRating(value);
@@ -17,6 +18,7 @@ function FeedbackPage() {
     e.preventDefault();
     // Send feedback data to backend endpoint
     const feedbackData = {
+      email: email,
       rating: rating,
       review: comment // Change key to 'review' instead of 'comment'
     };
