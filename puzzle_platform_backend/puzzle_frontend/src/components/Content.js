@@ -181,7 +181,7 @@ const Content = ({ selectedTask, puzzleData }) => {
       const buttonRows = [];
       for (let i = 0; i < puzzles.length; i += 6) {
         const rowPuzzles = puzzles.slice(i, i + 6);
-        const rowButtons = rowPuzzles.map((puzzle) => {
+        const rowButtons = rowPuzzles.map((puzzle, index) => {
           let buttonClass = "difficulty-button";
           if (selectedPuzzle && selectedPuzzle.puzzle_id === puzzle.puzzle_id) {
             buttonClass += ` current-${puzzle.level && puzzle.level.toLowerCase()}`;
@@ -198,11 +198,11 @@ const Content = ({ selectedTask, puzzleData }) => {
           return (
             <div key={puzzle.id} className="button-container" style={{ position: "relative" }}>
               <button
-                onClick={() => handleButtonClick(puzzle)} // Modified onClick handler
+                onClick={() => handleButtonClick(puzzle, i + index)} // Modified onClick handler
                 className={buttonClass}
                 // disabled={puzzle.puzzle_locked} // Disable button if puzzle is locked
               >
-                {puzzle.id}
+                {i + index + 1}
               </button>
               {puzzle.puzzle_locked && <img src={LockIcon} className="lock-icon" alt="Locked" />}
             </div>
@@ -217,11 +217,11 @@ const Content = ({ selectedTask, puzzleData }) => {
       return buttonRows;
     };
     
-    const handleButtonClick = (puzzle) => {
+    const handleButtonClick = (puzzle, buttonIndex) => {
       if (puzzle.puzzle_locked) {
         setPopupMessage("This puzzle is locked!.please upgrade your plan.");
       } else {
-        handleDifficultyBoxButtonClick(puzzle.puzzle_id);
+        handleDifficultyBoxButtonClick(puzzle.puzzle_id, buttonIndex);
       }
     };
     return (
