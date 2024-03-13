@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./SubscriptionPage.css";
+import ProfileImage from "./Images/Profile photo.svg";
 
 function Wallet() {
   const [userData, setUserData] = useState(null);
@@ -33,7 +34,6 @@ function Wallet() {
         return response.json();
       })
       .then(data => {
-        console.log(data);
         setUserData(data.subscription_details);
       })
       .catch(error => {
@@ -62,8 +62,11 @@ function Wallet() {
         return response.json();
       })
       .then(data => {
-        console.log(data);
-        setPlans(data);
+        if (Array.isArray(data.plans)) {
+          setPlans(data.plans);
+        } else {
+          setError("Received plans data is not in the expected format");
+        }
       })
       .catch(error => {
         setError(error.message);
@@ -86,26 +89,42 @@ function Wallet() {
 
   return (
     <div className="wallet-container">
-      <div className="wallet-header">
-        <div className="user-info">
-          <div className="user-details">
-            <span className="username">{userData.name}</span>
-            <span className="wallet-balance">Wallet Balance: {userData.wallet}</span>
-            <span className="subscription">Subscription: {userData.plan_type}</span>
+    <div className="wallet-header">
+      <div className="user-info">
+        <div className="prof-image">
+          <img src={ProfileImage} alt='ProfileImage'/>
+        </div>
+        <div className="user-details">
+          <div className="username">Heloo, {userData.name}</div>
+          <div className="wallet-balance">
+            <span className='text'>Wallet Balance</span>
+            <br/>
+            {userData.wallet}
+          </div>
+          <div className="subscription">
+            <span className='text'>Current Plan </span>
+            <br/>
+            {userData.plan_type}
           </div>
         </div>
       </div>
-      <div className="subscription-plans">
-        {plans.map(plan => (
-          <div key={plan.plan_type} className="plan">
-            <h2>{plan.plan_type} Plan</h2>
-            <p>${plan.price} per month</p>
-            <button onClick={() => handleSubscribe(plan.plan_type)}>Subscribe</button>
-          </div>
-        ))}
+      <div className='message-con'>
+        <div className="message">My Wallet</div>
       </div>
     </div>
-  );
+    <div className="subscription-plans">
+      {plans.map(plan => (
+        <div key={plan.plan_type} className="plan">
+          <h2 className='plan-text'>{plan.plan_type} PLAN</h2>
+          <p className='benefits'>{plan.benefits}</p>
+          <p className='price'><span className='price-text'>per month</span>
+            <br/>${plan.plan_price}
+          </p>
+          <button onClick={() => handleSubscribe(plan.plan_type)}>Subscribe</button>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 }
-
 export default Wallet;

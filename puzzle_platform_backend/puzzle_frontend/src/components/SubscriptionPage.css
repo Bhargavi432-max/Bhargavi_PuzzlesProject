@@ -1,8 +1,8 @@
 .wallet-container {
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 20px;
 }
-  
+
 .wallet-header {
     display: flex;
     justify-content: space-between;
@@ -27,7 +27,7 @@
 }
 
 .user-details {
-    margin-right: 20px;
+    display: flex;
     margin-left: 15px;
 }
 
@@ -36,20 +36,24 @@
     font-family: "Inter-SemiBold", Helvetica;
     font-size: 27.1px;
     font-weight: 600;
+    margin-right: 100px; /* Adjust as needed */
 }
 
 .wallet-balance,
 .subscription {
+    display: flex;
     color: #686464;
     font-size: 25px;
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 500;
+    margin-right: 100px; /* Adjust as needed */
 }
 
 .text {
     color: #3B4AB4;
     font-size: 15px;
     font-family: "Inter-SemiBold", Helvetica;
+    left:0;
 }
 
 .message-con {
@@ -70,15 +74,40 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    padding: 10px;
 }
 
 .plan {
-    width: 30%;
+    width: 27%;
+    height: 340px;
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
+    border-radius: 20px;
+}
+.price-text{
+    color: #807878;
+    font-size: 15px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 300;
+}
+.price{
+    color: #030303;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 20px;
+    font-weight: 600;
+}
+.plan-text{
+    color: #3B4AB4;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 23px;
+    font-weight: 600;
 }
 
 .plan button {
     margin-top: 10px;
 }
+/* .benefits{
+    width:30px;
+
+} */
