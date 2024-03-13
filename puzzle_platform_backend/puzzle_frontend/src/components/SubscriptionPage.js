@@ -73,10 +73,28 @@ function Wallet() {
       });
   };
 
-  const handleSubscribe = (planType) => {
+  const handleSubscribe = (planType, planPrice) => {
     // Logic to handle subscription redirection
     console.log(`Subscribing to ${planType} plan`);
     // Redirect to payment page
+  
+    // Get the user's email from localStorage
+    const userEmail = localStorage.getItem("email");
+  
+    // Check if the user's email exists
+    if (!userEmail) {
+      setError("User email not found");
+      return;
+    }
+  
+    // Now you can store the user's email and the plan price in variables or state
+    // For example:
+    const subscriptionData = {
+      email: userEmail,
+      planType: planType,
+      planPrice: planPrice
+    };
+    console.log(subscriptionData);
   };
 
   if (error) {
@@ -116,11 +134,11 @@ function Wallet() {
       {plans.map(plan => (
         <div key={plan.plan_type} className="plan">
           <h2 className='plan-text'>{plan.plan_type} PLAN</h2>
-          <p className='benefits'>{plan.benefits}</p>
+          <div className='benefits'>{plan.benefits}</div>
           <p className='price'><span className='price-text'>per month</span>
             <br/>${plan.plan_price}
           </p>
-          <button onClick={() => handleSubscribe(plan.plan_type)}>Subscribe</button>
+          <button onClick={() => handleSubscribe(plan.plan_type, plan.plan_price)}>Subscribe</button>
         </div>
       ))}
     </div>

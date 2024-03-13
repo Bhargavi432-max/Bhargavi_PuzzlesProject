@@ -78,7 +78,7 @@
 }
 
 .plan {
-    width: 27%;
+    width: 30%;
     height: 340px;
     border: 1px solid #ccc;
     padding: 10px;
@@ -107,7 +107,14 @@
 .plan button {
     margin-top: 10px;
 }
-/* .benefits{
-    width:30px;
+.benefits{
+    width:270px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+    margin-left: 20px;
+    line-height: 30px;
 
-} */
+
+}
