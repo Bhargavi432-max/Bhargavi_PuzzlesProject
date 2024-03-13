@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CustomUser,Subscription,FAQ,Feedback
+from .models import CustomUser,Subscription,FAQ,Feedback,PlanTable,UserProfile
 from django.core.mail import send_mail
 import json
 from django.conf import settings
@@ -14,15 +14,33 @@ def get_subscription_details(request):
         try:
             user_email = request.POST.get('email')
             user = CustomUser.objects.get(email=user_email)
-            subscription_data = Subscription.objects.get(user=user).plan_data
+            subscription_type = Subscription.objects.get(user=user).plan_data.plan_type
+            wallet_balance=UserProfile.objects.get(user=user).wallet
             subscription_details = {
-                'plan_type': subscription_data.plan_type,
-                'plan_price':subscription_data.plan_price,
-                'benefits':subscription_data.benefits,
+                'plan_type': subscription_type,
+                'wallet':wallet_balance,
+                'name':user.username,
             }
             return JsonResponse({'status': True, 'subscription_details': subscription_details})
         except Subscription.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'Subscription not found'})
+    else:
+        return JsonResponse({'error': 'Only GET requests are allowed'})
+    
+# This function gets all plan details.
+@csrf_exempt
+def get_all_plans(request):
+    if request.method == 'POST':
+        plans = PlanTable.objects.all()
+        plan_list = []
+        for plan in plans:
+            plan_dict = {
+                'plan_type': plan.plan_type,
+                'plan_price': plan.plan_price,
+                'benefits': plan.benefits,
+            }
+            plan_list.append(plan_dict)
+        return JsonResponse({'status': True, 'plans': plan_list})
     else:
         return JsonResponse({'error': 'Only GET requests are allowed'})
     

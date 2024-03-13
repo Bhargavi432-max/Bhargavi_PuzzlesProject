@@ -138,4 +138,4 @@ class Feedback(models.Model):
     review = models.TextField()
 
     def __str__(self):
-        return "self.rating"
+        return f"{self.user.username} given {self.rating} rating"
