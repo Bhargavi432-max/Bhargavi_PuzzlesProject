@@ -241,7 +241,7 @@ def get_task_status(request):
 
 # View for linking user with it subscription.
 def link_subscription_user(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
         try:
             data = json.loads(request.body)
             user_email = data.get('email')

@@ -133,8 +133,9 @@ class FAQ(models.Model):
 
 # Model for storing feedback
 class Feedback(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     rating = models.IntegerField()
     review = models.TextField()
 
     def __str__(self):
-        return self.question
+        return self.rating

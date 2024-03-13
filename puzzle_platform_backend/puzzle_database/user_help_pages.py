@@ -56,13 +56,17 @@ def retrieve_faqs(request):
 def add_feedback(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        user_email = data.get('email')
         rating = data.get('rating')
         review = data.get('review')
+        print(rating,review)
 
-        if not (rating and review):
+        if not (rating and review and user_email):
             return JsonResponse({'status': False, 'message': 'All fields are required'})
+        
+        user = CustomUser.objects.get(email=user_email)
 
-        Feedback.objects.create(rating=rating, review=review)
+        Feedback.objects.create(user=user, rating=rating, review=review)
         
         return JsonResponse({'status': True, 'message': 'Feedback form submitted successfully'})
     else:
