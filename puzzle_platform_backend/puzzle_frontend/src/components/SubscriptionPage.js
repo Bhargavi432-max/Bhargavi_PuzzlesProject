@@ -3,11 +3,13 @@ import "./SubscriptionPage.css";
 
 function Wallet() {
   const [userData, setUserData] = useState(null);
+  const [plans, setPlans] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch user data when component mounts
+    // Fetch user data and subscription plans when component mounts
     fetchUserData();
+    fetchAllPlans();
   }, []);
 
   const fetchUserData = () => {
@@ -31,16 +33,46 @@ function Wallet() {
         return response.json();
       })
       .then(data => {
-        setUserData(data);
+        console.log(data);
+        setUserData(data.subscription_details);
       })
       .catch(error => {
         setError(error.message);
       });
   };
 
-  const handleSubscribe = (subscriptionType) => {
+  const fetchAllPlans = () => {
+    const email = localStorage.getItem("email"); // Assuming you store user email in localStorage
+    if (!email) {
+      setError("User email not found");
+      return;
+    }
+
+    fetch("http://127.0.0.1:8000/api/get_all_plans/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch subscription plans');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setPlans(data);
+      })
+      .catch(error => {
+        setError(error.message);
+      });
+  };
+
+  const handleSubscribe = (planType) => {
     // Logic to handle subscription redirection
-    console.log(`Subscribing to ${subscriptionType} plan`);
+    console.log(`Subscribing to ${planType} plan`);
     // Redirect to payment page
   };
 
@@ -48,7 +80,7 @@ function Wallet() {
     return <div>Error: {error}</div>;
   }
 
-  if (!userData) {
+  if (!userData || plans.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -57,28 +89,20 @@ function Wallet() {
       <div className="wallet-header">
         <div className="user-info">
           <div className="user-details">
-            <span className="username">{userData.username}</span>
-            <span className="wallet-balance">Wallet Balance: {userData.walletBalance}</span>
-            <span className="subscription">Subscription: {userData.subscription}</span>
+            <span className="username">{userData.name}</span>
+            <span className="wallet-balance">Wallet Balance: {userData.wallet}</span>
+            <span className="subscription">Subscription: {userData.plan_type}</span>
           </div>
         </div>
       </div>
       <div className="subscription-plans">
-        <div className="plan">
-          <h2>Basic Plan</h2>
-          <p>$10 per month</p>
-          <button onClick={() => handleSubscribe('Basic')}>Subscribe</button>
-        </div>
-        <div className="plan">
-          <h2>Standard Plan</h2>
-          <p>$20 per month</p>
-          <button onClick={() => handleSubscribe('Standard')}>Subscribe</button>
-        </div>
-        <div className="plan">
-          <h2>Premium Plan</h2>
-          <p>$30 per month</p>
-          <button onClick={() => handleSubscribe('Premium')}>Subscribe</button>
-        </div>
+        {plans.map(plan => (
+          <div key={plan.plan_type} className="plan">
+            <h2>{plan.plan_type} Plan</h2>
+            <p>${plan.price} per month</p>
+            <button onClick={() => handleSubscribe(plan.plan_type)}>Subscribe</button>
+          </div>
+        ))}
       </div>
     </div>
   );
