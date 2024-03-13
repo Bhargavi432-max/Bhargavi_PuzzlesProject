@@ -12,7 +12,8 @@ import re
 def get_subscription_details(request):
     if request.method == 'POST':
         try:
-            user_email = request.POST.get('email')
+            data = json.loads(request.body)
+            user_email =  data.get('email')
             user = CustomUser.objects.get(email=user_email)
             subscription_type = Subscription.objects.get(user=user).plan_data.plan_type
             wallet_balance=UserProfile.objects.get(user=user).wallet
