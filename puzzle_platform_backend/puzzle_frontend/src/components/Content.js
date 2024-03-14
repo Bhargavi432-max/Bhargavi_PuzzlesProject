@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LockIcon from "./Images/Vector.png";
 import "./Content.css";
+import Wallet from "./SubscriptionPage";
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
