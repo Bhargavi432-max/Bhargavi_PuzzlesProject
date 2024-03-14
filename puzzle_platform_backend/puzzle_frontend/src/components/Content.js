@@ -279,8 +279,9 @@ const Content = ({ selectedTask, puzzleData }) => {
     
     
     const handleButtonClick = (puzzle, buttonIndex) => {
+      setSelectedPuzzle(puzzle)
       if (puzzle.puzzle_locked) {
-        setPopupMessage("This puzzle is locked!.please upgrade your plan.");
+        setPopupMessage("This puzzle is locked!.please upgrade your plan or buy the puzzle");
       } else {
         handleDifficultyBoxButtonClick(puzzle.puzzle_id, buttonIndex);
       }
@@ -319,6 +320,48 @@ const Content = ({ selectedTask, puzzleData }) => {
     navigate('/home');
     
   };
+  const handlebuypuzzle = () => {
+    console.log("details",email,selectedPuzzle.puzzle_id,selectedTask.id);
+    fetch("http://127.0.0.1:8000/api/buy_puzzle/", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        task_id: selectedTask.id,
+        puzzle_id: selectedPuzzle.puzzle_id,
+      }),
+    })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Request failed");
+      }
+    })
+    .then((data) => {
+      console.log(data);
+      if(data.status){
+        console.log(selectedPuzzle);
+        selectedPuzzle.puzzle_locked=false;
+        handleDifficultyBoxButtonClick(selectedPuzzle.puzzle_id);
+      }else{
+        setPopupMessage(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  };
+  const handleCloseit = () => {
+    setPopupMessage(null);
+    setSelectedPuzzle(null)
+    setSelectedPuzzleDetails(null);
+    navigate('/puzzlepage');
+    
+  };
+
   
 
    const renderPopup = () => {
@@ -326,9 +369,12 @@ const Content = ({ selectedTask, puzzleData }) => {
       return (
         <div className="popup-container">
           <div className="popup">
+          <button className="close-popup" onClick={handleCloseit}>X</button>
             <div className="popup-content">
               <p className="pop-text">{popupMessage}</p>
               <button className="close-button" onClick={handleClosePopup}>Subscribe</button>
+              <p>or</p>
+              <button className="buy-button" onClick={handlebuypuzzle}>Buy Puzzle</button>
             </div>
           </div>
         </div>
