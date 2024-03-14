@@ -55,7 +55,7 @@ def read_json_file_view(request):
                         task_status='notstarted'
                     )
 
-        return JsonResponse({'data': "creted"}, status=200)
+        return JsonResponse({'data': data}, status=200)
     except FileNotFoundError:
         return JsonResponse({'error': 'File not found'}, status=404)
     except json.JSONDecodeError as e:
