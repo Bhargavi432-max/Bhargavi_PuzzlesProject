@@ -200,7 +200,7 @@ def mark_puzzle_status(request):
             print(next_puzzle_id)
 
             if status.puzzle_status == 'completed':
-                return JsonResponse({'status': False, 'message': 'Puzzle already completed','next_puzzle_id':next_puzzle_id})
+                return JsonResponse({'status': True, 'message': 'Puzzle already completed','next_puzzle_id':next_puzzle_id})
             hours, minutes, seconds_with_milliseconds = time_spent.split(":")
             seconds, milliseconds = seconds_with_milliseconds.split(".")
             hours = int(hours)
