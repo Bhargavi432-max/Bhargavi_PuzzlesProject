@@ -285,6 +285,7 @@ def get_puzzle_access(request):
             task_id = data.get('task_id')
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
+            print(puzzle.puzzle_video)
             puzzle_locked = UserDataTableStatus.objects.get(user=user , data_table=puzzle).puzzle_locked
             wallet_balance = UserProfile.objects.get(user=user).wallet
             puzzle_price = puzzle.puzzle_price
