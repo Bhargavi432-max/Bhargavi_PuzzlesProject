@@ -1,6 +1,6 @@
-// DashboardPage.js
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
+import SubscriptionPage from './SubscriptionPage'; // Import the SubscriptionPage component
 
 const DashboardPage = () => {
   const [chartInstance, setChartInstance] = useState(null);
@@ -67,6 +67,9 @@ const DashboardPage = () => {
         <h2>Task Stats</h2>
         <canvas ref={chartRef}></canvas>
       </div>
+
+      {/* Render the SubscriptionPage component */}
+      <SubscriptionPage />
     </div>
   );
 };

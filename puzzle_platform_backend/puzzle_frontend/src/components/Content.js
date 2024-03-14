@@ -15,7 +15,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   const [startTime, setStartTime] = useState(null);
   const [nextPuzzleId, setNextPuzzleId] = useState(null);
   const [completedPuzzles, setCompletedPuzzles] = useState([]); // State to hold the id of the next puzzle
-  localStorage.setItem("completedPuzzles", completedPuzzles);
+  
 
   useEffect(() => {
     // Load puzzle details from local storage if available
@@ -153,7 +153,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     const taskStatus = "incomplete";
     const actionItem = "puzzle completed";
     setCompletedPuzzles([...completedPuzzles, selectedPuzzle.puzzle_id]);
-
+    localStorage.setItem("completedPuzzles", completedPuzzles);
     // Fetch request to mark puzzle status
     fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
       method: "POST",

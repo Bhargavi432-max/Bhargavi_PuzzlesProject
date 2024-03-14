@@ -1,15 +1,21 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom"; // Rename the imported Link as RouterLink
 import "./Navbar.css"; 
 import Logo from "./Images/LogoSVS.png"; // Import your logo image here
-import HomeIcon from "./Images/Homeicon.png"; // Import your custom home icon image here
-import ProfileIcon from "./Images/Profileicon.png"; // Import your custom profile icon image here
-import AboutIcon from "./Images/Infoicon.png"; 
-import PuzzleIcon from "./Images/Puzzleicon.png";
-import LogoutIcon from"./Images/Logout.png";
+import HomeBIcon from "./Images/HomeB.png"; 
+import HomeWIcon from "./Images/HomeW.png";// Import your custom home icon image here
+import ProfileBIcon from "./Images/ProfileB.png";
+import ProfileWIcon from "./Images/ProfileW.png"; 
+import InfoB from "./Images/InfoB.png";
+import InfoW from "./Images/InfoW.png"; 
+import PuzzleB from "./Images/PuzzleB.png";
+import PuzzleW from "./Images/PuzzleW.png";
+import LogoutIcon from"./Images/Logout.svg";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("email");
@@ -19,8 +25,30 @@ const Navbar = () => {
     localStorage.removeItem("selectedPuzzleDetails");
     localStorage.removeItem("rzp_device_id");
     localStorage.removeItem("rzp_checkout_anon_id");
+    localStorage.removeItem("completedPuzzles");
     navigate('/login');
   }
+
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  const renderNavItem = (tabName, icon, text) => {
+    const isActive = activeTab === tabName;
+    return (
+      <li key={tabName}>
+        <RouterLink // Use RouterLink instead of Link
+          to={`/${tabName}`}
+          onClick={() => handleTabClick(tabName)}
+        >
+          <div className={`nav-item ${isActive ? 'active' : ''}`}>
+            <img src={icon} alt={text} />
+            {isActive && <span>{text}</span>}
+          </div>
+        </RouterLink>
+      </li>
+    );
+  };
 
   return (
     <nav className="navbar">
@@ -28,29 +56,13 @@ const Navbar = () => {
         <img src={Logo} alt="Logo" />
       </div>
       <ul>
-        <li>
-          <Link to="/home">
-            <img src={HomeIcon} alt="Home" style={{ width: '86.03px', height: '36.64px' }}/>
-          </Link>
-        </li>
-        <li>
-          <Link to="/puzzlepage">
-            <img src={PuzzleIcon} alt="puzzle" />
-          </Link>
-        </li>
-        <li>
-          <Link to="/about">
-            <img src={AboutIcon} alt="About" />
-          </Link>
-        </li>
-        <li>
-          <Link to="/profile">
-            <img src={ProfileIcon} alt="Profile" />
-          </Link>
-        </li>
+        {renderNavItem("home", HomeWIcon, "Home")}
+        {renderNavItem("puzzlepage", PuzzleW, "Puzzle")}
+        {renderNavItem("about",InfoW , "About")}
+        {renderNavItem("profile", ProfileWIcon, "Profile")}
         <li>
           <div className="logout" onClick={handleLogout}>
-            <img src={LogoutIcon} alt="logout" />
+            <img src={LogoutIcon} alt="Logout" />
           </div>
         </li>
       </ul>
