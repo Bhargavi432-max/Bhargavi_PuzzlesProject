@@ -283,12 +283,10 @@ def get_puzzle_access(request):
             user_email = data.get('email')
             puzzle_id = data.get('puzzle_id')
             task_id = data.get('task_id')
+            print(puzzle_id)
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
-            print(puzzle.puzzle_video)
             puzzle_locked = UserDataTableStatus.objects.get(user=user , data_table=puzzle).puzzle_locked
-            wallet_balance = UserProfile.objects.get(user=user).wallet
-            puzzle_price = puzzle.puzzle_price
             start_index = puzzle.puzzle_video.path.find('videos')
             relative_path = puzzle.puzzle_video.path[start_index:].replace('\\', '/')
 
@@ -343,12 +341,31 @@ def get_task_status(request):
     return JsonResponse({'status': False, 'message': 'Only GET requests are allowed'})
 
 # View for linking user with it subscription.
+@csrf_exempt
 def link_subscription_user(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
             user_email = data.get('email')
             user_subscription_type = data.get('user_subscription_type')
+
+            puzzles = DataTable.objects.all()
+
+            # Get users - you may have your own way of retrieving users
+            user = CustomUser.objects.get(email=user_email)
+
+            # Loop through each user and each puzzle to create UserDataTableStatus instances
+            for puzzle in puzzles:
+                # Check if the user has already played this puzzle
+                existing_status = UserDataTableStatus.objects.filter(user=user, data_table=puzzle).exists()
+                if not existing_status:
+                    # Create UserDataTableStatus instance with puzzle_status and task_status as 'notstarted'
+                    UserDataTableStatus.objects.create(
+                        user=user,
+                        data_table=puzzle,
+                        puzzle_status='notstarted',
+                        task_status='notstarted'
+                    )
 
 
             user = CustomUser.objects.get(email=user_email)
@@ -385,6 +402,7 @@ def link_subscription_user(request):
                     puzzle_lock = UserDataTableStatus.objects.get(user=user,data_table=puzzle)
                     puzzle_lock.puzzle_locked = False
                     puzzle_lock.save()
+
             
             return JsonResponse({'status': True, 'message': 'Puzzles Updated'})
 

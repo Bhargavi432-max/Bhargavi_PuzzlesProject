@@ -105,8 +105,8 @@ class LogReport(models.Model):
 class UserDataTableStatus(models.Model):
     STATUS_CHOICES = (
         ('notstarted', 'notstarted'),
-        ('incompleted', 'Incompleted'),
-        ('completed', 'Completed'),
+        ('incompleted', 'incompleted'),
+        ('completed', 'completed'),
     )
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

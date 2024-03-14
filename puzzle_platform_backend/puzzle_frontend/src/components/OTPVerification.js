@@ -36,6 +36,16 @@ const OTPVerification = () => {
                 setMessage(data.message); // Update message state
                 if (data.status) {
                     navigateToLogin();
+                    await fetch('http://127.0.0.1:8000/api/link_subscription_user/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            user_subscription_type: 'FREE'
+                        })
+                    });
 
                     // Send post request for logging OTP verification
                     await fetch('http://127.0.0.1:8000/api/log_login_register_otp/', {
@@ -49,6 +59,7 @@ const OTPVerification = () => {
                         })
                     });
                     console.log("succes");
+                    
                 }
             } else {
                 setMessage('OTP verification failed. Please try again.'); // Update message state
