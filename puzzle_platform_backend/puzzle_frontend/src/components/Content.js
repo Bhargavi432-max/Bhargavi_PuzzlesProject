@@ -15,6 +15,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   const [startTime, setStartTime] = useState(null);
   const [nextPuzzleId, setNextPuzzleId] = useState(null);
   const [completedPuzzles, setCompletedPuzzles] = useState([]); // State to hold the id of the next puzzle
+  localStorage.setItem("completedPuzzles", completedPuzzles);
 
   useEffect(() => {
     // Load puzzle details from local storage if available
