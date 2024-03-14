@@ -5,7 +5,7 @@ import random
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import CustomUser,PlanTable,Subscription
+from .models import CustomUser,PlanTable,Subscription,UserProfile
 from .authentication import authenticate_user
 
 
@@ -126,6 +126,7 @@ def verify_otp(request):
                 
                 free_plan = PlanTable.objects.get(plan_type='FREE')
                 Subscription.objects.create(user=user, plan_data=free_plan)
+                UserProfile.objects.create(user=user,wallet=0)
 
                 return JsonResponse({'status': True, 'message': 'Account activated successfully'})
             else:
