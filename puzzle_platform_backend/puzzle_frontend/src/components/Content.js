@@ -10,7 +10,8 @@ const Content = ({ selectedTask, puzzleData }) => {
   const [key, setKey] = useState(0);
   const email = localStorage.getItem("email");
   const [startTime, setStartTime] = useState(null);
-  const [nextPuzzleId, setNextPuzzleId] = useState(null); // State to hold the id of the next puzzle
+  const [nextPuzzleId, setNextPuzzleId] = useState(null);
+  const [completedPuzzles, setCompletedPuzzles] = useState([]); // State to hold the id of the next puzzle
 
   useEffect(() => {
     // Load puzzle details from local storage if available
@@ -98,6 +99,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     const videoViewStatus = true;
     const taskStatus = "incomplete";
     const actionItem = "puzzle completed";
+    setCompletedPuzzles([...completedPuzzles, selectedPuzzle.puzzle_id]);
 
     // Fetch request to mark puzzle status
     fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
@@ -188,7 +190,7 @@ const Content = ({ selectedTask, puzzleData }) => {
           if (selectedPuzzle && selectedPuzzle.puzzle_id === puzzle.puzzle_id) {
             buttonClass += ` current-${puzzle.level && puzzle.level.toLowerCase()}`;
           } else {
-            if (puzzle.user_status === "completed") {
+            if (puzzle.user_status === "completed" || completedPuzzles.includes(puzzle.puzzle_id)) {
               buttonClass += ` completed-${puzzle.level && puzzle.level.toLowerCase()}`;
             } else if (puzzle.user_status === "incompleted") {
               buttonClass += ` incompleted`;

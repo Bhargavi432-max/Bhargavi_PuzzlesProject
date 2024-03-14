@@ -16,6 +16,9 @@ const Navbar = () => {
     localStorage.removeItem("selectedTask");
     localStorage.removeItem("puzzleData");
     localStorage.removeItem("selectedPuzzleDetails");
+    localStorage.removeItem("selectedPuzzleDetails");
+    localStorage.removeItem("rzp_device_id");
+    localStorage.removeItem("rzp_checkout_anon_id");
     navigate('/login');
   }
 

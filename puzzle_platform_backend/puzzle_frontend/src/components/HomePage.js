@@ -1,8 +1,9 @@
-// App.js
+// HomePage.js
 import React, { useState } from 'react';
 import "./HomePage.css";
 import Helpandsupport from "./HelpAndSupportPage";
 import Wallet from "./SubscriptionPage";
+import DashboardPage from "./DashbordPage";
 
 function HomePage() {
   const [activePage, setActivePage] = useState('Dashboard');
@@ -30,7 +31,7 @@ function HomePage() {
   const PageContent = () => {
     switch (activePage) {
       case 'Dashboard':
-        return <div>Dashboard Page</div>;
+        return <DashboardPage />;
       case 'Task Level':
         return <div>Task Level Page</div>;
       case 'My Task':
