@@ -4,6 +4,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest, JsonResponse,HttpResponseRedirect
 import json
+from .models import CustomUser,Subscription,PlanTable,UserDataTableStatus,DataTable
 
 # Authorize razorpay client with API Keys.
 razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
@@ -36,7 +37,7 @@ def order_create(request):
                 'razorpay_merchant_key': settings.RAZOR_KEY_ID,
                 'razorpay_amount': amount,
                 'currency': currency,
-                'callback_url': 'http://127.0.0.1:8000/api/paymenthandler/'+email+'/'
+                'callback_url': 'http://127.0.0.1:8000/api/paymenthandler/'+email+'/'+str(amount)+'/'
             }
             print(context)
             return JsonResponse(context)
@@ -48,14 +49,14 @@ def order_create(request):
         return HttpResponseBadRequest()
 
 @csrf_exempt
-def paymenthandler(request,email):
+def paymenthandler(request,email,amount):
     if request.method == "POST":
         try:
             print(request.POST)
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')
             signature = request.POST.get('razorpay_signature', '')
-            print(email)
+            print(email,amount)
             params_dict = {
                 'razorpay_order_id': razorpay_order_id,
                 'razorpay_payment_id': payment_id,
@@ -64,6 +65,16 @@ def paymenthandler(request,email):
             result = razorpay_client.utility.verify_payment_signature(params_dict)
             print(params_dict,result)
             if result is not None:
+
+                user = CustomUser.objects.get(email = email)
+                plan = PlanTable.objects.get(plan_price=amount)
+                print(user,plan)
+                subscription = Subscription.objects.get(user=user)
+                subscription.plan_data = plan
+                subscription.save()
+                user_plan_type = plan.plan_type
+                print(user_plan_type)
+                change_data_type(email,user_plan_type)
                 # Handle payment success
                 # You might want to update your database or perform other actions here
                 return HttpResponseRedirect('http://localhost:3000/success')
@@ -76,3 +87,31 @@ def paymenthandler(request,email):
     else:
         # Handle non-POST requests
         return HttpResponseBadRequest()
+
+
+def change_data_type(email,subscripton_type):
+
+    user_subscription_type = subscripton_type
+    user = CustomUser.objects.get(email = email)
+    plan = PlanTable.objects.get(plan_type=subscripton_type)
+    user_subscription = Subscription.objects.get(user=user)
+    user_subscription.plan_data = plan
+    user_subscription.save()
+    puzzle_status_data = UserDataTableStatus.objects.filter(user=user)    
+    easy_puzzles = list(DataTable.objects.filter(task_id=1,level='EASY').order_by('puzzle_id')[:5])
+    medium_puzzles = list(DataTable.objects.filter(task_id=1,level='MEDIUM').order_by('puzzle_id')[:5])
+    hard_puzzles = list(DataTable.objects.filter(task_id=1,level='HARD').order_by('puzzle_id')[:5])
+    print(hard_puzzles)
+    need_puzzle_data = easy_puzzles + medium_puzzles + hard_puzzles    
+    if user_subscription_type=='PREMIUM':
+        for puzzle in puzzle_status_data:
+            puzzle.puzzle_locked = False
+            puzzle.save()
+    elif user_subscription_type == 'BASIC':
+        for puzzle in puzzle_status_data:
+            puzzle.puzzle_locked = True
+            puzzle.save()
+        for puzzle in need_puzzle_data:
+            puzzle_lock = UserDataTableStatus.objects.get(user=user,data_table=puzzle)
+            puzzle_lock.puzzle_locked = False
+            puzzle_lock.save()

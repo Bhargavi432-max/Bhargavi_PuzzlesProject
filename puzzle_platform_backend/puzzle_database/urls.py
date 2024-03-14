@@ -45,5 +45,5 @@ urlpatterns = [
 
     # Payment Handle URLs
     path('order_create/', razor_pay.order_create, name='order_create'),
-    path('paymenthandler/<str:email>/', razor_pay.paymenthandler, name='paymenthandler')
+    path('paymenthandler/<str:email>/<str:amount>/', razor_pay.paymenthandler, name='paymenthandler')
 ]

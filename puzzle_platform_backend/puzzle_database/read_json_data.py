@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.conf import settings
 import os
 import json
-from .models import UserDataTableStatus,Admin,UserProfile,CustomUser,DataTable
+from .models import UserDataTableStatus,Admin,CustomUser,DataTable
 
 # View for reading data in the json file.
 def read_json_file_view(request):
@@ -62,3 +62,4 @@ def read_json_file_view(request):
         return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+

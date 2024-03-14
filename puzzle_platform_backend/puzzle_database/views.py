@@ -350,6 +350,7 @@ def link_subscription_user(request):
             user_email = data.get('email')
             user_subscription_type = data.get('user_subscription_type')
 
+
             user = CustomUser.objects.get(email=user_email)
             plan = PlanTable.objects.get(plan_type=user_subscription_type)
             user_subscription = Subscription.objects.get(user=user)
