@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import LockIcon from "./Images/Vector.png";
 import "./Content.css";
 import Wallet from "./SubscriptionPage";
+import { useNavigate } from "react-router-dom";
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
+  const navigate = useNavigate();
   const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
   const [popupMessage, setPopupMessage] = useState(null);
   const [videoPath, setVideoPath] = useState(null); // State to hold video path
@@ -29,13 +31,22 @@ const Content = ({ selectedTask, puzzleData }) => {
     }
   }, [selectedPuzzle]);
 
+  useEffect(() => {
+    if (nextPuzzleId) {
+      handleDifficultyBoxButtonClick(nextPuzzleId);
+    }
+  }, [nextPuzzleId]);
+
   const handleVideoMouseDown = (e) => {
     e.preventDefault();
   };
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.puzzle_id === puzzleId);
+    console.log("click:",clickedPuzzle.puzzle_locked);
+    if(!clickedPuzzle.puzzle_locked){
     setSelectedPuzzle(clickedPuzzle);
+    
     fetch("http://127.0.0.1:8000/api/get_puzzle_access/", {
       method: "POST",
       headers: {
@@ -74,6 +85,9 @@ const Content = ({ selectedTask, puzzleData }) => {
       .catch((error) => {
         console.error("Error:", error);
       });
+    }else{
+      setPopupMessage("Puzzle is Locked.Please Upgrade your plan to access it");
+    }
   };
 
   const handleVideoStart = () => {
@@ -222,6 +236,7 @@ const Content = ({ selectedTask, puzzleData }) => {
       return buttonRows;
     };
     
+    
     const handleButtonClick = (puzzle, buttonIndex) => {
       if (puzzle.puzzle_locked) {
         setPopupMessage("This puzzle is locked!.please upgrade your plan.");
@@ -258,6 +273,12 @@ const Content = ({ selectedTask, puzzleData }) => {
       </div>
     );
   };
+  const handleClosePopup = () => {
+    setPopupMessage(null);
+    navigate('/home');
+    
+  };
+  
 
    const renderPopup = () => {
     if (popupMessage) {
@@ -266,7 +287,7 @@ const Content = ({ selectedTask, puzzleData }) => {
           <div className="popup">
             <div className="popup-content">
               <p className="pop-text">{popupMessage}</p>
-              <button className="close-button" onClick={() => setPopupMessage(null)}>Subscribe</button>
+              <button className="close-button" onClick={handleClosePopup}>Subscribe</button>
             </div>
           </div>
         </div>
