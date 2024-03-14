@@ -293,6 +293,7 @@ def get_puzzle_access(request):
             puzzle_data = {
                 'video': relative_path,
                 'question': puzzle.puzzle_question,
+                'puzzle_locked':puzzle_locked,
                 'status': 'User has access to the puzzle',
             }
             if not puzzle_locked:
@@ -450,4 +451,29 @@ def buy_puzzle(request):
         except UserProfile.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User profile not found'})
         except Exception as e:
-            return JsonResponse({'status': False, 'message': str(e)})  # Handle other exceptions
+            return JsonResponse({'status': False, 'message': str(e)}) 
+
+
+@csrf_exempt
+def check_puzzle_locked(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            puzzle_id = data.get('puzzle_id')
+            task_id = data.get('task_id')
+            print(user_email,puzzle_id,task_id)
+
+            user = CustomUser.objects.get(email=user_email)
+            puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
+            puzzle_locked = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
+
+            return JsonResponse({'status': True, 'puzzle_locked':puzzle_locked.puzzle_locked})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+        except DataTable.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Puzzle not found'})
+        except UserDataTableStatus.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'Puzzle status not found'})
+        except Exception as e:
+            return JsonResponse({'status': False, 'message': str(e)}) 

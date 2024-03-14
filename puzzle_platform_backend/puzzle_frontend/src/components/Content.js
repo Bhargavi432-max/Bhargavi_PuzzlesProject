@@ -5,6 +5,7 @@ import Wallet from "./SubscriptionPage";
 import { useNavigate } from "react-router-dom";
 
 const Content = ({ selectedTask, puzzleData }) => {
+  const [Isvideocomplete, setIsvideocomplete] = useState(false);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
   const navigate = useNavigate();
   const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
@@ -33,7 +34,44 @@ const Content = ({ selectedTask, puzzleData }) => {
 
   useEffect(() => {
     if (nextPuzzleId) {
-      handleDifficultyBoxButtonClick(nextPuzzleId);
+      fetch("http://127.0.0.1:8000/api/check_puzzle_locked/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        task_id: selectedTask ? selectedTask.id : null,
+        puzzle_id: nextPuzzleId,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Request failed");
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.status) {
+          if(!data.puzzle_locked){
+            console.log('safdas')
+            const clickedPuzzle = puzzleData.find((puzzle) => puzzle.puzzle_id === nextPuzzleId);
+            clickedPuzzle.puzzle_locked = false;
+            console.log(clickedPuzzle)
+            console.log(nextPuzzleId);
+            handleDifficultyBoxButtonClick(nextPuzzleId);
+          }else{
+            setPopupMessage("Puzzle is Locked.Please Upgrade your plan to access it");
+          }
+        } else {
+          setPopupMessage(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     }
   }, [nextPuzzleId]);
 
@@ -44,6 +82,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.puzzle_id === puzzleId);
     console.log("click:",clickedPuzzle.puzzle_locked);
+    
     if(!clickedPuzzle.puzzle_locked){
     setSelectedPuzzle(clickedPuzzle);
     
@@ -91,6 +130,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
 
   const handleVideoStart = () => {
+    setIsvideocomplete(false);
     const currentDateTime = new Date();
     const startTime = currentDateTime.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ' ' + currentDateTime.toLocaleTimeString('en-US', {hour12: false}); 
     setStartTime(startTime);
@@ -115,6 +155,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     const taskStatus = "incomplete";
     const actionItem = "puzzle completed";
     setCompletedPuzzles([...completedPuzzles, selectedPuzzle.puzzle_id]);
+    setIsvideocomplete(true);
 
     // Fetch request to mark puzzle status
     fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
@@ -142,6 +183,9 @@ const Content = ({ selectedTask, puzzleData }) => {
       console.log(data); // Log the response from the backend
       setNextPuzzleId(data.next_puzzle_id)
       if (nextPuzzleId) {
+
+
+
         handleDifficultyBoxButtonClick(nextPuzzleId);
       }
     })
