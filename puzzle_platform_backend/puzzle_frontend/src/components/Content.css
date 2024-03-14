@@ -394,6 +394,37 @@
 .close-button:hover {
   background-color: darkblue;
 }
+
+
+.buy-button{
+  background-color: #3F4DB6;
+  color: white;
+  height: fit-content;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.close-button:hover {
+  background-color: darkblue;
+}
+.close-popup {
+  position: absolute;
+  margin-top: 5px;
+  margin-left: 16%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+}
+
+.close-popup:hover {
+  color: #666;
+  background-color: transparent;
+}
+
+
 .pop-text{
   color: #000000;
   font-family: "Poppins-semiBold",Helvetica;
