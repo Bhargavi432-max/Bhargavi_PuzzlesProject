@@ -59,6 +59,7 @@ const Content = ({selectedTask, puzzleData }) => {
 
   useEffect(() => {
     if (nextPuzzleId) {
+      const clickedPuzzle = puzzleData.find((puzzle) => puzzle.puzzle_id === nextPuzzleId);
       fetch("http://127.0.0.1:8000/api/check_puzzle_locked/", {
       method: "POST",
       headers: {
@@ -82,12 +83,13 @@ const Content = ({selectedTask, puzzleData }) => {
         if (data.status) {
           if(!data.puzzle_locked){
             console.log('safdas')
-            const clickedPuzzle = puzzleData.find((puzzle) => puzzle.puzzle_id === nextPuzzleId);
+            
             clickedPuzzle.puzzle_locked = false;
             console.log(clickedPuzzle)
             console.log(nextPuzzleId);
             handleDifficultyBoxButtonClick(nextPuzzleId);
           }else{
+            setSelectedPuzzle(clickedPuzzle);
             setPopupMessage("Puzzle is Locked.Please Upgrade your plan to access it");
           }
         } else {
