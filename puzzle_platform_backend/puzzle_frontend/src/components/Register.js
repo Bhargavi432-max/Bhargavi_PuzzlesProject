@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterImage from "./Images/Sign up-cuate.svg";
 import "./Register.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Register = () => {
     const [email, setEmail] = useState('');
@@ -36,8 +38,12 @@ export const Register = () => {
             if (response.ok && data.status === true) {
                 console.log(data.message);
                 console.log(data.status)
-                setError(data.message);
-                navigate('/otp', { state: { email } });
+                // setError(data.message);
+                toast.success('Please verify the otp sent to email ',email);
+                setTimeout(() => {
+                    navigate('/otp', { state: { email } });
+                  }, 2000);
+                
 
                 // Send post request for logging login/register OTP
                 await fetch('http://127.0.0.1:8000/api/log_login_register_otp/', {
@@ -50,7 +56,6 @@ export const Register = () => {
                         action_item: 'registered'
                     })
                 });
-                console.log("register sucse");
             } else {
                 setError(data.message);
             }
@@ -93,6 +98,7 @@ export const Register = () => {
                     </form>
                 </div>
             </div>
+            <ToastContainer /> 
         </div>
     )
 }
