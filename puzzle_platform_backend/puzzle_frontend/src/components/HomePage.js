@@ -6,7 +6,7 @@ import Wallet from "./SubscriptionPage";
 import DashboardPage from "./DashbordPage";
 import Content from './Content';
 function HomePage( ) {
-  const [activePage, setActivePage] = useState('Dashboard');
+  const [activePage, setActivePage] = useState('Wallet');
 
   const handlePageChange = (pageName) => {
     setActivePage(pageName);
