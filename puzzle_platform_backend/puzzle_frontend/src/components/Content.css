@@ -81,9 +81,10 @@
 
 
 .button-row {
-  display: flex;
-  justify-content: center;
-  gap: 17px; 
+    display: flex;
+    justify-content: flex-start;
+    gap: 17px;
+    flex-wrap: wrap;
 }
 .puzzle-details {
   display: flex;
@@ -180,6 +181,7 @@
   border-radius: 5px;
   border: 1px solid #ccc;
   overflow-y: auto;
+  position: relative; /* Set position to relative */
 }
 .question-Box::-webkit-scrollbar {
   width: 3px;
@@ -203,13 +205,37 @@
 .question-Box::-webkit-scrollbar-thumb:hover {
   background: #5c5c5c; /* Thumb color on hover */
 }
-.question-Box h2 {
-  text-align: center;
-  letter-spacing: 0.24px;
-  line-height:17.4px;
+.question-heading {
+  width: 100px;
+  height: 23px;
+  border-radius: 5px;
+  margin-top: 0;
+  font-size: small;
+  color: white;
+  background: linear-gradient(90deg, #1c2b99 0.08%, #EEE 103.47%);
+  position: absolute; /* Set position to absolute */
+  top: 10px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+}
+.question-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.question-question {
+  margin-top: 15px;
   font-size: 12px;
-  font-weight: 500;
-  font-family: 'Inter-Medium', Helvetica;
+  font-family: "Acme-Regular", Helvetica;
+  justify-content: flex-start; /* Align content to start from the left */
+  text-align: left; /* Ensure text starts from the left */
+  margin-left: 10px;
+}
+.question-code {
+  margin-top: 10px;
+  font-size: 12px;
+  font-family: "Acme-Regular", Helvetica;
+  justify-content: flex-start; /* Align content to start from the left */
+  text-align: left; /* Ensure text starts from the left */
 }
 /* Easy Level */
 .difficulty-buttons .difficulty-button.current-easy {
