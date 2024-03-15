@@ -349,9 +349,16 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
       if(data.status){
         console.log(selectedPuzzle);
         selectedPuzzle.puzzle_locked=false;
+        setPopupMessage(null);
+        setSelectedPuzzle(null)
+        setSelectedPuzzleDetails(null);
+        console.log("enter")
+        navigate('/puzzlepage');
         handleDifficultyBoxButtonClick(selectedPuzzle.puzzle_id);
+
       }else{
         setPopupMessage(data.message);
+        
       }
     })
     .catch((error) => {
