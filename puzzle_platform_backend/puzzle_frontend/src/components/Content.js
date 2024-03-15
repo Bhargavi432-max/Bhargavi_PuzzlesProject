@@ -141,6 +141,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
       console.log(email,selectedPuzzle.puzzle_id,selectedTask.id);
       if(!isupdateskip){
         setisupdateskip(true);  
+        selectedPuzzle.puzzle_status='incompleted';
       await fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
       method: "POST",
       headers: {
