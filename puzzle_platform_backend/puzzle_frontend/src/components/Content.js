@@ -18,6 +18,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
   const [nextPuzzleId, setNextPuzzleId] = useState(null);
   const [completedPuzzles, setCompletedPuzzles] = useState([]);
   const [isupdateskip,setisupdateskip]=useState(false);
+  const [incompletedPuzzles, setIncompletedPuzzles] = useState([]);
   
 
   useEffect(() => {
@@ -35,8 +36,21 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
     }
   }, [selectedPuzzle]);
   useEffect(() => {
+    const storedCompletedPuzzles = JSON.parse(localStorage.getItem("completedPuzzles")) || [];
+    setCompletedPuzzles(storedCompletedPuzzles);
+
+    const storedIncompletedPuzzles = JSON.parse(localStorage.getItem("incompletedPuzzles")) || [];
+    setIncompletedPuzzles(storedIncompletedPuzzles);
+  }, []);
+
+  // Update local storage when completedPuzzles or incompletedPuzzles change
+  useEffect(() => {
     localStorage.setItem("completedPuzzles", JSON.stringify(completedPuzzles));
   }, [completedPuzzles]);
+
+  useEffect(() => {
+    localStorage.setItem("incompletedPuzzles", JSON.stringify(incompletedPuzzles));
+  }, [incompletedPuzzles]);
 
 
   useEffect(() => {
@@ -137,6 +151,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
 
   const handleVideoSkip = async () => {
     if (!isWatchedCompletely && isVideoStarted) {
+      setIncompletedPuzzles([...incompletedPuzzles, selectedPuzzle.puzzle_id]);
       console.log('Video skipped.');
       console.log(email,selectedPuzzle.puzzle_id,selectedTask.id);
       if(!isupdateskip){
@@ -299,7 +314,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
           } else {
             if (puzzle.user_status === "completed" || completedPuzzles.includes(puzzle.puzzle_id)) {
               buttonClass += ` completed-${puzzle.level && puzzle.level.toLowerCase()}`;
-            } else if (puzzle.user_status === "incompleted") {
+            } else if (puzzle.user_status === "incompleted" || incompletedPuzzles.includes(puzzle.puzzle_id)) {
               buttonClass += ` incompleted`;
             } else if (puzzle.user_status === "notstarted") {
               buttonClass += ` notstarted`;
