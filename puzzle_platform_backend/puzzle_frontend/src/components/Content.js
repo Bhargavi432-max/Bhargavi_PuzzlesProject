@@ -32,7 +32,7 @@ const Content = ({selectedTask, puzzleData }) => {
     return storedIncompletedPuzzles ? JSON.parse(storedIncompletedPuzzles) : [];
   });
   
-
+ 
   useEffect(() => {
     // Load puzzle details from local storage if available
     const storedPuzzleDetails = JSON.parse(localStorage.getItem("selectedPuzzleDetails"));
@@ -106,10 +106,10 @@ const Content = ({selectedTask, puzzleData }) => {
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
     const clickedPuzzle = puzzleData.find((puzzle) => puzzle.puzzle_id === puzzleId);
-    console.log("click:",clickedPuzzle.puzzle_locked);
+    console.log("click:",clickedPuzzle);
     if(!clickedPuzzle.puzzle_locked){
     setSelectedPuzzle(clickedPuzzle);
-    localStorage.setItem("selectedPuzzle");
+    localStorage.setItem("selectedPuzzle", JSON.stringify(clickedPuzzle));
     
     fetch("http://127.0.0.1:8000/api/get_puzzle_access/", {
       method: "POST",
@@ -477,13 +477,19 @@ const Content = ({selectedTask, puzzleData }) => {
     if (!question || !videoPath) {
       return <p>No data found for this puzzle</p>;
     }
+    const puzzle_id_get_it = () => {
+    const puzzle_data_need = JSON.parse(localStorage.getItem("selectedPuzzle"));
+    console.log(puzzle_data_need);
+    return puzzle_data_need.puzzle_id;
+}
+
 
     return (
       <div className="puzzle-details">
         <div className="question-container">
           <div className="header-container">
             <h2 className="question-Name">
-              Puzzle No: {}
+              Puzzle No: {puzzle_id_get_it()}
             </h2>
             <b><h2 className="question-code">
               Interview No: {selectedPuzzleDetails.data.interview_code}
