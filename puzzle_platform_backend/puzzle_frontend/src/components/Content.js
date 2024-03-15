@@ -5,6 +5,8 @@ import HomePage from "./HomePage";
 import { useNavigate } from "react-router-dom";
 
 const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
+  const [isWatchedCompletely, setIsWatchedCompletely] = useState(false);
+  const [isVideoStarted, setIsVideoStarted] = useState(false);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
   const navigate = useNavigate();
   const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
@@ -15,6 +17,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
   const [startTime, setStartTime] = useState(null);
   const [nextPuzzleId, setNextPuzzleId] = useState(null);
   const [completedPuzzles, setCompletedPuzzles] = useState([]);
+  const [isupdateskip,setisupdateskip]=useState(false);
   
 
   useEffect(() => {
@@ -132,10 +135,49 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
     }
   };
 
+  const handleVideoSkip = async () => {
+    if (!isWatchedCompletely && isVideoStarted) {
+      console.log('Video skipped.');
+      console.log(email,selectedPuzzle.puzzle_id,selectedTask.id);
+      if(!isupdateskip){
+        setisupdateskip(true);  
+      await fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        task_id: selectedTask.id,
+        puzzle_id: selectedPuzzle.puzzle_id,
+        puzzle_status: 'incompleted',
+        time_spent:'00:00:00.000'
+      }),
+    })
+    .then((response) => {
+      if (response.ok) {
+
+        return response.json();
+      } else {
+        throw new Error("Request failed");
+      }
+    })
+    .then((data) => {
+      console.log(data); // Log the response from the backend
+      
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  }
+    }
+  };
+
   const handleVideoStart = () => {
     const currentDateTime = new Date();
     const startTime = currentDateTime.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ' ' + currentDateTime.toLocaleTimeString('en-US', {hour12: false}); 
     setStartTime(startTime);
+    setIsVideoStarted(true);
   };
   const formatDuration = (totalSeconds) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -149,8 +191,12 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
   const handleVideoEnd = () => {
     const currentDateTime = new Date();
     const endTime = currentDateTime.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ' ' + currentDateTime.toLocaleTimeString('en-US', {hour12: false});
+    // console.log(endTime)
     const elapsedTimeInSeconds = (currentDateTime.getTime() - new Date(startTime).getTime()) / 1000;
     const duration = formatDuration(elapsedTimeInSeconds);
+    if (isVideoStarted) {
+      setIsWatchedCompletely(true);
+    }
     const puzzleStatus = "completed";
     const questionViewStatus = true;
     const videoViewStatus = true;
@@ -423,6 +469,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
             onContextMenu={(e) => e.preventDefault()}
             onMouseDown={handleVideoMouseDown}
             onEnded={handleVideoEnd}
+            onTimeUpdate={handleVideoSkip}
             onPlay={handleVideoStart}
             className="react-player"
           >
