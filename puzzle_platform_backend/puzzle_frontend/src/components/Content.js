@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
+const Content = ({selectedTask, puzzleData }) => {
   const [isWatchedCompletely, setIsWatchedCompletely] = useState(false);
   const [isVideoStarted, setIsVideoStarted] = useState(false);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
@@ -109,6 +109,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
     console.log("click:",clickedPuzzle.puzzle_locked);
     if(!clickedPuzzle.puzzle_locked){
     setSelectedPuzzle(clickedPuzzle);
+    localStorage.setItem("selectedPuzzle");
     
     fetch("http://127.0.0.1:8000/api/get_puzzle_access/", {
       method: "POST",
@@ -482,7 +483,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
         <div className="question-container">
           <div className="header-container">
             <h2 className="question-Name">
-              Puzzle No: {selectedPuzzle.puzzle_id}
+              Puzzle No: {}
             </h2>
             <b><h2 className="question-code">
               Interview No: {selectedPuzzleDetails.data.interview_code}

@@ -54,7 +54,7 @@ const DashboardPage = () => {
 
   return (
     <div className="dashboard-page">
-      {/* User details box */}
+      User details box
       {/* Assume userDetails and taskStats are fetched from somewhere */}
       <div className="user-details-box">
         <h2>User Details</h2>
