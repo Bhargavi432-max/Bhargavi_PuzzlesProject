@@ -47,22 +47,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
       setVideoPath(null); // Clear video path when new puzzle is selected
     }
   }, [selectedPuzzle]);
-  // useEffect(() => {
-  //   const storedCompletedPuzzles = JSON.parse(localStorage.getItem("completedPuzzles")) || [];
-  //   setCompletedPuzzles(storedCompletedPuzzles);
-
-  //   const storedIncompletedPuzzles = JSON.parse(localStorage.getItem("incompletedPuzzles")) || [];
-  //   setIncompletedPuzzles(storedIncompletedPuzzles);
-  // }, []);
-
-  // // Update local storage when completedPuzzles or incompletedPuzzles change
-  // useEffect(() => {
-  //   localStorage.setItem("completedPuzzles", JSON.stringify(completedPuzzles));
-  // }, [completedPuzzles]);
-
-  // useEffect(() => {
-  //   localStorage.setItem("incompletedPuzzles", JSON.stringify(incompletedPuzzles));
-  // }, [incompletedPuzzles]);
+  
   useEffect(() => {
     // Update localStorage whenever completedPuzzles state changes
     localStorage.setItem("completedPuzzles", JSON.stringify(completedPuzzles));
@@ -499,9 +484,10 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
             <h2 className="question-Name">
               Puzzle No: {selectedPuzzle.puzzle_id}
             </h2>
-            <h2 className="question-code">
+            <b><h2 className="question-code">
               Interview No: {selectedPuzzleDetails.data.interview_code}
             </h2>
+            </b>
           </div>
           <div className="question-Box">
             <div className="question-heading">{selectedPuzzleDetails.data.puzzle_name}</div>
