@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './FeedbackPage.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function FeedbackPage() {
   const [rating, setRating] = useState(0);
@@ -36,9 +38,13 @@ function FeedbackPage() {
         // Reset form fields
         setRating(0);
         setComment('');
+        // Display success toast message
+        toast.success('Feedback submitted successfully.');
       })
       .catch(error => {
         console.error('Error submitting feedback:', error);
+        // Display error toast message
+        toast.error('Error submitting feedback. Please try again.');
       });
   };
 
@@ -70,6 +76,7 @@ function FeedbackPage() {
           </div>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 }

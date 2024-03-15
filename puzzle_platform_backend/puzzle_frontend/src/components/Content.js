@@ -3,6 +3,9 @@ import LockIcon from "./Images/Vector.png";
 import "./Content.css";
 import HomePage from "./HomePage";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
   const [isWatchedCompletely, setIsWatchedCompletely] = useState(false);
@@ -232,6 +235,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
     if (isVideoStarted) {
       setIsWatchedCompletely(true);
     }
+    toast.success('Puzzle completed successfully!', { autoClose: 2000 });
     const puzzleStatus = "completed";
     const questionViewStatus = true;
     const videoViewStatus = true;
@@ -528,6 +532,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
       {renderPopup()}
       {selectedTask && renderDifficultyBoxButtons()}
       {renderPuzzleDetails()}
+      <ToastContainer />
     </div>
   );
 };

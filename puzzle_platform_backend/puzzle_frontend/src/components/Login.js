@@ -41,8 +41,11 @@ export const Login = () => {
         if (data.login_status) {
           setEmailContext(email);
           localStorage.setItem("email", email);
-          navigate("/puzzlepage");
-          toast.success("Login Successful");
+          toast.success("Login Successful", { autoClose: 1000 });
+
+          setTimeout(() => {
+            navigate("/puzzlepage");
+          }, 1000);
         } else {
           // setError(data.message);
           toast.error(data.message);

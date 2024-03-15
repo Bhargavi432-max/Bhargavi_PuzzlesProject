@@ -38,3 +38,26 @@
     transform: rotate(360deg);
   }
 }
+
+
+.Toastify__toast-container {
+  /* bottom: 100px; */
+  margin-top: 50px;
+  width: fit-content; /* Adjust the distance from the bottom */
+}
+
+.Toastify__toast {
+  font-size: 14px; /* Example font size */
+  border-radius: 10px; /* Example border radius */
+
+}
+
+.Toastify__toast--success {
+  background-color: #28a745; /* Success background color */
+  color: #fff; /* Success text color */
+}
+
+.Toastify__toast--error {
+  background-color: #dc3545; /* Error background color */
+  color: #fff; /* Error text color */
+}
