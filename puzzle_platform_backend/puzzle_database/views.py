@@ -87,6 +87,14 @@ def get_user_statistics(request):
                     percentage_completed_by_level[level] = round(percentage_completed, 2)
                 else:
                     percentage_completed_by_level[level] = 0
+            completed_in_tasks={}
+            for each_task_id in range(1,26):
+                completed_puzzles_count = UserDataTableStatus.objects.filter(
+                        user=user,
+                        data_table__task_id=each_task_id,
+                        puzzle_status='completed'
+                    ).count()
+                completed_in_tasks[each_task_id] = completed_puzzles_count
 
             user_statistics = {
                 'completed_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='completed').count(),
@@ -97,9 +105,12 @@ def get_user_statistics(request):
                     'minutes': total_minutes,
                     'seconds': total_seconds
                 },
-                'percentage_completed_by_level': percentage_completed_by_level
+                'percentage_completed_by_level': percentage_completed_by_level,
+                'completed_each_task':completed_in_tasks
             }
             print(user_statistics)
+
+
             return JsonResponse({'status': True, 'user_statistics': user_statistics})
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
