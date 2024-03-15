@@ -235,7 +235,7 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
     if (isVideoStarted) {
       setIsWatchedCompletely(true);
     }
-    toast.success('Puzzle completed successfully!', { autoClose: 2000 });
+    toast.success('Puzzle completed successfully !', { autoClose: 2000 });
     const puzzleStatus = "completed";
     const questionViewStatus = true;
     const videoViewStatus = true;
