@@ -167,6 +167,16 @@
   font-size: 11px;
   font-weight: bold;
 }
+.header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.question-Name,
+.question-code {
+  font-size: small; /* Adjust font size as needed */
+  font-weight: bold;
+}
 
 .question-Box {
   flex: 1;

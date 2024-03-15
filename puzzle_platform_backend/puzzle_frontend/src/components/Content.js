@@ -495,9 +495,14 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
     return (
       <div className="puzzle-details">
         <div className="question-container">
-          <h2 className="question-Name">
-            Puzzle No: {}
-          </h2>
+          <div className="header-container">
+            <h2 className="question-Name">
+              Puzzle No: {selectedPuzzle.puzzle_id}
+            </h2>
+            <h2 className="question-code">
+              Interview No: {selectedPuzzleDetails.data.interview_code}
+            </h2>
+          </div>
           <div className="question-Box">
             <div className="question-heading">{selectedPuzzleDetails.data.puzzle_name}</div>
             <div className="question-content">
