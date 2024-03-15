@@ -16,9 +16,18 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
   const email = localStorage.getItem("email");
   const [startTime, setStartTime] = useState(null);
   const [nextPuzzleId, setNextPuzzleId] = useState(null);
-  const [completedPuzzles, setCompletedPuzzles] = useState([]);
+  // const [completedPuzzles, setCompletedPuzzles] = useState([]);
   const [isupdateskip,setisupdateskip]=useState(false);
-  const [incompletedPuzzles, setIncompletedPuzzles] = useState([]);
+  const [completedPuzzles, setCompletedPuzzles] = useState(() => {
+    // Initialize completedPuzzles state with data from localStorage, if available
+    const storedCompletedPuzzles = localStorage.getItem("completedPuzzles");
+    return storedCompletedPuzzles ? JSON.parse(storedCompletedPuzzles) : [];
+  });
+  const [incompletedPuzzles, setIncompletedPuzzles] = useState(() => {
+    // Initialize completedPuzzles state with data from localStorage, if available
+    const storedIncompletedPuzzles = localStorage.getItem("incompletedPuzzles");
+    return storedIncompletedPuzzles ? JSON.parse(storedIncompletedPuzzles) : [];
+  });
   
 
   useEffect(() => {
@@ -35,23 +44,30 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
       setVideoPath(null); // Clear video path when new puzzle is selected
     }
   }, [selectedPuzzle]);
-  useEffect(() => {
-    const storedCompletedPuzzles = JSON.parse(localStorage.getItem("completedPuzzles")) || [];
-    setCompletedPuzzles(storedCompletedPuzzles);
+  // useEffect(() => {
+  //   const storedCompletedPuzzles = JSON.parse(localStorage.getItem("completedPuzzles")) || [];
+  //   setCompletedPuzzles(storedCompletedPuzzles);
 
-    const storedIncompletedPuzzles = JSON.parse(localStorage.getItem("incompletedPuzzles")) || [];
-    setIncompletedPuzzles(storedIncompletedPuzzles);
-  }, []);
+  //   const storedIncompletedPuzzles = JSON.parse(localStorage.getItem("incompletedPuzzles")) || [];
+  //   setIncompletedPuzzles(storedIncompletedPuzzles);
+  // }, []);
 
-  // Update local storage when completedPuzzles or incompletedPuzzles change
+  // // Update local storage when completedPuzzles or incompletedPuzzles change
+  // useEffect(() => {
+  //   localStorage.setItem("completedPuzzles", JSON.stringify(completedPuzzles));
+  // }, [completedPuzzles]);
+
+  // useEffect(() => {
+  //   localStorage.setItem("incompletedPuzzles", JSON.stringify(incompletedPuzzles));
+  // }, [incompletedPuzzles]);
   useEffect(() => {
+    // Update localStorage whenever completedPuzzles state changes
     localStorage.setItem("completedPuzzles", JSON.stringify(completedPuzzles));
   }, [completedPuzzles]);
-
   useEffect(() => {
+    // Update localStorage whenever completedPuzzles state changes
     localStorage.setItem("incompletedPuzzles", JSON.stringify(incompletedPuzzles));
   }, [incompletedPuzzles]);
-
 
   useEffect(() => {
     if (nextPuzzleId) {
@@ -151,7 +167,10 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
 
   const handleVideoSkip = async () => {
     if (!isWatchedCompletely && isVideoStarted) {
-      setIncompletedPuzzles([...incompletedPuzzles, selectedPuzzle.puzzle_id]);
+      const updatedIncompletedPuzzles = [...incompletedPuzzles, selectedPuzzle.puzzle_id];
+      setIncompletedPuzzles(updatedIncompletedPuzzles);
+      // Save updated completedPuzzles to localStorage
+      localStorage.setItem("incompletedPuzzles", JSON.stringify(updatedIncompletedPuzzles));
       console.log('Video skipped.');
       console.log(email,selectedPuzzle.puzzle_id,selectedTask.id);
       if(!isupdateskip){
@@ -218,8 +237,10 @@ const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
     const videoViewStatus = true;
     const taskStatus = "incomplete";
     const actionItem = "puzzle completed";
-    setCompletedPuzzles([...completedPuzzles, selectedPuzzle.puzzle_id]);
-    localStorage.setItem("completedPuzzles", completedPuzzles);
+    const updatedCompletedPuzzles = [...completedPuzzles, selectedPuzzle.puzzle_id];
+    setCompletedPuzzles(updatedCompletedPuzzles);
+    // Save updated completedPuzzles to localStorage
+    localStorage.setItem("completedPuzzles", JSON.stringify(updatedCompletedPuzzles));
     // Fetch request to mark puzzle status
     fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
       method: "POST",
