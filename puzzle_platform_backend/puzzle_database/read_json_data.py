@@ -20,6 +20,7 @@ def read_json_file_view(request):
                 puzzle_name = puzzle['name']
                 puzzle_video = video_extra_path+puzzle['video_name']
                 puzzle_question = puzzle['question']
+                puzzle_code = puzzle['code']
                 puzzle_interview_code = puzzle['interview_code']
                 level = puzzle['Level']
                 puzzle_price = puzzle['puzzle_price']
@@ -32,6 +33,7 @@ def read_json_file_view(request):
                     puzzle_name=puzzle_name,
                     puzzle_video=puzzle_video,
                     puzzle_question=puzzle_question,
+                    puzzle_code=puzzle_code,
                     puzzle_interview_code=puzzle_interview_code,
                     level=level,
                     puzzle_price=puzzle_price

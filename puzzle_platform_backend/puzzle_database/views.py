@@ -293,6 +293,7 @@ def get_puzzle_access(request):
             puzzle_data = {
                 'video': relative_path,
                 'question': puzzle.puzzle_question,
+                'code':puzzle.puzzle_code,
                 'puzzle_locked':puzzle_locked,
                 'status': 'User has access to the puzzle',
             }

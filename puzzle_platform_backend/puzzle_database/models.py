@@ -38,6 +38,7 @@ class DataTable(models.Model):
     puzzle_name = models.CharField(max_length=255)
     puzzle_video = models.FileField(upload_to='puzzle_frontend/src/videos')
     puzzle_question = models.TextField()
+    puzzle_code = models.TextField()
     puzzle_interview_code = models.CharField(max_length=100)
     level = models.CharField(max_length=50)
     puzzle_price = models.DecimalField(max_digits=10, decimal_places=2)
