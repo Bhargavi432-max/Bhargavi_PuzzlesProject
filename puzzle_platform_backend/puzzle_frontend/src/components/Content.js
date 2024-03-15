@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import LockIcon from "./Images/Vector.png";
 import "./Content.css";
-import Wallet from "./SubscriptionPage";
+import HomePage from "./HomePage";
 import { useNavigate } from "react-router-dom";
 
-const Content = ({ selectedTask, puzzleData }) => {
+const Content = ({ handlePageChange, selectedTask, puzzleData }) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
   const navigate = useNavigate();
   const [selectedPuzzleDetails, setSelectedPuzzleDetails] = useState(null);
@@ -14,7 +14,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   const email = localStorage.getItem("email");
   const [startTime, setStartTime] = useState(null);
   const [nextPuzzleId, setNextPuzzleId] = useState(null);
-  const [completedPuzzles, setCompletedPuzzles] = useState([]); // State to hold the id of the next puzzle
+  const [completedPuzzles, setCompletedPuzzles] = useState([]);
   
 
   useEffect(() => {
@@ -31,6 +31,10 @@ const Content = ({ selectedTask, puzzleData }) => {
       setVideoPath(null); // Clear video path when new puzzle is selected
     }
   }, [selectedPuzzle]);
+  useEffect(() => {
+    localStorage.setItem("completedPuzzles", JSON.stringify(completedPuzzles));
+  }, [completedPuzzles]);
+
 
   useEffect(() => {
     if (nextPuzzleId) {
@@ -318,7 +322,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   const handleClosePopup = () => {
     setPopupMessage(null);
     navigate('/home');
-    
+  
   };
   const handlebuypuzzle = () => {
     console.log("details",email,selectedPuzzle.puzzle_id,selectedTask.id);

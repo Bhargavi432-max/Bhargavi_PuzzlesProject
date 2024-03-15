@@ -4,8 +4,8 @@ import "./HomePage.css";
 import Helpandsupport from "./HelpAndSupportPage";
 import Wallet from "./SubscriptionPage";
 import DashboardPage from "./DashbordPage";
-
-function HomePage() {
+import Content from './Content';
+function HomePage( ) {
   const [activePage, setActivePage] = useState('Dashboard');
 
   const handlePageChange = (pageName) => {
@@ -39,7 +39,7 @@ function HomePage() {
       case 'Help and Support':
         return <Helpandsupport />;
       case 'Wallet':
-        return <Wallet/>;
+        return  <Wallet />;;
       case 'Settings':
         return <div>Settings Page</div>;
       case 'Sign Out':
@@ -54,6 +54,7 @@ function HomePage() {
       <Navbar />
       <div className="content-home">
         <PageContent />
+        {/* <Content handlePageChange={handlePageChange} /> */}
       </div>
     </div>
   );

@@ -33,8 +33,11 @@ const Navbar = () => {
     setActiveTab(tabName);
   };
 
-  const renderNavItem = (tabName, icon, text) => {
+  const renderNavItem = (tabName, inactiveIcon, activeIcon, text) => {
     const isActive = activeTab === tabName;
+    const icon = isActive ? activeIcon : inactiveIcon;
+    const buttonText = isActive ? text : null;
+
     return (
       <li key={tabName}>
         <RouterLink // Use RouterLink instead of Link
@@ -43,7 +46,7 @@ const Navbar = () => {
         >
           <div className={`nav-item ${isActive ? 'active' : ''}`}>
             <img src={icon} alt={text} />
-            {isActive && <span>{text}</span>}
+            {buttonText}
           </div>
         </RouterLink>
       </li>
@@ -56,10 +59,10 @@ const Navbar = () => {
         <img src={Logo} alt="Logo" />
       </div>
       <ul>
-        {renderNavItem("home", HomeWIcon, "Home")}
-        {renderNavItem("puzzlepage", PuzzleW, "Puzzle")}
-        {renderNavItem("about",InfoW , "About")}
-        {renderNavItem("profile", ProfileWIcon, "Profile")}
+        {renderNavItem("home", HomeWIcon, HomeBIcon, "Home")}
+        {renderNavItem("puzzlepage", PuzzleW, PuzzleB, "Puzzle")}
+        {renderNavItem("about", InfoW, InfoB, "About")}
+        {renderNavItem("profile", ProfileWIcon, ProfileBIcon, "Profile")}
         <li>
           <div className="logout" onClick={handleLogout}>
             <img src={LogoutIcon} alt="Logout" />
