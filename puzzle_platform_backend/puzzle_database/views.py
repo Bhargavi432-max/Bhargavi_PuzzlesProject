@@ -295,6 +295,7 @@ def get_puzzle_access(request):
                 'question': puzzle.puzzle_question,
                 'code':puzzle.puzzle_code,
                 'puzzle_locked':puzzle_locked,
+                'interview_code':puzzle.puzzle_interview_code,
                 'status': 'User has access to the puzzle',
             }
             if not puzzle_locked:
