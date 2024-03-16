@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom"; // Rename the imported Link as RouterLink
-import "./Navbar.css"; 
+import "./Navbar.css";
 import Logo from "./Images/LogoSVS.png"; // Import your logo image here
-import HomeBIcon from "./Images/HomeB.png"; 
-import HomeWIcon from "./Images/HomeW.png";// Import your custom home icon image here
+import HomeBIcon from "./Images/HomeB.png";
+import HomeWIcon from "./Images/HomeW.png"; // Import your custom home icon image here
 import ProfileBIcon from "./Images/ProfileB.png";
-import ProfileWIcon from "./Images/ProfileW.png"; 
+import ProfileWIcon from "./Images/ProfileW.png";
 import InfoB from "./Images/InfoB.png";
-import InfoW from "./Images/InfoW.png"; 
+import InfoW from "./Images/InfoW.png";
 import PuzzleB from "./Images/PuzzleB.png";
 import PuzzleW from "./Images/PuzzleW.png";
-import LogoutIcon from"./Images/Logout.svg";
+import LogoutIcon from "./Images/Logout.svg";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -26,8 +26,9 @@ const Navbar = () => {
     localStorage.removeItem("rzp_device_id");
     localStorage.removeItem("rzp_checkout_anon_id");
     localStorage.removeItem("completedPuzzles");
-    navigate('/login');
-  }
+    setActiveTab("");
+    navigate("/");
+  };
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -44,7 +45,7 @@ const Navbar = () => {
           to={`/${tabName}`}
           onClick={() => handleTabClick(tabName)}
         >
-          <div className={`nav-item ${isActive ? 'active' : ''}`}>
+          <div className={`nav-item ${isActive ? "active" : ""}`}>
             <img src={icon} alt={text} />
             {buttonText}
           </div>
