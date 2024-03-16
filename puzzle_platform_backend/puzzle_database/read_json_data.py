@@ -8,7 +8,7 @@ from .models import UserDataTableStatus,Admin,CustomUser,DataTable
 def read_json_file_view(request):
     try:
         file_path = os.path.join(settings.BASE_DIR, 'puzzle_data.json')
-        admin_email = "adminemail@gmail.com"
+        admin_email = "admin@gmail.com"
         admin = Admin.objects.get(admin_email=admin_email)
         video_extra_path ='puzzle_frontend/src/videos/'
         with open(file_path, 'r') as file:

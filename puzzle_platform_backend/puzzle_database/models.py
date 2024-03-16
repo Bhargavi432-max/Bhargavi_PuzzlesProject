@@ -52,7 +52,7 @@ class UserProfile(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     user_in_task = models.IntegerField(blank=True,null=True)
-    user_in_puzzle = models.IntegerField(blank=True,null=True)
+    user_in_puzzle = models.CharField(max_length=50,blank=True,null=True)
     question_status = models.BooleanField(default=False)
     video_status = models.BooleanField(default=False)
     wallet = models.DecimalField(max_digits=10, decimal_places=2)

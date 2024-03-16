@@ -32,7 +32,9 @@ def get_all_full_ids(request):
                 }
                 for obj, status in zip(data_table_objects, status_objects)
             ]
-            return JsonResponse({'status': True, 'full_ids': data_list})
+            current_puzzle_id = UserProfile.objects.get(user=user).user_in_puzzle
+            print(current_puzzle_id)
+            return JsonResponse({'status': True, 'full_ids': data_list,'current_puzzle_id':current_puzzle_id})
         except Exception as e:
             return JsonResponse({'status': False, 'message': 'Error fetching full_ids'})
 
@@ -300,6 +302,11 @@ def get_puzzle_access(request):
             puzzle_locked = UserDataTableStatus.objects.get(user=user , data_table=puzzle).puzzle_locked
             start_index = puzzle.puzzle_video.path.find('videos')
             relative_path = puzzle.puzzle_video.path[start_index:].replace('\\', '/')
+
+            current_state = UserProfile.objects.get(user=user)
+            current_state.user_in_task = task_id
+            current_state.user_in_puzzle=puzzle_id
+            current_state.save()
 
             puzzle_data = {
                 'video': relative_path,
