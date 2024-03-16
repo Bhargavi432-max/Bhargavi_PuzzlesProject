@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 // import Chart from 'chart.js/auto';
 import SubscriptionPage from './SubscriptionPage'; 
 import LineChart from "./Linechart";
+import TaskLevelPage from "./OverallPie";
+import SinglePercentagePieChart from './UserStatistics';
 const DashboardPage = () => {
   // const [chartInstance, setChartInstance] = useState(null);
   // const chartRef = useRef(null);
@@ -54,7 +56,10 @@ const DashboardPage = () => {
 
   return (
     <div className="dashboard-page">
+      <TaskLevelPage/>
+      <SinglePercentagePieChart percentage={75}  />
       <LineChart />
+      
     </div>
   );
 };

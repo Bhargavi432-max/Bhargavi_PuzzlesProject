@@ -1,0 +1,18 @@
+.SinglePercentagePieChart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px; /* Adjust the height as needed */
+  }
+  
+  .InnerPieChart {
+    position: relative;
+  }
+  
+  .SubInnerPieChart {
+    position: absolute;
+    top: 50%; /* Position at the center vertically */
+    left: 50%; /* Position at the center horizontally */
+    transform: translate(-50%, -50%); /* Center the element */
+  }
+  

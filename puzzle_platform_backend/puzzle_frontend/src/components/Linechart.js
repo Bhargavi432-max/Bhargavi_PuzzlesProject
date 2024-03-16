@@ -1,85 +1,72 @@
-import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
+import "./Linechart.css"; // Import the CSS file
+
 import {
-    Chart as ChartJS,
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement
 } from 'chart.js';
 
 ChartJS.register(
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement
 );
 
 function LineChart() {
-    const [taskData, setTaskData] = useState(null); // State to store task data
-    const email = localStorage.getItem("email");
+  const data = {
+    labels: ['Task 1', 'Task 2', 'Task 3', 'Task3', 'Task4', 'Task5', 'Task6'],
+    datasets: [{
+      label: 'no of questions completed',
+      data: [5, 2, 5, 10, 4, 8, 5],
+      backgroundColor: 'aqua',
+      borderColor: '#336699', // Change line color to a specific shade
+      pointBackgroundColor: '#FFF', // Set point fill color to white
+      pointBorderColor: '#336699', // Set point stroke color to #336699
+      pointBorderWidth: 1, // Set point stroke width
+      pointRadius: 7, // Set point radius
+      pointHoverRadius: 10, // Set point hover radius
+      fill: true,
+      tension: 0
+    }]
+  };
 
-    useEffect(() => {
-        // Fetch data from backend
-        fetch('http://127.0.0.1:8000/api/get_user_statistics/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            // You can add any payload here if needed
-            body: JSON.stringify({ 
-                email:email,
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Once data is received, update state
-            console.log(data);
-            setTaskData(data);
-        })
-        .catch(error => {
-            console.error('Error fetching task data:', error);
-        });
-    }, []); // Empty dependency array ensures the effect runs only once on component mount
-
-    // Define chart data and options based on received task data
-    const data = {
-        labels: taskData ? Object.keys(taskData) : [],
-        datasets: [{
-            label: 'Completed Questions',
-            data: taskData ? Object.values(taskData) : [],
-            backgroundColor: 'aqua',
-            borderColor: 'black',
-            pointBorderColor: 'aqua',
-            fill: true,
-            tension: 0.4
-        }]
-    };
-
-    const options = {
-        plugins: {
-            legend: true
-        },
-        scales: {
-            y: {}
+  const options = {
+    plugins: {
+      legend: true,
+      tooltip: {
+        enabled: true,
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false // Hide vertical grid lines
         }
-    };
+      },
+      y: {
+        grid: {
+          display: true // Display horizontal grid lines
+        }
+      }
+    }
+  };
 
-    return (
-        <div className="Main">
-            <h1>LINE Chart</h1>
-            <div style={{ width: '600px', height: '800px' }}>
-                {taskData ? (
-                    <Line
-                        data={data}
-                        options={options}
-                    />
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </div>
-        </div>
-    );
+  return (
+    <div className="Main">
+      <div className="statis">Statistics</div>
+      <div className="heading-chart">Task Improvement</div>
+      <div className="graph" style={{ width: '350px', height: '200px' }}>
+        <Line
+          data={data}
+          options={options}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default LineChart;
