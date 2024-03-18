@@ -5,6 +5,20 @@ import "./UserStatistics.css"; // Import the CSS file
 
 ChartJS.register(ArcElement);
 
+// Color indication dot component with label
+function ColorDot({ color, label }) {
+  return (
+    <div className="color-dot" style={{ backgroundColor: color }}>
+      {label}
+    </div>
+  );
+}
+
+// Percentage indication component
+function PercentageIndicator({ percentage }) {
+  return <div className="percentage-indicator">{percentage}%</div>;
+}
+
 function SubInnerPieChart({ percentage }) {
   // Calculate the remaining percentage (to fill the pie chart)
   const remainingPercentage = 100 - percentage;
@@ -33,7 +47,7 @@ function SubInnerPieChart({ percentage }) {
 
   return (
     <div className="SubInnerPieChart">
-      <div style={{ width: "120px", height: "120px" }}>
+      <div style={{ width: "120px", height: "120px", position: "relative" }}>
         <Pie data={data} options={options} />
       </div>
     </div>
@@ -68,7 +82,7 @@ function InnerPieChart({ percentage }) {
 
   return (
     <div className="InnerPieChart">
-      <div style={{ width: "160px", height: "160px" }}>
+      <div style={{ width: "160px", height: "160px", position: "relative" }}>
         <Pie data={data} options={options} />
         <SubInnerPieChart percentage={30} /> {/* Include another sub inner pie chart */}
       </div>
@@ -79,6 +93,7 @@ function InnerPieChart({ percentage }) {
 function SinglePercentagePieChart({ percentage }) {
   // Calculate the remaining percentage (to fill the pie chart)
   const remainingPercentage = 100 - percentage;
+  const skippedPercentage = 100 - (percentage + 30); // Assuming the skipped percentage is the remainder
 
   // Define data for the outer pie chart
   const data = {
@@ -104,10 +119,32 @@ function SinglePercentagePieChart({ percentage }) {
 
   return (
     <div className="SinglePercentagePieChart">
-      <h2>Progress</h2>
-      <div style={{ width: "200px", height: "200px" }}>
+      <div className="subtext-pie">Statistics</div>
+      <h2 className="main-pie">Overall</h2>
+      <div className="line"></div>
+      <div className="pie-chart-container">
+      <div style={{ width: "200px", height: "200px", position: "relative" }}>
         <Pie data={data} options={options} />
-        <InnerPieChart percentage={50} />
+        <InnerPieChart percentage={percentage} />
+      </div>
+      {/* Color indication dots and percentage indicators */}
+      <div className="indicator-container">
+        <div className="indicator">
+          <ColorDot color="#39BC90" />
+          <PercentageIndicator percentage={percentage} />
+          <span className="label">Completed</span>
+        </div>
+        <div className="indicator">
+          <ColorDot color="#3366CC" />
+          <PercentageIndicator percentage={remainingPercentage} />
+          <span className="label">Incomplete</span>
+        </div>
+        <div className="indicator">
+          <ColorDot color="#FFC83A" />
+          <PercentageIndicator percentage={skippedPercentage} />
+          <span className="label">Skipped</span>
+        </div>
+      </div>
       </div>
     </div>
   );
