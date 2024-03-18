@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import "./SubscriptionPage.css";
-
-import useRazorpay from "react-razorpay";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// import useRazorpay from "react-razorpay";
 import ProfileImage from "./Images/Profile photo.svg";
 
 function Wallet() {
-  const [Razorpay] = useRazorpay();
+  // const [Razorpay] = useRazorpay();
   const [userData, setUserData] = useState(null);
   const [plans, setPlans] = useState([]);
   const [error, setError] = useState(null);
@@ -77,6 +78,12 @@ function Wallet() {
   };
 
   const handleSubscribe = async (planType, planPrice) => {
+    if (planPrice === '0.00') {
+      console.log("Plan price is 0, displaying toast message");
+      toast.info("This plan is a free plan!"); // Display toast message for free plan
+      return;
+  }
+
     // Logic to handle subscription redirection
     console.log(`Subscribing to ${planType} plan`);
     // Redirect to payment page
@@ -148,6 +155,7 @@ function Wallet() {
 
   return (
     <div className="wallet-container">
+     <ToastContainer />
     <div className="wallet-header">
       <div className="user-info">
         <div className="prof-image">
