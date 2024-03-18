@@ -5,17 +5,17 @@ import TaskLevelPage from './OverallPie';
 import './DashbordPage.css'; // Import CSS for styling
 
 const DashboardPage = () => {
-  return (
+ return (
     <div className="dashboard-page">
-      
-      <div className="pie-container">
-        <div className="box-structure">
-          <SinglePercentagePieChart percentage={75} />
-          
+      <div className="content">
+        <div className="pie-container">
+          <div className="box-structure">
+            <SinglePercentagePieChart percentage={75} />
+          </div>
         </div>
+        <LineChart className="linechart" />
+        <TaskLevelPage className="tasklevel" />
       </div>
-      <LineChart className="linechat"/>
-      <TaskLevelPage className="tasklevel"/>
     </div>
   );
 };

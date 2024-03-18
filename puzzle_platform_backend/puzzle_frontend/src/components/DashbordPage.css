@@ -1,24 +1,45 @@
 .dashboard-page {
   position: relative;
-  /* height: 100vh; Ensure the page takes up the full height of the viewport */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.pie-container {
+.content {
+  flex: 1;
   display: flex;
-  justify-content: center;
-  bottom: 0;
-  left:0;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin-bottom: 40px; /* Adjust as needed */
 }
+
+/* .pie-container {
+  /* margin-bottom: 20px; Adjust as needed */
+
 
 .box-structure {
-  width: 300px; /* Adjust the width as needed */
-  height: 300px; /* Adjust the height as needed */
-  border: 1px solid #ccc; /* Add border for visualization */
-  border-radius: 10px; /* Add border radius for rounded corners */
-  padding: 20px; /* Add padding for spacing */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+  width: 300px;
+  height: 300px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.linechat{
-  margin-right: 0px;
+.linechart,
+.tasklevel {
+  width: calc(50% - 10px); /* Adjust as needed */
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .linechart,
+  .tasklevel {
+    width: 100%;
+  }
 }
