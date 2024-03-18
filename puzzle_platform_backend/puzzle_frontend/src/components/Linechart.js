@@ -59,7 +59,7 @@ function LineChart() {
     <div className="Main">
       <div className="statis">Statistics</div>
       <div className="heading-chart">Task Improvement</div>
-      <div className="graph" style={{ width: '350px', height: '200px' }}>
+      <div className="graph" style={{ width: '450px', height: '400px' }}>
         <Line
           data={data}
           options={options}

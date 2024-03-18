@@ -7,13 +7,15 @@ import './DashbordPage.css'; // Import CSS for styling
 const DashboardPage = () => {
   return (
     <div className="dashboard-page">
-      {/* <TaskLevelPage />
-      <LineChart /> */}
+      
       <div className="pie-container">
         <div className="box-structure">
           <SinglePercentagePieChart percentage={75} />
+          
         </div>
       </div>
+      <LineChart className="linechat"/>
+      <TaskLevelPage className="tasklevel"/>
     </div>
   );
 };

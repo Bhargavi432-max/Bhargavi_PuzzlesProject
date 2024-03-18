@@ -119,10 +119,12 @@ function SinglePercentagePieChart({ percentage }) {
 
   return (
     <div className="SinglePercentagePieChart">
-      <div className="subtext-pie">Statistics</div>
+      
+      <div className="pie-chart-container"><div className="names">
+        <div className="subtext-pie">Statistics</div>
       <h2 className="main-pie">Overall</h2>
-      <div className="line"></div>
-      <div className="pie-chart-container">
+      </div>
+
       <div style={{ width: "200px", height: "200px", position: "relative" }}>
         <Pie data={data} options={options} />
         <InnerPieChart percentage={percentage} />

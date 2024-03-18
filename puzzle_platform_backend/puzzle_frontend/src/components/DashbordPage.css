@@ -1,20 +1,24 @@
 .dashboard-page {
-    position: relative;
-    /* height: 100vh; Ensure the page takes up the full height of the viewport */
-  }
-  
-  .pie-container {
-    display: flex;
-    justify-content: center;
-    
-  }
-  
-  .box-structure {
-    width: 300px; /* Adjust the width as needed */
-    height: 300px; /* Adjust the height as needed */
-    border: 1px solid #ccc; /* Add border for visualization */
-    border-radius: 10px; /* Add border radius for rounded corners */
-    padding: 20px; /* Add padding for spacing */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
-  }
-  
+  position: relative;
+  /* height: 100vh; Ensure the page takes up the full height of the viewport */
+}
+
+.pie-container {
+  display: flex;
+  justify-content: center;
+  bottom: 0;
+  left:0;
+}
+
+.box-structure {
+  width: 300px; /* Adjust the width as needed */
+  height: 300px; /* Adjust the height as needed */
+  border: 1px solid #ccc; /* Add border for visualization */
+  border-radius: 10px; /* Add border radius for rounded corners */
+  padding: 20px; /* Add padding for spacing */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+}
+
+.linechat{
+  margin-right: 0px;
+}
