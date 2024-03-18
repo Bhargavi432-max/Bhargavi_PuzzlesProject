@@ -5,6 +5,7 @@ import Helpandsupport from "./HelpAndSupportPage";
 import Wallet from "./SubscriptionPage";
 import DashboardPage from "./DashbordPage";
 import Content from './Content';
+import TaskLevel from './TaskLevel';
 function HomePage( ) {
   const [activePage, setActivePage] = useState('Wallet');
 
@@ -33,7 +34,7 @@ function HomePage( ) {
       case 'Dashboard':
         return <DashboardPage />;
       case 'Task Level':
-        return <div>Task Level Page</div>;
+        return <TaskLevel/>;
       case 'My Task':
         return <div>My Task Page</div>;
       case 'Help and Support':
