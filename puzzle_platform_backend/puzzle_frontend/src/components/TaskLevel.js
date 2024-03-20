@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2'; // Import Doughnut from react-chartjs-2
 import './TaskLevel.css'; // Import CSS file
+import TimeTakenChart from './AreaChart';
 
 function TaskLevel() {
   const [responseData, setResponseData] = useState(null);
@@ -116,6 +117,7 @@ function TaskLevel() {
                 }}
               />
             </div>
+            <div style={{width:'500px', height:'5'}}><TimeTakenChart/></div>
           </div>
         ) : (
           <p>Loading...</p>
