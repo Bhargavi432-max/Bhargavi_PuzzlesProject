@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2"; // Import Doughnut from react-chartjs-2
 import "./TaskLevel.css"; // Import CSS file
 import TimeTakenChart from "./AreaChart";
-import LineChart from "./Linechart";
+import LineChart from "./TaskDataChart";
 
 function TaskLevel() {
   const [responseData, setResponseData] = useState(null);
@@ -78,10 +78,10 @@ function TaskLevel() {
           <div>
             <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="chart-details">
-                <div className="chart-name-details">
+                {/* <div className="chart-name-details">
                   <h5 className="stat-text">Statistics</h5>
                   <h3 className="det-text">View Count</h3>
-                </div>
+                </div> */}
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div className="chart-levels">{renderLegend()}</div>
 
@@ -107,8 +107,8 @@ function TaskLevel() {
                     }}
                     options={{
                       cutoutPercentage: 50,
-                      cutout: 70, // Inner radius
-                      radius: 100, // Outer radius
+                      cutout: 70,
+                      radius: 100,
                       plugins: {
                         legend: {
                           display: false, // Hide legend
@@ -130,13 +130,12 @@ function TaskLevel() {
                   />
                 </div>
               </div>
-              <div style={{ width: "500px", height: "5" }}>
+              <div className="timetakenchart">
                 <TimeTakenChart />
               </div>
             </div>
-            <div>
-              {" "}
-              <LineChart className="linechart" />
+            <div className="linechart">
+              <LineChart />
             </div>
           </div>
         ) : (
