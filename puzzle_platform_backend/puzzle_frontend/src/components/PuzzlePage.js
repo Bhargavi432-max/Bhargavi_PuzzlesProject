@@ -8,6 +8,7 @@ import "./PuzzlePage.css";
 const PuzzlePage = () => {
   const tasks = [];
   for (let index = 0; index < 25; index++) {
+
     tasks.push({ id: index + 1 });
   }
 

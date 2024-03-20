@@ -1,66 +1,31 @@
 .task-level-container {
   width: calc(100vw - 200px);
-  /* 100% of the viewport width */
   height: 100vh;
-  /* 100% of the viewport height */
-  overflow: hidden;
-  /* Hide overflow for the entire container */
+  /* overflow: hidden; */
 }
-
-.task-level-container .data-container {
-  position: absolute;
-  /* Position the data container absolutely */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: auto;
-  /* Allow data container to scroll */
-  padding: 20px;
-  /* Add padding as needed */
-}
-
-.task-level-container .data-container::-webkit-scrollbar {
-  display: none;
-  /* Hide the scrollbar */
-}
-
 .task-level-container .button-container {
   white-space: nowrap;
   overflow-x: auto;
-  /* Allow button container to scroll horizontally */
   padding: 20px;
-  /* Add padding as needed */
 }
 
 .task-level-container .button-container::-webkit-scrollbar {
   display: none;
-  /* Hide the scrollbar */
 }
 
 .task-level-container .button-container button {
-  display: inline-block;
   margin-right: 10px;
-  /* Adjust as needed */
 }
 
-.chart-container {
+.chart-details {
   width: 250px;
-  /* Adjust as needed */
   height: 250px;
-  /* Adjust as needed */
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;  */
-
 }
 
 
 .legend {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-top: 10px;
-  /* Adjust margin as needed */
   justify-content: center;
 }
 
@@ -68,19 +33,13 @@
   display: flex;
   align-items: center;
   margin-bottom: 5px;
-  /* Adjust margin as needed */
 }
 
 .legend-color {
   width: 20px;
   height: 20px;
   margin-right: 5px;
-  /* Adjust margin as needed */
-}
 
-.chart-details {
-  display: flex;
-  padding: 20px;
 }
 
 .chart-levels {
@@ -98,7 +57,9 @@
   font-weight: 800;
   width:100px
 }
-.chart-details{
+.top-chats {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 20px; 
 }

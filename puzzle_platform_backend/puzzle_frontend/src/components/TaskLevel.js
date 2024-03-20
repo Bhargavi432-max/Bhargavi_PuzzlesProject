@@ -1,34 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Doughnut } from 'react-chartjs-2'; // Import Doughnut from react-chartjs-2
-import './TaskLevel.css'; // Import CSS file
-import TimeTakenChart from './AreaChart';
+import React, { useState, useEffect } from "react";
+import { Doughnut } from "react-chartjs-2"; // Import Doughnut from react-chartjs-2
+import "./TaskLevel.css"; // Import CSS file
+import TimeTakenChart from "./AreaChart";
+import LineChart from "./Linechart";
 
 function TaskLevel() {
   const [responseData, setResponseData] = useState(null);
-  const email = localStorage.getItem('email');
+  const email = localStorage.getItem("email");
 
   const handleClick = async (taskId) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/get_user_taskwise_statistics/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          task_id: taskId
-        })
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/get_user_taskwise_statistics/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            task_id: taskId,
+          }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         console.log(data);
         setResponseData(data);
       } else {
-        console.error('Error fetching data:', response.statusText);
+        console.error("Error fetching data:", response.statusText);
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -36,15 +40,24 @@ function TaskLevel() {
     return (
       <div className="legend">
         <div className="legend-item">
-          <span className="legend-color" style={{ backgroundColor: '#AAF77B' }}></span>
+          <span
+            className="legend-color"
+            style={{ backgroundColor: "#AAF77B" }}
+          ></span>
           <span>Easy</span>
         </div>
         <div className="legend-item">
-          <span className="legend-color" style={{ backgroundColor: '#962DFF' }}></span>
+          <span
+            className="legend-color"
+            style={{ backgroundColor: "#962DFF" }}
+          ></span>
           <span>Medium</span>
         </div>
         <div className="legend-item">
-          <span className="legend-color" style={{ backgroundColor: '#FFB5B0' }}></span>
+          <span
+            className="legend-color"
+            style={{ backgroundColor: "#FFB5B0" }}
+          ></span>
           <span>Hard</span>
         </div>
       </div>
@@ -55,69 +68,76 @@ function TaskLevel() {
     <div className="task-level-container">
       <div className="button-container">
         {[...Array(25)].map((_, index) => (
-          <button key={index} onClick={() => handleClick(index + 1)}>Task {index + 1}</button>
+          <button key={index} onClick={() => handleClick(index + 1)}>
+            Task {index + 1}
+          </button>
         ))}
       </div>
       <div className="chart-container">
         {responseData ? (
-          <div className='chart-details'>
-            <div className='chart-name-details'>
-              <h5 className='stat-text'>Statistics</h5>
-              <h3 className='det-text'>View Count</h3>
-            </div>
-            <div style={{display:'flex',flexDirection:"row"}}>
-              <div className='chart-levels'>{renderLegend()}</div>
+          <div>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div className="chart-details">
+                <div className="chart-name-details">
+                  <h5 className="stat-text">Statistics</h5>
+                  <h3 className="det-text">View Count</h3>
+                </div>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div className="chart-levels">{renderLegend()}</div>
 
-              <Doughnut
-                data={{
-                  labels: ['Easy', 'Medium', 'Hard'],
-                  datasets: [
-                    {
-                      data: [
-                        responseData.user_statistics.completed_puzzles_by_level.EASY,
-                        responseData.user_statistics.completed_puzzles_by_level.MEDIUM,
-                        responseData.user_statistics.completed_puzzles_by_level.HARD
+                  <Doughnut
+                    data={{
+                      labels: ["Easy", "Medium", "Hard"],
+                      datasets: [
+                        {
+                          data: [
+                            responseData.user_statistics
+                              .completed_puzzles_by_level.EASY,
+                            responseData.user_statistics
+                              .completed_puzzles_by_level.MEDIUM,
+                            responseData.user_statistics
+                              .completed_puzzles_by_level.HARD,
+                          ],
+                          backgroundColor: ["#AAF77B", "#962DFF", "#FFB5B0"],
+                          borderColor: ["#AAF77B", "#962DFF", "#FFB5B0"],
+                          borderWidth: 1,
+                          borderRadius: 6,
+                        },
                       ],
-                      backgroundColor: [
-                        '#AAF77B',
-                        '#962DFF',
-                        '#FFB5B0'
-                      ],
-                      borderColor: [
-                        '#AAF77B',
-                        '#962DFF',
-                        '#FFB5B0'
-                      ],
-                      borderWidth: 1,
-                      borderRadius: 6,
-                    }
-                  ]
-                }}
-                options={{
-                  cutoutPercentage: 50,
-                  cutout: 70, // Inner radius
-                  radius: 100, // Outer radius
-                  plugins: {
-                    legend: {
-                      display: false // Hide legend
-                    },
-                    tooltip: {
-                      callbacks: {
-                        label: function (context) {
-                          var label = context.label || '';
-                          if (label) {
-                            label += ': ';
-                          }
-                          label += context.raw;
-                          return label;
-                        }
-                      }
-                    }
-                  }
-                }}
-              />
+                    }}
+                    options={{
+                      cutoutPercentage: 50,
+                      cutout: 70, // Inner radius
+                      radius: 100, // Outer radius
+                      plugins: {
+                        legend: {
+                          display: false, // Hide legend
+                        },
+                        tooltip: {
+                          callbacks: {
+                            label: function (context) {
+                              var label = context.label || "";
+                              if (label) {
+                                label += ": ";
+                              }
+                              label += context.raw;
+                              return label;
+                            },
+                          },
+                        },
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+              <div style={{ width: "500px", height: "5" }}>
+                <TimeTakenChart />
+              </div>
             </div>
-            <div style={{width:'500px', height:'5'}}><TimeTakenChart/></div>
+            <div>
+              {" "}
+              <LineChart className="linechart" />
+            </div>
           </div>
         ) : (
           <p>Loading...</p>

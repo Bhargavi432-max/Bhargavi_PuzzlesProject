@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginImage from "./Images/Login-cuate.svg";
 import "./Login.css";
 import { useEmail } from "./EmailContext";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +13,10 @@ export const Login = () => {
   const [error, setError] = useState(null);
   const { setEmail: setEmailContext } = useEmail();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
