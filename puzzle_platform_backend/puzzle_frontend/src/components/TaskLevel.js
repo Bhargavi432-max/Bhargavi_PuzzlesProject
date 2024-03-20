@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Doughnut } from 'react-chartjs-2'; // Import Doughnut from react-chartjs-2
+import './TaskLevel.css'; // Import CSS file
 
 function TaskLevel() {
   const [responseData, setResponseData] = useState(null);
@@ -19,6 +21,7 @@ function TaskLevel() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setResponseData(data);
       } else {
         console.error('Error fetching data:', response.statusText);
@@ -28,37 +31,95 @@ function TaskLevel() {
     }
   };
 
-  useEffect(() => {
-    console.log("Response Data:", responseData);
-  }, [responseData]);
+  const renderLegend = () => {
+    return (
+      <div className="legend">
+        <div className="legend-item">
+          <span className="legend-color" style={{ backgroundColor: '#AAF77B' }}></span>
+          <span>Easy</span>
+        </div>
+        <div className="legend-item">
+          <span className="legend-color" style={{ backgroundColor: '#962DFF' }}></span>
+          <span>Medium</span>
+        </div>
+        <div className="legend-item">
+          <span className="legend-color" style={{ backgroundColor: '#FFB5B0' }}></span>
+          <span>Hard</span>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div>
-      <div>TaskLevel</div>
-      <div style={{ display: 'flex' }}>
+    <div className="task-level-container">
+      <div className="button-container">
         {[...Array(25)].map((_, index) => (
           <button key={index} onClick={() => handleClick(index + 1)}>Task {index + 1}</button>
         ))}
       </div>
-      <div>
-        <h2>Response Data</h2>
+      <div className="chart-container">
         {responseData ? (
-        <>
-          <p>Completed Puzzles: {responseData.user_statistics.completed_puzzles}</p>
-          <p>Incompleted Puzzles: {responseData.user_statistics.incompleted_puzzles}</p>
-          <p>Not Started Puzzles: {responseData.user_statistics.notstarted_puzzles}</p>
-          <h3>Completed Puzzles by Level:</h3>
-          <p>Easy: {responseData.user_statistics.completed_puzzles_by_level.EASY}</p>
-          <p>Medium: {responseData.user_statistics.completed_puzzles_by_level.MEDIUM}</p>
-          <p>Hard: {responseData.user_statistics.completed_puzzles_by_level.HARD}</p>
-          <h3>Time Taken:</h3>
-          <p>Easy: {responseData.user_statistics.time_taken.EASY.hours} hours, {responseData.user_statistics.time_taken.EASY.minutes} minutes, {responseData.user_statistics.time_taken.EASY.seconds} seconds</p>
-          <p>Medium: {responseData.user_statistics.time_taken.MEDIUM.hours} hours, {responseData.user_statistics.time_taken.MEDIUM.minutes} minutes, {responseData.user_statistics.time_taken.MEDIUM.seconds} seconds</p>
-          <p>Hard: {responseData.user_statistics.time_taken.HARD.hours} hours, {responseData.user_statistics.time_taken.HARD.minutes} minutes, {responseData.user_statistics.time_taken.HARD.seconds} seconds</p>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+          <div className='chart-details'>
+            <div className='chart-name-details'>
+              <h5 className='stat-text'>Statistics</h5>
+              <h3 className='det-text'>View Count</h3>
+            </div>
+            <div style={{display:'flex',flexDirection:"row"}}>
+              <div className='chart-levels'>{renderLegend()}</div>
+
+              <Doughnut
+                data={{
+                  labels: ['Easy', 'Medium', 'Hard'],
+                  datasets: [
+                    {
+                      data: [
+                        responseData.user_statistics.completed_puzzles_by_level.EASY,
+                        responseData.user_statistics.completed_puzzles_by_level.MEDIUM,
+                        responseData.user_statistics.completed_puzzles_by_level.HARD
+                      ],
+                      backgroundColor: [
+                        '#AAF77B',
+                        '#962DFF',
+                        '#FFB5B0'
+                      ],
+                      borderColor: [
+                        '#AAF77B',
+                        '#962DFF',
+                        '#FFB5B0'
+                      ],
+                      borderWidth: 1,
+                      borderRadius: 6,
+                    }
+                  ]
+                }}
+                options={{
+                  cutoutPercentage: 50,
+                  cutout: 70, // Inner radius
+                  radius: 100, // Outer radius
+                  plugins: {
+                    legend: {
+                      display: false // Hide legend
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          var label = context.label || '';
+                          if (label) {
+                            label += ': ';
+                          }
+                          label += context.raw;
+                          return label;
+                        }
+                      }
+                    }
+                  }
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
     </div>
   );
