@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2"; // Import Doughnut from react-chartjs-2
 import "./TaskLevel.css"; // Import CSS file
 import TimeTakenChart from "./AreaChart";
-import LineChart from "./TaskDataChart";
+import TaskDataChart from "./TaskDataChart";
 
 function TaskLevel() {
   const [responseData, setResponseData] = useState(null);
@@ -135,7 +135,7 @@ function TaskLevel() {
               </div>
             </div>
             <div className="linechart">
-              <LineChart />
+              <TaskDataChart  />
             </div>
           </div>
         ) : (

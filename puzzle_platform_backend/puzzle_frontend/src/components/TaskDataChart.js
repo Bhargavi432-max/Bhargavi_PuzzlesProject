@@ -11,7 +11,7 @@ import {
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-function LineChart() {
+function TaskDataChart() {
   const data = {
     labels: [
       "Task 1",
@@ -56,26 +56,49 @@ function LineChart() {
         grid: {
           display: false, // Hide vertical grid lines
         },
+        ticks: {
+          font: {
+            size: 14 // Increase x-axis label font size
+          }
+        },
+        maxBarThickness: 20 // Set maximum thickness of each bar (label spacing)
       },
       y: {
         grid: {
           display: true, // Display horizontal grid lines
         },
+        ticks: {
+          font: {
+            size: 14 // Increase y-axis label font size
+          }
+        }
       },
     },
+    layout: {
+      padding: {
+        left: 20, // Adjust left padding to fit labels properly
+        right: 40, // Adjust right padding to fit labels properly
+        top: 0,
+        bottom: 0
+      }
+    }
   };
 
   return (
-    <div className="Main">
-      <div className="statis">Statistics</div>
-      <div className="heading-chart">Task Improvement</div>
-      <div className="graph">
-        <div className="chart-container">
-          <Line data={data} options={options} style={{width:"800px",height:"225px"}} />
+    <div className="Main-box">
+      <div className="box-statis">Statistics</div>
+      <div className="chart-heading">Task Improvement</div>
+      <div className="graph-box">
+        <div className="chart-container" style={{ width: "950px", height: "225px" }}>
+          <Line 
+            data={data} 
+            options={options} 
+            style={{ width: "100%", height: "100%" }} // Set width and height here
+          />
         </div>
       </div>
     </div>
   );
 }
 
-export default LineChart;
+export default TaskDataChart;
