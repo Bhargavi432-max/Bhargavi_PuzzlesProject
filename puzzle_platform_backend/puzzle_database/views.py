@@ -1,8 +1,11 @@
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,UserProfile,PlanTable
+from .models import CustomUser,Subscription,DataTable,UserDataTableStatus,UserProfile,PlanTable,LogReport
 import json
 from datetime import timedelta
+from django.db.models import Count
+from datetime import date
+from django.db.models.functions import TruncDate
 
 # View for retrieving all data of puzzle of the task along with their statuses.
 @csrf_exempt
@@ -152,6 +155,17 @@ def get_user_taskwise_statistics(request):
             hard_minutes = (hard_time_taken.seconds % 3600) // 60
             hard_seconds = hard_time_taken.seconds % 60
 
+             # Fetching completed puzzles count by date
+            completed_puzzles_by_date = LogReport.objects.filter(user=user, task_id=task_id, puzzle_status='completed').annotate(completed_date=TruncDate('timestamp')).values('completed_date').annotate(count=Count('id'))
+            print(completed_puzzles_by_date)
+            print("----------------------------------------")
+            # Converting queryset to a dictionary
+            completed_puzzles_by_date_dict = {
+                entry['completed_date'].strftime('%d-%B-%Y'): entry['count'] 
+                for entry in completed_puzzles_by_date
+            }
+            print(completed_puzzles_by_date_dict)
+
             completed_puzzles_by_level = {
                 'EASY': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed', data_table__level='EASY').count(),
                 'MEDIUM': UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed', data_table__level='MEDIUM').count(),
@@ -166,7 +180,8 @@ def get_user_taskwise_statistics(request):
                     'EASY': {'hours': easy_hours, 'minutes': easy_minutes, 'seconds': easy_seconds},
                     'MEDIUM': {'hours': medium_hours, 'minutes': medium_minutes, 'seconds': medium_seconds},
                     'HARD': {'hours': hard_hours, 'minutes': hard_minutes, 'seconds': hard_seconds}
-                }
+                },
+                "completed_puzzles_by_date":completed_puzzles_by_date_dict,
             }
             print(task_statistics)
             return JsonResponse({'status': True, 'user_statistics': task_statistics })
