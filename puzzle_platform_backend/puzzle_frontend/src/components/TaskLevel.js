@@ -131,11 +131,11 @@ function TaskLevel() {
                 </div>
               </div>
               <div className="timetakenchart">
-                <TimeTakenChart />
+              <TimeTakenChart timeTakenData={responseData.user_statistics.time_taken} />
               </div>
             </div>
             <div className="linechart">
-              <TaskDataChart  />
+            <TaskDataChart completedPuzzlesByDate={responseData.user_statistics.completed_puzzles_by_date} />
             </div>
           </div>
         ) : (

@@ -1,36 +1,22 @@
 import { Line } from "react-chartjs-2";
 import "./TaskDataChart.css"; // Import the CSS file
 
-import {
-  Chart as ChartJS,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-} from "chart.js";
+function TaskDataChart({ completedPuzzlesByDate }) {
+  // Check if completedPuzzlesByDate is undefined or null
+  if (!completedPuzzlesByDate) {
+    return <p>No data available</p>; // Return a message or render a placeholder if data is not available
+  }
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+  // Convert completedPuzzlesByDate object into arrays for labels and data
+  const labels = Object.keys(completedPuzzlesByDate);
+  const dataValues = Object.values(completedPuzzlesByDate);
 
-function TaskDataChart() {
   const data = {
-    labels: [
-      "Task 1",
-      "Task 2",
-      "Task 3",
-      "Task3",
-      "Task4",
-      "Task5",
-      "Task6",
-      "Task 7",
-      "Task8",
-      "Task9",
-      "Task10",
-      "Task11",
-    ],
+    labels: labels,
     datasets: [
       {
-        label: "no of questions completed",
-        data: [5, 2, 5, 10, 4, 8, 5, 10, 4, 8, 5],
+        label: "Number of questions completed",
+        data: dataValues,
         backgroundColor: "transparent",
         borderColor: "#336699", // Change line color to a specific shade
         pointBackgroundColor: "#FFF", // Set point fill color to white
@@ -45,43 +31,7 @@ function TaskDataChart() {
   };
 
   const options = {
-    plugins: {
-      legend: true,
-      tooltip: {
-        enabled: true,
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false, // Hide vertical grid lines
-        },
-        ticks: {
-          font: {
-            size: 14 // Increase x-axis label font size
-          }
-        },
-        maxBarThickness: 20 // Set maximum thickness of each bar (label spacing)
-      },
-      y: {
-        grid: {
-          display: true, // Display horizontal grid lines
-        },
-        ticks: {
-          font: {
-            size: 14 // Increase y-axis label font size
-          }
-        }
-      },
-    },
-    layout: {
-      padding: {
-        left: 20, // Adjust left padding to fit labels properly
-        right: 40, // Adjust right padding to fit labels properly
-        top: 0,
-        bottom: 0
-      }
-    }
+    // Your options configuration here...
   };
 
   return (
@@ -93,7 +43,7 @@ function TaskDataChart() {
           <Line 
             data={data} 
             options={options} 
-            style={{ width: "100%", height: "100%" }} // Set width and height here
+            style={{ width: "100%", height: "95%" }} // Set width and height here
           />
         </div>
       </div>

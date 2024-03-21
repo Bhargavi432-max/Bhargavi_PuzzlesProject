@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 
-const TimeTakenChart = () => {
+const TimeTakenChart = ({ timeTakenData }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -9,12 +9,10 @@ const TimeTakenChart = () => {
     if (chartRef && chartRef.current) {
       const ctx = chartRef.current.getContext('2d');
       
-      // Example data
-      const data = {
-        easy: [0, 10, 30, 60], // Time taken for easy mode
-        medium: [0, 25, 40, 80], // Time taken for medium mode
-        hard: [0, 50, 70, 120] // Time taken for hard mode
-      };
+      // Extracting time taken data
+      const easyData = Object.values(timeTakenData.EASY);
+      const mediumData = Object.values(timeTakenData.MEDIUM);
+      const hardData = Object.values(timeTakenData.HARD);
 
       if (chartInstance.current) {
         chartInstance.current.destroy();
@@ -27,30 +25,30 @@ const TimeTakenChart = () => {
           datasets: [
             {
               label: 'Easy',
-              data: data.easy,
+              data: easyData,
               backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              borderColor: 'rgba(54, 162, 235, 0.7)', // Changed border color
+              borderColor: 'rgba(54, 162, 235, 0.7)', 
               borderWidth: 0,
               fill: 'origin',
-              pointRadius: 0, // Hide points
+              pointRadius: 0, 
             },
             {
               label: 'Medium',
-              data: data.medium,
+              data: mediumData,
               backgroundColor: 'rgba(255, 206, 86, 0.2)',
-              borderColor: 'rgba(255, 206, 86, 0.7)', // Changed border color
+              borderColor: 'rgba(255, 206, 86, 0.7)',
               borderWidth: 0,
               fill: 'origin',
-              pointRadius: 0, // Hide points
+              pointRadius: 0, 
             },
             {
               label: 'Hard',
-              data: data.hard,
+              data: hardData,
               backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgba(255, 99, 132, 0.7)', // Changed border color
+              borderColor: 'rgba(255, 99, 132, 0.7)', 
               borderWidth: 0,
               fill: 'origin',
-              pointRadius: 0, // Hide points
+              pointRadius: 0, 
             }
           ]
         },
@@ -60,13 +58,13 @@ const TimeTakenChart = () => {
               beginAtZero: true,
               title: {
                 display: true,
-                text: 'Time Taken (in minutes)'
+                text: 'Time Taken (in seconds)'
               }
             },
             x: {
               title: {
                 display: true,
-                text: 'Difficulty Level'
+                text: 'Time Interval'
               }
             }
           }
@@ -80,7 +78,7 @@ const TimeTakenChart = () => {
         chartInstance.current.destroy();
       }
     };
-  }, []);
+  }, [timeTakenData]);
 
   return <canvas ref={chartRef} />;
 };
