@@ -1,30 +1,27 @@
+import React from "react";
 import { Line } from "react-chartjs-2";
 import "./Linechart.css"; // Import the CSS file
 
-import {
-  Chart as ChartJS,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-} from "chart.js";
+function LineChart({ userStatistics }) {
+  if (!userStatistics || !userStatistics.completed_each_task) {
+    return null; // Return null or a loading indicator if data is not available yet
+  }
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+  const completedEachTask = userStatistics.completed_each_task;
 
-function LineChart() {
   const data = {
-    labels: ["Task 1", "Task 2", "Task 3", "Task3", "Task4", "Task5", "Task6"],
+    labels: Object.keys(completedEachTask).map(task => `Task ${task}`),
     datasets: [
       {
-        label: "no of questions completed",
-        data: [5, 2, 5, 10, 4, 8, 5],
+        label: "Number of questions completed",
+        data: Object.values(completedEachTask),
         backgroundColor: "transparent",
-        borderColor: "#336699", // Change line color to a specific shade
-        pointBackgroundColor: "#FFF", // Set point fill color to white
-        pointBorderColor: "#336699", // Set point stroke color to #336699
-        pointBorderWidth: 1, // Set point stroke width
-        pointRadius: 7, // Set point radius
-        pointHoverRadius: 10, // Set point hover radius
+        borderColor: "#336699",
+        pointBackgroundColor: "#FFF",
+        pointBorderColor: "#336699",
+        pointBorderWidth: 1,
+        pointRadius: 7,
+        pointHoverRadius: 10,
         fill: true,
         tension: 0,
       },
@@ -41,12 +38,12 @@ function LineChart() {
     scales: {
       x: {
         grid: {
-          display: false, // Hide vertical grid lines
+          display: false,
         },
       },
       y: {
         grid: {
-          display: true, // Display horizontal grid lines
+          display: true,
         },
       },
     },
