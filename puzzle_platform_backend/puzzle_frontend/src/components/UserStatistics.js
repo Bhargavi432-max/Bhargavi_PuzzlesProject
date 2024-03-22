@@ -16,19 +16,17 @@ function ColorDot({ color, label }) {
 
 // Percentage indication component
 function PercentageIndicator({ percentage }) {
-  return <div className="percentage-indicator">{percentage}%</div>;
+  const formattedPercentage = percentage ? percentage.toFixed(2) : ''; // Check if percentage is defined before calling toFixed
+  return <div className="percentage-indicator">{formattedPercentage}%</div>;
 }
 
 function SubInnerPieChart({ percentage }) {
-  // Calculate the remaining percentage (to fill the pie chart)
-  const remainingPercentage = 100 - percentage;
-
   // Define data for the sub inner pie chart
   const data = {
     labels: ["Completed", "Remaining"],
     datasets: [
       {
-        data: [percentage, remainingPercentage],
+        data: [percentage, 100 - percentage],
         backgroundColor: ["#FFC83A", "#E5E5EF"], // Orange for completed, Gray for remaining
         borderRadius: 10,
       },
@@ -55,15 +53,12 @@ function SubInnerPieChart({ percentage }) {
 }
 
 function InnerPieChart({ percentage }) {
-  // Calculate the remaining percentage (to fill the pie chart)
-  const remainingPercentage = 100 - percentage;
-
   // Define data for the inner pie chart
   const data = {
     labels: ["Completed", "Remaining"],
     datasets: [
       {
-        data: [percentage, remainingPercentage],
+        data: [percentage, 100 - percentage],
         backgroundColor: ["#3366CC", "#E5E5EF"], // Blue for completed, Gray for remaining
         borderRadius: 10,
       },
@@ -90,17 +85,13 @@ function InnerPieChart({ percentage }) {
   );
 }
 
-function SinglePercentagePieChart({ percentage }) {
-  // Calculate the remaining percentage (to fill the pie chart)
-  const remainingPercentage = 100 - percentage;
-  const skippedPercentage = 100 - (percentage + 30); // Assuming the skipped percentage is the remainder
-
+function SinglePercentagePieChart({ completedPercentage, incompletedPercentage, notStartedPercentage }) {
   // Define data for the outer pie chart
-  const data = {
+  const outerData = {
     labels: ["Completed", "Remaining"],
     datasets: [
       {
-        data: [percentage, remainingPercentage],
+        data: [completedPercentage, 100 - completedPercentage],
         backgroundColor: ["#39BC90", "#E5E5EF"], // Green for completed, Gray for remaining
         borderRadius: 10,
       },
@@ -108,7 +99,7 @@ function SinglePercentagePieChart({ percentage }) {
   };
 
   // Define options for the outer pie chart
-  const options = {
+  const outerOptions = {
     cutout: 90, // Inner radius
     radius: 100, // Outer radius
     plugins: {
@@ -119,34 +110,33 @@ function SinglePercentagePieChart({ percentage }) {
 
   return (
     <div className="SinglePercentagePieChart">
-      
-      <div className="pie-chart-container"><div className="names">
-        <div className="subtext-pie">Statistics</div>
-      <h2 className="main-pie">Overall</h2>
-      </div>
-
-      <div style={{ width: "200px", height: "200px", position: "relative" }}>
-        <Pie data={data} options={options} />
-        <InnerPieChart percentage={percentage} />
-      </div>
-      {/* Color indication dots and percentage indicators */}
-      <div className="indicator-container">
-        <div className="indicator">
-          <ColorDot color="#39BC90" />
-          <PercentageIndicator percentage={percentage} />
-          <span className="label">Completed</span>
+      <div className="pie-chart-container">
+        <div className="names">
+          <div className="subtext-pie">Statistics</div>
+          <h2 className="main-pie">Overall</h2>
         </div>
-        <div className="indicator">
-          <ColorDot color="#3366CC" />
-          <PercentageIndicator percentage={remainingPercentage} />
-          <span className="label">Incomplete</span>
+        <div style={{ width: "200px", height: "200px", position: "relative" }}>
+          <Pie data={outerData} options={outerOptions} />
+          <InnerPieChart percentage={incompletedPercentage} />
         </div>
-        <div className="indicator">
-          <ColorDot color="#FFC83A" />
-          <PercentageIndicator percentage={skippedPercentage} />
-          <span className="label">Skipped</span>
+        {/* Color indication dots and percentage indicators */}
+        <div className="indicator-container">
+          <div className="indicator">
+            <ColorDot color="#39BC90" />
+            <PercentageIndicator percentage={completedPercentage} />
+            <span className="label">Completed</span>
+          </div>
+          <div className="indicator">
+            <ColorDot color="#3366CC" />
+            <PercentageIndicator percentage={incompletedPercentage} />
+            <span className="label">Incomplete</span>
+          </div>
+          <div className="indicator">
+            <ColorDot color="#FFC83A" />
+            <PercentageIndicator percentage={notStartedPercentage} />
+            <span className="label">Not Started</span>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );

@@ -1,23 +1,20 @@
 import React from "react";
 import "./OverallPie.css";
-//import { Pie } from "react-chartjs-2";
 
-
-
-const TaskLevelPage = () => {
+const TaskLevelPage = ({ percentageCompletedByLevel }) => {
   return (
     <div className="container">
       <div className="container-box">
         <div className="text-pie">High Score</div>
         <div className="big-text">Difficulty Level</div>
         <div className="circle" id="greenCircle">
-          80%
+          {percentageCompletedByLevel && percentageCompletedByLevel.HARD}%
         </div>
         <div className="circle" id="yellowCircle">
-          40%
+          {percentageCompletedByLevel && percentageCompletedByLevel.MEDIUM}%
         </div>
         <div className="circle" id="purpleCircle">
-          10%
+          {percentageCompletedByLevel && percentageCompletedByLevel.EASY}%
         </div>
       </div>
     </div>

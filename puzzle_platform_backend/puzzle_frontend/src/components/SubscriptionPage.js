@@ -161,7 +161,7 @@ function Wallet() {
         <div className="prof-image">
           <img src={ProfileImage} alt='ProfileImage'/>
         </div>
-        <div className="user-details">
+        <div className="user-subdetails">
           <div className="username">Heloo, {userData.name}</div>
           <div className="wallet-balance">
             <span className='text'>Wallet Balance</span>

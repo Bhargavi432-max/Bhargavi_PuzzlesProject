@@ -60,13 +60,19 @@ const DashboardPage = () => {
       </div>
       <div className="content">
         <div className="box-structure">
-          <SinglePercentagePieChart percentage={75} />
+        <SinglePercentagePieChart
+          completedPercentage={responseData?.user_statistics.completed_puzzles}
+          incompletedPercentage={responseData?.user_statistics.incompleted_puzzles}
+          notStartedPercentage={responseData?.user_statistics.notstarted_puzzles}
+          style={{marginright:"10px"}}
+        />
         </div>
-        <LineChart className="linechart" userStatistics={responseData?.user_statistics} />
+        <LineChart className="linechart" userStatistics={responseData?.user_statistics} style={{marginright:"10px"}}/>
         {responseData && responseData.user_statistics && (
-          <div className="side-container">
+          <div className="side-container" style={{marginleft:"10px"}}>
             <RingPieChart className="ringpiechart" totalTimeSpent={responseData.user_statistics.total_time_spent} />
-            <TaskLevelPage className="tasklevel" percentageCompletedByLevel={responseData?.user_statistics?.percentage_completed_by_level} style={{ marginTop: "20px" }} />
+            <TaskLevelPage percentageCompletedByLevel={responseData?.user_statistics.percentage_completed_by_level} />
+
           </div>
         )}
       </div>

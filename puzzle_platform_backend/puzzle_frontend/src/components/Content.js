@@ -304,6 +304,12 @@ const Content = ({selectedTask, puzzleData }) => {
       console.error("Error:", error);
     });
   };
+  const handleVideoSeeking = (e) => {
+    // Prevent seeking forward by setting the current time back to the previous time
+    if (e.target.currentTime > e.target.seekable.start(0)) {
+      e.target.currentTime = e.target.seekable.start(0);
+    }
+  };
 
   const renderDifficultyBoxButtons = () => {
     const easyPuzzles = puzzleData.filter(
@@ -517,6 +523,7 @@ const Content = ({selectedTask, puzzleData }) => {
             onEnded={handleVideoEnd}
             onTimeUpdate={handleVideoSkip}
             onPlay={handleVideoStart}
+            onSeeking={handleVideoSeeking} 
             className="react-player"
           >
             <source src={videoPath} type="video/mp4" />
@@ -527,7 +534,7 @@ const Content = ({selectedTask, puzzleData }) => {
   };
 
   return (
-    <div className="content">
+    <div className="contents">
       {renderPopup()}
       {selectedTask && renderDifficultyBoxButtons()}
       {renderPuzzleDetails()}
