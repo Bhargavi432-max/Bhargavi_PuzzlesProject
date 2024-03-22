@@ -100,11 +100,11 @@ def get_user_statistics(request):
                         puzzle_status='completed'
                     ).count()
                 completed_in_tasks[each_task_id] = completed_puzzles_count
-
+            total_puzzles_count = UserDataTableStatus.objects.filter(user=user).count()
             user_statistics = {
-                'completed_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='completed').count(),
-                'incompleted_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='incompleted').count(),
-                'notstarted_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='notstarted').count(),
+                'completed_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='completed').count() / total_puzzles_count) * 100,
+                'incompleted_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='incompleted').count()  / total_puzzles_count) * 100,
+                'notstarted_puzzles': UserDataTableStatus.objects.filter(user=user, puzzle_status='notstarted').count()  / total_puzzles_count) * 100,
                 'total_time_spent': {
                     'hours': total_hours,
                     'minutes': total_minutes,
