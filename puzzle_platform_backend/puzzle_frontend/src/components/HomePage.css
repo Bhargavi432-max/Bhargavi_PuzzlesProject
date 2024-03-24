@@ -1,6 +1,6 @@
 .nav-home {
   display: flex;
-  height: 100vh; /* Make the navbar take up full height of the viewport */
+  height: calc(100vh-60px); /* Make the navbar take up full height of the viewport */
 }
 
 .home-nav {
@@ -38,4 +38,9 @@
   font-size: 13px;
   font-family: "Poppins-semiBold", Helvetica;
   margin-top: 10px;
+}
+
+.content-home{
+  overflow: hidden; /* Prevent content overflow */
+  margin-left: 20px;
 }

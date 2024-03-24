@@ -63,7 +63,6 @@ const Navbar = () => {
         {renderNavItem("home", HomeWIcon, HomeBIcon, "Home")}
         {renderNavItem("puzzlepage", PuzzleW, PuzzleB, "Puzzle")}
         {renderNavItem("about", InfoW, InfoB, "About")}
-        {renderNavItem("profile", ProfileWIcon, ProfileBIcon, "Profile")}
         <li>
           <div className="logout" onClick={handleLogout}>
             <img src={LogoutIcon} alt="Logout" />

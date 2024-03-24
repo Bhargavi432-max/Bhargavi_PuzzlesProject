@@ -1,15 +1,17 @@
 // PaymentSuccessPage.jsx
 
-import React from 'react';
+import React, { useEffect } from "react";
 
 const PaymentSuccessPage = () => {
-    return (
-        <div>
-            <h1>Payment Successful</h1>
-            <p>Thank you for your Subscribing!</p>
-        </div>
-    );
+  useEffect(() => {
+    localStorage.removeItem("puzzleData");
+  }, []);
+  return (
+    <div>
+      <h1>Payment Successful</h1>
+      <p>Thank you for your Subscribing!</p>
+    </div>
+  );
 };
 
 export default PaymentSuccessPage;
-    

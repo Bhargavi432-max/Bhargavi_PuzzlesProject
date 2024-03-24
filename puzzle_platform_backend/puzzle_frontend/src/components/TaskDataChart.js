@@ -32,6 +32,7 @@ function TaskDataChart({ completedPuzzlesByDate }) {
 
   const options = {
     // Your options configuration here...
+    maintainAspectRatio: false,
   };
 
   return (
@@ -39,11 +40,14 @@ function TaskDataChart({ completedPuzzlesByDate }) {
       <div className="box-statis">Statistics</div>
       <div className="chart-heading">Task Improvement</div>
       <div className="graph-box">
-        <div className="chart-container" style={{ width: "950px", height: "225px" }}>
-          <Line 
-            data={data} 
-            options={options} 
-            style={{ width: "100%", height: "95%" }} // Set width and height here
+        <div
+          className="mychart-container"
+          style={{ width: "950px", height: "225px" }}
+        >
+          <Line
+            data={data}
+            options={options}
+            style={{ width: "100%", height: "100%" }} // Set width and height here
           />
         </div>
       </div>

@@ -79,7 +79,7 @@
 
 .plan {
     width: 30%;
-    height: 340px;
+    height: 40  0px;
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
@@ -117,4 +117,11 @@
     line-height: 30px;
 
 
+}
+.benefit {
+    display: flex; 
+    align-items: center; 
+  }
+  .benefit p {
+  margin: 6px; /* Remove default margin for <p> element */
 }

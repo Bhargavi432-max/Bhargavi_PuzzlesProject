@@ -37,3 +37,9 @@
   height: 225px;
   /* width: 450px; Remove this fixed width */
 }
+
+.mychart-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Ensure the container doesn't overflow */
+}

@@ -78,3 +78,17 @@
     align-items: center;
   }
 }
+
+.dashboard-username{
+  color: blue;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.user-branch{
+  margin-bottom: 10px;
+}
+
+.icon {
+  margin-right: 10px; 
+}
