@@ -124,3 +124,28 @@ def user_login(request):
         return JsonResponse({'message': 'Invalid username or password', 'login_status': False})
     else:
         return JsonResponse({'message': 'Only POST requests are allowed', 'login_status': False})
+
+
+@csrf_exempt 
+def get_user_info(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        image_url = data.get('image_url')
+        college_name = data.get('college_name')
+        education = data.get('education')
+
+        if email is None:
+            return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            user.profile_image = image_url
+            user.college_name = college_name
+            user.education = education
+            user.save()
+            return JsonResponse({'success': True, 'message': "stored successful"})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+    else:
+        return JsonResponse({'success': False, 'error': 'Only POST requests are allowed'}, status=405)

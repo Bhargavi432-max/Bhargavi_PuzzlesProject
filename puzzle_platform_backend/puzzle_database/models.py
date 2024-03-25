@@ -10,6 +10,9 @@ class CustomUser(models.Model):
     mobile_number = models.CharField(max_length=20)
     login_status = models.BooleanField(default=False)
     otp = models.CharField(max_length=6, null=True, blank=True)
+    profile_image = models.ImageField(upload_to='puzzle_frontend/src/profile_image', null=True, blank=True)
+    education = models.CharField(max_length=100, null=True, blank=True)
+    college_name = models.CharField(max_length=150, null=True, blank=True)
     is_active = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -115,8 +118,9 @@ class UserDataTableStatus(models.Model):
     puzzle_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='notstarted')
     task_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='notstarted')
     puzzle_locked = models.BooleanField(default=False)
+    puzzle_count = models.IntegerField(default=0) 
+    video_count = models.IntegerField(default=0) 
     time_spent = models.IntegerField(default=0) 
-
 
     class Meta:
         unique_together = ['user', 'data_table']

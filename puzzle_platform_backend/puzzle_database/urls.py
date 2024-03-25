@@ -5,7 +5,8 @@ urlpatterns = [
      # User authentication related URLs
     path('register_user/', user_validation.register_user, name='register_user'),
     path('user_login/', user_validation.user_login, name='user_login'),
-
+    path('get_user_info/', user_validation.get_user_info, name='get_user_info'),
+    
      # Password management URLs
     path('change_password/', password_validation.change_password, name='change_password'),
     path('forgot_password/', password_validation.forgot_password, name='forgot_password'),

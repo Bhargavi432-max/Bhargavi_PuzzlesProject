@@ -92,14 +92,18 @@ def get_user_statistics(request):
                     percentage_completed_by_level[level] = round(percentage_completed, 2)
                 else:
                     percentage_completed_by_level[level] = 0
-            completed_in_tasks={}
-            for each_task_id in range(1,26):
+            completed_in_tasks = {}
+            for each_task_id in range(1, 26):
+                total_puzzles_count = DataTable.objects.filter(task_id=each_task_id).count()
                 completed_puzzles_count = UserDataTableStatus.objects.filter(
-                        user=user,
-                        data_table__task_id=each_task_id,
-                        puzzle_status='completed'
-                    ).count()
-                completed_in_tasks[each_task_id] = completed_puzzles_count
+                    user=user,
+                    data_table__task_id=each_task_id,
+                    puzzle_status='completed'
+                ).count()
+                completed_in_tasks[each_task_id] = {
+                    'total_puzzles': total_puzzles_count,
+                    'completed_puzzles': completed_puzzles_count
+                }
             total_puzzles_count = UserDataTableStatus.objects.filter(user=user).count()
             user_statistics = {
                 'completed_puzzles': (UserDataTableStatus.objects.filter(user=user, puzzle_status='completed').count() / total_puzzles_count) * 100,
@@ -158,8 +162,6 @@ def get_user_taskwise_statistics(request):
 
              # Fetching completed puzzles count by date
             completed_puzzles_by_date = LogReport.objects.filter(user=user, task_id=task_id, puzzle_status='completed').annotate(completed_date=TruncDate('timestamp')).values('completed_date').annotate(count=Count('id'))
-            print(completed_puzzles_by_date)
-            print("----------------------------------------")
             # Converting queryset to a dictionary
             completed_puzzles_by_date_dict = {
                 entry['completed_date'].strftime('%d-%B-%Y'): entry['count'] 
@@ -184,7 +186,6 @@ def get_user_taskwise_statistics(request):
                 },
                 "completed_puzzles_by_date":completed_puzzles_by_date_dict,
             }
-            print(task_statistics)
             return JsonResponse({'status': True, 'user_statistics': task_statistics })
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
