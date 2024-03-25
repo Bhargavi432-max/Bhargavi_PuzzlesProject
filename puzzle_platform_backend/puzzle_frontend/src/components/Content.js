@@ -407,10 +407,13 @@ const Content = ({ selectedTask, puzzleData }) => {
               <button
                 onClick={() => handleButtonClick(puzzle, i + index)} // Modified onClick handler
                 className={buttonClass}
-                // disabled={puzzle.puzzle_locked} // Disable button if puzzle is locked
               >
                 {i + index + 1}
               </button>
+              {i === 0 && ( // Conditionally add tooltip to buttons in the first row
+            <div className={`tooltip tooltip-bottom`}>{"hello!"}</div>
+          )}
+              <div className="tooltip">{"hello!"}</div>
               {puzzle.puzzle_locked && (
                 <img src={LockIcon} className="lock-icon" alt="Locked" />
               )}

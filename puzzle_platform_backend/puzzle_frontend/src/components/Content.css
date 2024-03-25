@@ -29,7 +29,7 @@
   box-sizing: border-box;
   border-radius: 7px;
   box-shadow: 4px 4px 15px #00000040;
-  background-color: #f4f4f4;
+  background-color:rgba(139, 153, 255, 0.33);
   height: 200px;
   border-color: #c6c6c6;
   
@@ -250,12 +250,11 @@
 /* Easy Level */
 .difficulty-buttons .difficulty-button.current-easy {
   -webkit-backdrop-filter: blur(48.36px) brightness(100%);
-  backdrop-filter: blur(48.36px) brightness(100%);
-  background-color: #66ff096b;
-  border: 2px solid;
-  border-color: #349407;
-  border-radius: 48.36px;
-  box-shadow: inset -1.61px 1.61px 1.61px #ffffff99, inset 1.61px -1.61px 1.61px #75757599;
+  border-radius: 48.364px;
+  border: 2px solid #071694;
+  background: rgba(77, 83, 228, 0.42);
+  box-shadow: 1.612px -1.612px 1.612px 0px rgba(117, 117, 117, 0.60) inset, -1.612px 1.612px 1.612px 0px rgba(255, 255, 255, 0.60) inset;
+  backdrop-filter: blur(24.182077407836914px);
   height: 35px;
   position: relative;
   width: 35px;
@@ -282,12 +281,11 @@
 /* Medium Level */
 .difficulty-buttons .difficulty-button.current-medium {
   -webkit-backdrop-filter: blur(48.36px) brightness(100%);
-  backdrop-filter: blur(48.36px) brightness(100%);
-  background-color: #ca97ff;
-  border: 2px solid;
-  border-color: #8a15ff;
-  border-radius: 48.36px;
-  box-shadow: inset -1.61px 1.61px 1.61px #ffffff99, inset 1.61px -1.61px 1.61px #75757599;
+  border-radius: 48.364px;
+  border: 2px solid #071694;
+  background: rgba(77, 83, 228, 0.42);
+  box-shadow: 1.612px -1.612px 1.612px 0px rgba(117, 117, 117, 0.60) inset, -1.612px 1.612px 1.612px 0px rgba(255, 255, 255, 0.60) inset;
+  backdrop-filter: blur(24.182077407836914px);
   height: 35px;
   position: relative;
   width: 35px;
@@ -298,10 +296,10 @@
 }
 
 .difficulty-buttons .difficulty-button.completed-medium {
-  background: linear-gradient(180deg, rgb(138.3, 21.6, 255) 0%, rgb(215.31, 175.95, 255) 100%);
+  background: linear-gradient(180deg, rgb(69.19, 161.06, 12.88) 0%, rgb(189.13, 255, 148.75) 100%);
   background-color: rgba(255, 255, 255, 1);
   border-radius: 38.36px;
-  box-shadow: inset 5.22e-16px 8.52px 8.52px #d2a5ff, inset -5.22e-16px -8.52px 8.52px #7e55a7;
+  box-shadow: inset 5.22e-16px 8.52px 8.52px #5bd70f, inset -5.22e-16px -8.52px 8.52px #608946;
   height: 35px;
   position: relative;
   width: 35px;
@@ -314,12 +312,11 @@
 /* Hard Level */
 .difficulty-buttons .difficulty-button.current-hard {
   -webkit-backdrop-filter: blur(48.36px) brightness(100%);
-  backdrop-filter: blur(48.36px) brightness(100%);
-  background-color: #fe5f5f82;
-  border: 2px solid;
-  border-color: #ff0404;
-  border-radius: 48.36px;
-  box-shadow: inset -1.61px 1.61px 1.61px #ffffff99, inset 1.61px -1.61px 1.61px #75757599;
+  border-radius: 48.364px;
+  border: 2px solid #071694;
+  background: rgba(77, 83, 228, 0.42);
+  box-shadow: 1.612px -1.612px 1.612px 0px rgba(117, 117, 117, 0.60) inset, -1.612px 1.612px 1.612px 0px rgba(255, 255, 255, 0.60) inset;
+  backdrop-filter: blur(24.182077407836914px);
   height: 35px;
   position: relative;
   width: 35px;
@@ -330,10 +327,10 @@
 }
 
 .difficulty-buttons .difficulty-button.completed-hard {
-  background: linear-gradient(180deg, rgb(223.11, 45.04, 5.95) 0%, rgb(255, 180, 175.95) 100%);
+  background: linear-gradient(180deg, rgb(69.19, 161.06, 12.88) 0%, rgb(189.13, 255, 148.75) 100%);
   background-color: rgba(255, 255, 255, 1);
   border-radius: 38.36px;
-  box-shadow: inset 5.22e-16px 8.52px 8.52px #ffa497, inset -5.22e-16px -8.52px 8.52px #de381e;
+  box-shadow: inset 5.22e-16px 8.52px 8.52px #5bd70f, inset -5.22e-16px -8.52px 8.52px #608946;
   height: 35px;
   position: relative;
   width: 35px;
@@ -475,4 +472,45 @@
     margin-bottom: 10px; /* Add margin between rows */
 
   }
+}
+.button-container {
+  position: relative;
+}
+
+/* Tooltip container */
+.tooltip {
+  visibility: hidden;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 999;
+  bottom: calc(100% + 5px); /* Position the tooltip just above the button */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Tooltip tip */
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* Position the tip just below the tooltip body */
+  left: 50%;
+  margin-left: -5px; /* Adjust the margin to position the tip horizontally */
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgb(255, 255, 255) transparent transparent transparent; /* Triangle tip with transparent top border */
+}
+
+
+/* Show the tooltip when hovering over the button container */
+.button-container:hover .tooltip {
+  visibility: visible;
+}
+.tooltip tooltip-bottom {
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
 }
