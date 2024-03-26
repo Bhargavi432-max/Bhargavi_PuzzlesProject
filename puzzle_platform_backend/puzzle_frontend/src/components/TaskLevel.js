@@ -68,7 +68,7 @@ function TaskLevel() {
     <div className="task-level-container">
       <div className="button-container">
         {[...Array(25)].map((_, index) => (
-          <button key={index} onClick={() => handleClick(index + 1)}>
+          <button className="butoon-level" key={index} onClick={() => handleClick(index + 1)}>
             Task {index + 1}
           </button>
         ))}

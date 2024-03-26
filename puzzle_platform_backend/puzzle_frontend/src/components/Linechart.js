@@ -1,5 +1,5 @@
 import React from "react";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import "./Linechart.css"; // Import the CSS file
 
 function LineChart({ userStatistics }) {
@@ -9,28 +9,36 @@ function LineChart({ userStatistics }) {
 
   const completedEachTask = userStatistics.completed_each_task;
 
+  // Extracting task numbers and data
+  const taskNumbers = Object.keys(completedEachTask);
+  const totalQuestionsData = taskNumbers.map(task => completedEachTask[task].total_puzzles);
+  const completedQuestionsData = taskNumbers.map(task => completedEachTask[task].completed_puzzles);
+
   const data = {
-    labels: Object.keys(completedEachTask).map(task => `Task ${task}`),
+    labels: taskNumbers.map(task => `Task ${task}`),
     datasets: [
       {
+        label: "Total questions",
+        data: totalQuestionsData,
+        backgroundColor: "#5F84E3",
+        borderColor: "#5F84E3",
+        borderWidth: 1,
+      },
+      {
         label: "Number of questions completed",
-        data: Object.values(completedEachTask),
-        backgroundColor: "transparent",
-        borderColor: "#336699",
-        pointBackgroundColor: "#FFF",
-        pointBorderColor: "#336699",
-        pointBorderWidth: 1,
-        pointRadius: 7,
-        pointHoverRadius: 10,
-        fill: true,
-        tension: 0,
+        data: completedQuestionsData,
+        backgroundColor: "#BBCAF1",
+        borderColor: "#BBCAF1",
+        borderWidth: 1,
       },
     ],
   };
 
   const options = {
     plugins: {
-      legend: true,
+      legend: {
+        display: true,
+      },
       tooltip: {
         enabled: true,
       },
@@ -45,6 +53,7 @@ function LineChart({ userStatistics }) {
         grid: {
           display: true,
         },
+        beginAtZero: true,
       },
     },
   };
@@ -54,7 +63,7 @@ function LineChart({ userStatistics }) {
       <div className="statis">Statistics</div>
       <div className="heading-chart">Task Improvement</div>
       <div className="graph" style={{ width: "450px", height: "400px" }}>
-        <Line data={data} options={options} />
+        <Bar data={data} options={options} />
       </div>
     </div>
   );

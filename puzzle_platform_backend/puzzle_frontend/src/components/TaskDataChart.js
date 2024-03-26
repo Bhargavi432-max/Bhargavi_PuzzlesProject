@@ -1,4 +1,5 @@
-import { Line } from "react-chartjs-2";
+import React from "react";
+import { Bar } from "react-chartjs-2";
 import "./TaskDataChart.css"; // Import the CSS file
 
 function TaskDataChart({ completedPuzzlesByDate }) {
@@ -11,21 +12,26 @@ function TaskDataChart({ completedPuzzlesByDate }) {
   const labels = Object.keys(completedPuzzlesByDate);
   const dataValues = Object.values(completedPuzzlesByDate);
 
+  // Dynamically determine the background color based on the value of completed puzzles
+  const backgroundColors = dataValues.map(value =>
+    value <= 2 ? "#BBCAF1" : "#5F84E3"
+  );
+
+  // Dynamically determine the border color based on the value of completed puzzles
+  const borderColors = dataValues.map(value =>
+    value <= 2 ? "#BBCAF1" : "#5F84E3"
+  );
+
   const data = {
     labels: labels,
     datasets: [
       {
         label: "Number of questions completed",
         data: dataValues,
-        backgroundColor: "transparent",
-        borderColor: "#336699", // Change line color to a specific shade
-        pointBackgroundColor: "#FFF", // Set point fill color to white
-        pointBorderColor: "#336699", // Set point stroke color to #336699
-        pointBorderWidth: 1, // Set point stroke width
-        pointRadius: 7, // Set point radius
-        pointHoverRadius: 10, // Set point hover radius
-        fill: true,
-        tension: 0,
+        backgroundColor: backgroundColors,
+        borderColor: borderColors, // Set border color
+        borderWidth: 1, // Set border width
+        barThickness: 10, // Set bar width
       },
     ],
   };
@@ -33,6 +39,20 @@ function TaskDataChart({ completedPuzzlesByDate }) {
   const options = {
     // Your options configuration here...
     maintainAspectRatio: false,
+    
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        grid: {
+          display: true,
+        },
+        beginAtZero: true,
+      },
+    },
   };
 
   return (
@@ -44,7 +64,7 @@ function TaskDataChart({ completedPuzzlesByDate }) {
           className="mychart-container"
           style={{ width: "950px", height: "225px" }}
         >
-          <Line
+          <Bar
             data={data}
             options={options}
             style={{ width: "100%", height: "100%" }} // Set width and height here

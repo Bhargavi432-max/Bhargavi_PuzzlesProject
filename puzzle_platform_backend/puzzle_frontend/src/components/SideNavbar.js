@@ -37,20 +37,22 @@ const SideNavbar = ({
     <div className="Sidebar-container">
       <div className="sidenavbar" id="Scrollbar">
         {tasks.map((task) => (
-          <button
-            key={task.id}
-            onClick={() => handleClick(task.id)}
-            className={`task-button ${
-              selectedPuzzleId === task.id ? "active" : ""
-            } ${
-              taskStatus && taskStatus[task.id]
-                ? taskStatus[task.id]
-                : "notstarted"
-            } ${taskStatus && taskStatus[task.id] === "completed" ? "completed" : ""}`}
-          >
-            {`Task ${task.id}`}
-            <span className="arrow"></span>
-          </button>
+          <div key={task.id} className="button-container">
+            <button
+              onClick={() => handleClick(task.id)}
+              className={`task-button ${
+                selectedPuzzleId === task.id ? "active" : ""
+              } ${
+                taskStatus && taskStatus[task.id]
+                  ? taskStatus[task.id]
+                  : "notstarted"
+              } ${taskStatus && taskStatus[task.id] === "completed" ? "completed" : ""}`}
+            >
+              {`Task ${task.id}`}
+              <span className="arrow"></span>
+            </button>
+            <div className="tooltips">{`Task ${task.id}`}</div>
+          </div>
         ))}
       </div>
     </div>

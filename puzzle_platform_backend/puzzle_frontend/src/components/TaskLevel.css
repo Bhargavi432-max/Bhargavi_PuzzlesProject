@@ -16,6 +16,20 @@
 .task-level-container .button-container button {
   margin-right: 10px;
 }
+.butoon-level{
+  border-radius: 47.656px;
+  border: 0.853px solid #B9B9B9;
+  background: rgba(132, 128, 187, 0.15);
+  color: rgb(24, 24, 24);
+  box-shadow: 3.413px 3.413px 12.8px 0px rgba(234, 234, 234, 0.27), -1.312px -1.749px 3.06px 0px rgba(255, 255, 255, 0.15) inset;
+}
+.butoon-level.active {
+  border-radius: 47.656px;
+  border: 0.853px solid #B9B9B9;
+  background: #463EBB;
+  color:white;
+  box-shadow: 3.413px 3.413px 12.8px 0px rgba(234, 234, 234, 0.27), -1.312px -1.749px 3.06px 0px rgba(255, 255, 255, 0.15) inset;
+}
 
 .chart-details {
   width: 20%;

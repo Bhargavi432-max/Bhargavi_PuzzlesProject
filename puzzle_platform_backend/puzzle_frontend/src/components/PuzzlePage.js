@@ -96,7 +96,7 @@ const PuzzlePage = () => {
                 selectedTask={selectedTask}
                 puzzleData={puzzleData}
               />
-            )};
+            )}
           </div>
         </div>
       </div>
