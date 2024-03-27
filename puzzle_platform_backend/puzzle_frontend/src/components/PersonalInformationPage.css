@@ -1,0 +1,17 @@
+/* Add this CSS to your stylesheet */
+.edit-icon.active {
+    background-color: #71bdff81; /* Light navy blue */
+    width:30px;
+    height:30px;
+    border-radius: 48.61px;
+    justify-items: center;
+  }
+  .edit-icon {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }

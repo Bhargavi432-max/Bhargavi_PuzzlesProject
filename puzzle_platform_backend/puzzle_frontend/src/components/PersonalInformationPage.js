@@ -1,5 +1,8 @@
 // PersonalInformationPage.js
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import "./PersonalInformationPage.css";
 
 const PersonalInformationPage = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -65,6 +68,9 @@ const PersonalInformationPage = () => {
 
   return (
     <div>
+      <div className={isEditing ? "edit-icon active" : "edit-icon"} onClick={handleEditClick}>
+        <FontAwesomeIcon icon={faEdit} style={{ color: '#3B4AB4' }} />
+      </div>
       {userInfo && !isEditing && (
         <div>
           <h2>General Information</h2>
@@ -75,7 +81,6 @@ const PersonalInformationPage = () => {
             <p>College Name: {userInfo.collegeName}</p>
             <img src={userInfo.imageUrl} alt="User" />
           </div>
-          <button onClick={handleEditClick}>Edit</button>
         </div>
       )}
       {isEditing && (
