@@ -129,12 +129,15 @@ def user_login(request):
 
 @csrf_exempt 
 def get_user_info(request):
+    print("enter")
     if request.method == 'POST':
         data = json.loads(request.body)
+        print(data)
         email = data.get('email')
         image_url = data.get('image_url')
         college_name = data.get('college_name')
         education = data.get('education')
+        print(image_url)
 
         if email is None:
             return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
