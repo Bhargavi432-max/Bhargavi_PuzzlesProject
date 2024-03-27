@@ -1,13 +1,13 @@
-// PersonalInformationPage.js
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import "./PersonalInformationPage.css";
+import './PersonalInformationPage.css';
 
 const PersonalInformationPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const email = localStorage.getItem('email');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [editedInfo, setEditedInfo] = useState({
     username: '',
     email: '',
@@ -22,6 +22,7 @@ const PersonalInformationPage = () => {
   }, []);
 
   const fetchUserInfo = async () => {
+    const email = localStorage.getItem('email');
     try {
       const response = await fetch('http://127.0.0.1:8000/api/get_user_details/', {
         method: 'POST',
@@ -32,6 +33,7 @@ const PersonalInformationPage = () => {
       });
       const data = await response.json();
       if (data.success) {
+        console.log({data});
         const userData = data.user_data;
         setUserInfo({
           username: userData.username,
@@ -54,7 +56,6 @@ const PersonalInformationPage = () => {
       console.error('Error fetching user information:', error);
     }
   };
-  
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -62,7 +63,11 @@ const PersonalInformationPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'imageFile') {
+    console.log("Name:", name);
+    console.log("Value:", value);
+    console.log("Files:", files);
+    
+    if (name === 'profile_image') {
       setEditedInfo({
         ...editedInfo,
         [name]: files[0] // Store the selected file
@@ -74,36 +79,48 @@ const PersonalInformationPage = () => {
       });
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Submit edited user information to the backend
+    setLoading(true);
+    setError(null);
+  
     const formData = new FormData();
     formData.append('username', editedInfo.username);
     formData.append('email', editedInfo.email);
     formData.append('education', editedInfo.education);
-    formData.append('collegeName', editedInfo.collegeName);
-    formData.append('imageFile', editedInfo.imageFile); // Append file object
+    formData.append('college_name', editedInfo.collegeName);
+    formData.append('profile_image', editedInfo.imageFile); // Check if imageFile is properly appended
+  
+    console.log("FormData:", formData); // Log FormData object to console
+  
     try {
       const response = await fetch('http://127.0.0.1:8000/api/get_user_info/', {
         method: 'POST',
-        body: formData // Send form data instead of JSON
+        body: formData
       });
       if (response.ok) {
-        // Refresh user information after successful update
         fetchUserInfo();
         setIsEditing(false);
+        console.log('User information updated successfully');
       } else {
-        console.error('Failed to update user information');
+        throw new Error('Failed to update user information');
       }
     } catch (error) {
       console.error('Error updating user information:', error);
+      setError('Failed to update user information. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
+  
+  
+  
 
   return (
     <div>
-      <div className={isEditing ? "edit-icon active" : "edit-icon"} onClick={handleEditClick}>
+      <div className={isEditing ? 'edit-icon active' : 'edit-icon'} onClick={handleEditClick}>
         <FontAwesomeIcon icon={faEdit} style={{ color: '#3B4AB4' }} />
       </div>
       {userInfo && !isEditing && (
@@ -122,12 +139,18 @@ const PersonalInformationPage = () => {
         <div>
           <h2>Edit Information</h2>
           <form onSubmit={handleSubmit}>
+            <label htmlFor="username">Username:</label>
             <input type="text" name="username" value={editedInfo.username} onChange={handleInputChange} />
-            <input type="text" name="email" value={editedInfo.email} onChange={handleInputChange} />
+            <label htmlFor="email">Email:</label>
+            <input type="email" name="email" value={editedInfo.email} onChange={handleInputChange} />
+            <label htmlFor="education">Education:</label>
             <input type="text" name="education" value={editedInfo.education} onChange={handleInputChange} />
+            <label htmlFor="collegeName">College Name:</label>
             <input type="text" name="collegeName" value={editedInfo.collegeName} onChange={handleInputChange} />
-            <input type="file" name="imageFile" onChange={handleInputChange} accept="image/*" /> {/* File input for image upload */}
-            <button type="submit">Save</button>
+            <label htmlFor="imageFile">Profile Picture:</label>
+            <input type="file" name="imageFile" onChange={handleInputChange} accept="image/*" />
+            <button type="submit" disabled={loading}>Save</button>
+            {error && <p className="error-message">{error}</p>}
           </form>
         </div>
       )}
