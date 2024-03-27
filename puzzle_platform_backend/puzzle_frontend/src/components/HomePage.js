@@ -4,8 +4,9 @@ import "./HomePage.css";
 import Helpandsupport from "./HelpAndSupportPage";
 import Wallet from "./SubscriptionPage";
 import DashboardPage from "./DashbordPage";
-import Content from './Content';
+import SettingsPage from './SettingsPage';
 import TaskLevel from './TaskLevel';
+
 function HomePage( ) {
   const [activePage, setActivePage] = useState('Wallet');
 
@@ -34,15 +35,15 @@ function HomePage( ) {
       case 'Dashboard':
         return <DashboardPage />;
       case 'Task Level':
-        return <TaskLevel/>;
+        return <TaskLevel />;
       case 'My Task':
         return <div>My Task Page</div>;
       case 'Help and Support':
         return <Helpandsupport />;
       case 'Wallet':
-        return  <Wallet />;;
+        return  <Wallet />;
       case 'Settings':
-        return <div>Settings Page</div>;
+        return <SettingsPage />;
       case 'Sign Out':
         return <div>Sign Out Page</div>;
       default:
@@ -55,7 +56,6 @@ function HomePage( ) {
       <Navbar />
       <div className="content-home">
         <PageContent />
-        {/* <Content handlePageChange={handlePageChange} /> */}
       </div>
     </div>
   );

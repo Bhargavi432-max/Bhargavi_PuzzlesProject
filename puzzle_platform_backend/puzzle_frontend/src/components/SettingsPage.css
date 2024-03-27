@@ -1,0 +1,108 @@
+/* SettingsPage.css */
+.settings-page {
+    padding: 20px;
+    margin: 20px;
+    position: relative;
+}
+  
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.settings-header h1 {
+    margin: 0;
+}
+
+.setting-text {
+    color: #000;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.settings-buttons {
+    display: flex; /* Ensure buttons are in the same line */
+    align-items: center; /* Center vertically */
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.settings-buttons button {
+    margin-left: 10px;
+}
+
+.save-button{
+    color: #FFF;
+    text-align: center;
+    font-family: Inter;
+    font-size: 10.88px;
+    font-style: normal;
+    font-weight: 500;
+    padding: 10.103px 16.935px 9.201px 15.542px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7.772px;
+    background: #3B4AB4;
+}
+
+.cancel-button{
+    padding: 10.103px 32.389px 9.201px 31.087px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7.772px;
+    background-color: #FFF;
+    border: 1.554px solid #3B4AB4;
+    color: #3B4AB4;
+    text-align: center;
+    font-family: Inter;
+    font-size: 12.88px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.settings-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 20px;
+    position: relative;
+    display: flex; /* Display children elements in a row */
+    height:470px
+}
+
+.settings-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border-right: 3px solid #dbdbdb86;
+    width: 200px; /* Adjust width as needed */
+}
+
+.settings-menu li {
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 13.212px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 17.098px;
+}
+.settings-menu li.active {
+    color: #0240BC;
+    border-radius: 3.875px;
+    background: rgba(79, 128, 225, 0.15);/* Light blue background color */
+    margin-right: 10px;
+}
+.settings-details {
+    margin-left: 20px; /* Adjust margin as needed */
+    flex-grow: 1; /* Allow the content to occupy remaining space */
+    overflow-y: auto; /* Add scrollbar if content overflows */
+}
