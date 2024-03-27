@@ -7,12 +7,13 @@ import "./PersonalInformationPage.css";
 const PersonalInformationPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const email = localStorage.getItem('email');
   const [editedInfo, setEditedInfo] = useState({
     username: '',
     email: '',
     education: '',
     collegeName: '',
-    imageUrl: ''
+    imageFile: null // Store file object here
   });
 
   useEffect(() => {
@@ -22,37 +23,71 @@ const PersonalInformationPage = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/get_user_info/');
+      const response = await fetch('http://127.0.0.1:8000/api/get_user_details/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
       const data = await response.json();
-      setUserInfo(data);
-      setEditedInfo(data); // Set editedInfo to fetched user info initially
+      if (data.success) {
+        const userData = data.user_data;
+        setUserInfo({
+          username: userData.username,
+          email: userData.email,
+          education: userData.education,
+          collegeName: userData.college_name,
+          imageUrl: userData.profile_image
+        });
+        setEditedInfo({
+          username: userData.username,
+          email: userData.email,
+          education: userData.education,
+          collegeName: userData.college_name,
+          imageFile: null // Initialize imageFile as null
+        });
+      } else {
+        console.error('Failed to fetch user information:', data.error);
+      }
     } catch (error) {
       console.error('Error fetching user information:', error);
     }
   };
+  
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedInfo({
-      ...editedInfo,
-      [name]: value
-    });
+    const { name, value, files } = e.target;
+    if (name === 'imageFile') {
+      setEditedInfo({
+        ...editedInfo,
+        [name]: files[0] // Store the selected file
+      });
+    } else {
+      setEditedInfo({
+        ...editedInfo,
+        [name]: value
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Submit edited user information to the backend
+    const formData = new FormData();
+    formData.append('username', editedInfo.username);
+    formData.append('email', editedInfo.email);
+    formData.append('education', editedInfo.education);
+    formData.append('collegeName', editedInfo.collegeName);
+    formData.append('imageFile', editedInfo.imageFile); // Append file object
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/update_user_info/', {
+      const response = await fetch('http://127.0.0.1:8000/api/get_user_info/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(editedInfo)
+        body: formData // Send form data instead of JSON
       });
       if (response.ok) {
         // Refresh user information after successful update
@@ -91,7 +126,7 @@ const PersonalInformationPage = () => {
             <input type="text" name="email" value={editedInfo.email} onChange={handleInputChange} />
             <input type="text" name="education" value={editedInfo.education} onChange={handleInputChange} />
             <input type="text" name="collegeName" value={editedInfo.collegeName} onChange={handleInputChange} />
-            <input type="text" name="imageUrl" value={editedInfo.imageUrl} onChange={handleInputChange} />
+            <input type="file" name="imageFile" onChange={handleInputChange} accept="image/*" /> {/* File input for image upload */}
             <button type="submit">Save</button>
           </form>
         </div>
