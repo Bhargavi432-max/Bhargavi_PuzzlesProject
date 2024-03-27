@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import random
@@ -32,7 +32,6 @@ def change_password(request):
 
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
-
 
 # View for handling forgot password functionality.
 @csrf_exempt
@@ -92,7 +91,6 @@ def reset_password(request):
 
         if not (email and new_password and confirm_password):
             return JsonResponse({'status': False, 'message': 'All fields are required'})
-
         try:
             user = CustomUser.objects.get(email=email)
             if new_password != confirm_password:
@@ -129,6 +127,53 @@ def verify_otp(request):
                 UserProfile.objects.create(user=user,wallet=0)
 
                 return JsonResponse({'status': True, 'message': 'Account activated successfully'})
+            else:
+                return JsonResponse({'status': False, 'message': 'Invalid OTP'})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User not found'})
+    else:
+        return JsonResponse({'status': False, 'error': 'Only POST requests are allowed'}, status=400)
+
+# View for sending OTP during account login for 2 step verification.
+@csrf_exempt
+def send_otp_via_email(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'status': False, 'message': 'User with this email does not exist'})
+
+        otp = str(random.randint(100000, 999999))
+        user.otp = otp
+        user.save()
+
+        subject = '2-step verification OTP'
+        message = f'Your OTP for 2-step verification is: {otp}'  
+        email_from = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [email]
+        send_mail(subject, message, email_from, recipient_list)
+
+        return JsonResponse({'status': True, 'message': 'OTP sent to your email. Please check your inbox.'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
+
+# View for verifying OTP during account login for 2 step verification.
+@csrf_exempt
+def login_verify_otp(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        otp = data.get('otp')
+        try:
+            user = CustomUser.objects.get(email=email)
+            if user.otp == otp:
+                user.is_active = True
+                user.otp = None
+                user.save()
+                return JsonResponse({'status': True, 'message': 'OTP verified successfully'})
             else:
                 return JsonResponse({'status': False, 'message': 'Invalid OTP'})
         except CustomUser.DoesNotExist:

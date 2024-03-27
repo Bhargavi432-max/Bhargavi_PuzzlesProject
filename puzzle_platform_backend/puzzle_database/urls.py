@@ -6,6 +6,8 @@ urlpatterns = [
     path('register_user/', user_validation.register_user, name='register_user'),
     path('user_login/', user_validation.user_login, name='user_login'),
     path('get_user_info/', user_validation.get_user_info, name='get_user_info'),
+    path('get_user_details/', user_validation.get_user_details, name='get_user_details'),
+
     
      # Password management URLs
     path('change_password/', password_validation.change_password, name='change_password'),
@@ -13,6 +15,9 @@ urlpatterns = [
     path('reset_password/', password_validation.reset_password, name='reset_password'),
     path('check_otp/', password_validation.check_otp, name='check_otp'),
     path('verify_otp/', password_validation.verify_otp, name='verify_otp'),
+    path('send_otp_via_email/', password_validation.send_otp_via_email, name='send_otp_via_email'),
+    path('login_verify_otp/', password_validation.login_verify_otp, name='login_verify_otp'),
+
 
      # User help and support URLs
     path('add_faq/', user_help_pages.add_faq, name='add_faq'),
