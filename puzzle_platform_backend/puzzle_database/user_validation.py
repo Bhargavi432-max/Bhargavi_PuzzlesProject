@@ -8,6 +8,7 @@ from django.conf import settings
 from .models import CustomUser
 from .authentication import authenticate_user,authenticate_admin
 import re
+from django.core import serializers
 
 
 # This function handles the user registration.
@@ -145,6 +146,31 @@ def get_user_info(request):
             user.education = education
             user.save()
             return JsonResponse({'success': True, 'message': "stored successful"})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+    else:
+        return JsonResponse({'success': False, 'error': 'Only POST requests are allowed'}, status=405)
+    
+
+@csrf_exempt 
+def get_user_details(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        if email is None:
+            return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            user_data = {
+                'username': user.username,
+                'email': user.email,
+                'mobile_number': user.mobile_number,
+                'profile_image': str(user.profile_image),
+                'education': user.education,
+                'college_name': user.college_name,
+            }
+            return JsonResponse({'success': True, 'user_data': user_data})
         except CustomUser.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
     else:
