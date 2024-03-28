@@ -47,7 +47,7 @@ const PersonalInformationPage = () => {
           email: userData.email,
           education: userData.education,
           collegeName: userData.college_name,
-          imageFile: null // Initialize imageFile as null
+          imageFile: null, // Initialize imageFile as null
         });
       } else {
         console.error('Failed to fetch user information:', data.error);
@@ -63,11 +63,8 @@ const PersonalInformationPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-    console.log("Name:", name);
-    console.log("Value:", value);
-    console.log("Files:", files);
-    
-    if (name === 'profile_image') {
+  
+    if (name === 'imageFile') {
       setEditedInfo({
         ...editedInfo,
         [name]: files[0] // Store the selected file
@@ -79,33 +76,28 @@ const PersonalInformationPage = () => {
       });
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
   
-    const formData = new FormData();
-    formData.append('username', editedInfo.username);
-    formData.append('email', editedInfo.email);
-    formData.append('education', editedInfo.education);
-    formData.append('college_name', editedInfo.collegeName);
-    formData.append('profile_image', editedInfo.imageFile); // Check if imageFile is properly appended
-  
-    console.log("FormData:", formData); // Log FormData object to console
-  
     try {
       const response = await fetch('http://127.0.0.1:8000/api/get_user_info/', {
         method: 'POST',
-        body: formData
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editedInfo)
       });
-      if (response.ok) {
-        fetchUserInfo();
+      const data = await response.json();
+      if (response.ok && data.status === true) {
+        console.log(data.message);
         setIsEditing(false);
-        console.log('User information updated successfully');
+        // Fetch user information again to display the latest data
+        fetchUserInfo();
       } else {
-        throw new Error('Failed to update user information');
+        setError(data.message || 'Failed to update user information');
       }
     } catch (error) {
       console.error('Error updating user information:', error);
@@ -114,8 +106,6 @@ const PersonalInformationPage = () => {
       setLoading(false);
     }
   };
-  
-  
   
 
   return (
