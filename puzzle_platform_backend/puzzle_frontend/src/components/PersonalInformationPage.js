@@ -40,14 +40,14 @@ const PersonalInformationPage = () => {
           email: userData.email,
           education: userData.education,
           collegeName: userData.college_name,
-          imageUrl: userData.profile_image
+          imageFile: userData.profile_image
         });
         setEditedInfo({
           username: userData.username,
           email: userData.email,
           education: userData.education,
           collegeName: userData.college_name,
-          imageFile: null, // Initialize imageFile as null
+          imageFile: userData.profile_image, // Initialize imageFile as null
         });
       } else {
         console.error('Failed to fetch user information:', data.error);
@@ -81,6 +81,7 @@ const PersonalInformationPage = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    console.log({editedInfo});
   
     try {
       const response = await fetch('http://127.0.0.1:8000/api/get_user_info/', {
@@ -120,8 +121,8 @@ const PersonalInformationPage = () => {
             <p>Username: {userInfo.username}</p>
             <p>Email: {userInfo.email}</p>
             <p>Education: {userInfo.education}</p>
-            <p>College Name: {userInfo.collegeName}</p>
-            <img src={userInfo.imageUrl} alt="User" />
+            {userInfo.collegeName && <p>College Name: {userInfo.collegeName}</p>}
+            <img src={userInfo.imageFile} alt="User" />
           </div>
         </div>
       )}
@@ -138,7 +139,7 @@ const PersonalInformationPage = () => {
             <label htmlFor="collegeName">College Name:</label>
             <input type="text" name="collegeName" value={editedInfo.collegeName} onChange={handleInputChange} />
             <label htmlFor="imageFile">Profile Picture:</label>
-            <input type="file" name="imageFile" onChange={handleInputChange} accept="image/*" />
+            <input type="file" name="imageFile"  onChange={handleInputChange} accept="image/*" />
             <button type="submit" disabled={loading}>Save</button>
             {error && <p className="error-message">{error}</p>}
           </form>

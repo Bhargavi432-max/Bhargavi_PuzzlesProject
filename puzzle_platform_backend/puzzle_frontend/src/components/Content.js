@@ -5,8 +5,12 @@ import HomePage from "./HomePage";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { LogarithmicScale } from "chart.js";
 
 const Content = ({ selectedTask, puzzleData }) => {
+  const [videoWatchCount, setVideoWatchCount] = useState(0);
+  const [puzzleButtonClickCount, setPuzzleButtonClickCount] = useState(0);
+  const [puzzleCounts, setPuzzleCounts] = useState({});
   const [isWatchedCompletely, setIsWatchedCompletely] = useState(false);
   const [isVideoStarted, setIsVideoStarted] = useState(false);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
@@ -117,10 +121,12 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
 
   const handleDifficultyBoxButtonClick = (puzzleId) => {
+    console.log({puzzleCounts});
     const clickedPuzzle = puzzleData.find(
       (puzzle) => puzzle.puzzle_id === puzzleId
     );
     setisupdateskip(false);
+    
     console.log("click:", clickedPuzzle);
     if (!clickedPuzzle.puzzle_locked) {
       setSelectedPuzzle(clickedPuzzle);
@@ -157,6 +163,7 @@ const Content = ({ selectedTask, puzzleData }) => {
             setVideoPath(path);
             setKey((prevKey) => prevKey + 1);
             // setNextPuzzleId(data.next_puzzle_id); // Set the next puzzle id
+           
           } else {
             setPopupMessage(data.message);
           }
@@ -164,6 +171,16 @@ const Content = ({ selectedTask, puzzleData }) => {
         .catch((error) => {
           console.error("Error:", error);
         });
+        const currentPuzzleId = puzzleId;
+        if (currentPuzzleId) {
+          setPuzzleCounts((prevCounts) => ({
+            ...prevCounts,
+            [currentPuzzleId]: {
+              ...prevCounts[currentPuzzleId],
+              buttonClickCount: (prevCounts[currentPuzzleId]?.buttonClickCount || 0) + 1,
+            },
+          }));
+        }
     } else {
       setPopupMessage("Puzzle is Locked.Please Upgrade your plan to access it");
     }
@@ -186,6 +203,8 @@ const Content = ({ selectedTask, puzzleData }) => {
       if (!isupdateskip) {
         setisupdateskip(true);
         selectedPuzzle.puzzle_status = "incompleted";
+        const currentPuzzleId = selectedPuzzle.puzzle_id;
+        console.log({puzzleCounts});
         await fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
           method: "POST",
           headers: {
@@ -197,6 +216,8 @@ const Content = ({ selectedTask, puzzleData }) => {
             puzzle_id: selectedPuzzle.puzzle_id,
             puzzle_status: "incompleted",
             time_spent: "00:00:00.000",
+            video_count: puzzleCounts[currentPuzzleId]?.videoWatchCount || 0,
+            puzzle_count: puzzleCounts[currentPuzzleId]?.buttonClickCount || 0,
           }),
         })
           .then((response) => {
@@ -228,6 +249,16 @@ const Content = ({ selectedTask, puzzleData }) => {
       currentDateTime.toLocaleTimeString("en-US", { hour12: false });
     setStartTime(startTime);
     setIsVideoStarted(true);
+    const currentPuzzleId = selectedPuzzle?.puzzle_id;
+    if (currentPuzzleId) {
+      setPuzzleCounts((prevCounts) => ({
+        ...prevCounts,
+        [currentPuzzleId]: {
+          ...prevCounts[currentPuzzleId],
+          videoWatchCount: (prevCounts[currentPuzzleId]?.videoWatchCount || 0) + 1,
+        },
+      }));
+    }
   };
   const formatDuration = (totalSeconds) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -272,6 +303,8 @@ const Content = ({ selectedTask, puzzleData }) => {
       JSON.stringify(updatedCompletedPuzzles)
     );
     // Fetch request to mark puzzle status
+    const currentPuzzleId = selectedPuzzle.puzzle_id;
+    console.log({puzzleCounts});
     fetch("http://127.0.0.1:8000/api/mark_puzzle_status/", {
       method: "POST",
       headers: {
@@ -283,6 +316,8 @@ const Content = ({ selectedTask, puzzleData }) => {
         puzzle_id: selectedPuzzle.puzzle_id,
         puzzle_status: puzzleStatus,
         time_spent: duration,
+        video_count: puzzleCounts[currentPuzzleId]?.videoWatchCount || 0,
+        puzzle_count: puzzleCounts[currentPuzzleId]?.buttonClickCount || 0,
       }),
     })
       .then((response) => {
