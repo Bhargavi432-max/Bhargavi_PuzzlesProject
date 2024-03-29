@@ -205,10 +205,8 @@ def mark_puzzle_status(request):
             user_email = data.get('email')
             task_id = data.get('task_id')
             puzzle_id = data.get('puzzle_id')
-            # puzzle_count = data.get('puzzle_count')
-            # video_count = data.get('video_count')
-            puzzle_count = 0
-            video_count = 0
+            puzzle_count = data.get('puzzle_count')
+            video_count = data.get('video_count')
             puzzle_status = data.get('puzzle_status').lower()            
             time_spent = data.get('time_spent')
 
@@ -220,8 +218,8 @@ def mark_puzzle_status(request):
             status = UserDataTableStatus.objects.get(user=user, data_table=puzzle)
             user_subscription_type = Subscription.objects.get(user=user).plan_data.plan_type
 
-            status.puzzle_count = puzzle_count
-            status.video_count = video_count
+            status.puzzle_count += puzzle_count
+            status.video_count += video_count
             status.save()
 
             next_puzzles_part = str(int(puzzle_id[-2:])+1)
