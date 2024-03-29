@@ -134,8 +134,8 @@ def get_user_info(request):
         data = json.loads(request.body)
         print(data)
         email = data.get('email')
-        image_url = data.get('image_url')
-        college_name = data.get('college_name')
+        image_url = data.get('imageFile')
+        college_name = data.get('collegeName')
         education = data.get('education')
         print(image_url)
 

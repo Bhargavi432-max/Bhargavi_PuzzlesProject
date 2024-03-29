@@ -205,12 +205,14 @@ def mark_puzzle_status(request):
             user_email = data.get('email')
             task_id = data.get('task_id')
             puzzle_id = data.get('puzzle_id')
-            puzzle_count = data.get('puzzle_count')
-            video_count = data.get('video_count')
+            # puzzle_count = data.get('puzzle_count')
+            # video_count = data.get('video_count')
+            puzzle_count = 0
+            video_count = 0
             puzzle_status = data.get('puzzle_status').lower()            
             time_spent = data.get('time_spent')
 
-
+            print(puzzle_count,video_count)
             print(time_spent)
             
             user = CustomUser.objects.get(email=user_email)
