@@ -144,3 +144,13 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"{self.user.username} given {self.rating} rating"
+
+# Model for storing payments history
+class PaymentHistory(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    plan = models.ForeignKey(PlanTable, on_delete=models.CASCADE)
+    transaction_id = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}"

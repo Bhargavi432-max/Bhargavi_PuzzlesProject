@@ -4,7 +4,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest, JsonResponse,HttpResponseRedirect
 import json
-from .models import CustomUser,Subscription,PlanTable,UserDataTableStatus,DataTable
+from .models import CustomUser,Subscription,PlanTable,UserDataTableStatus,DataTable,PaymentHistory
 
 # Authorize razorpay client with API Keys.
 razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
@@ -75,6 +75,12 @@ def paymenthandler(request,email,amount):
                 user_plan_type = plan.plan_type
                 print(user_plan_type)
                 change_data_type(email,user_plan_type)
+
+                payment_history = PaymentHistory.objects.create(
+                    user=user,
+                    plan=plan,
+                    transaction_id=payment_id
+                )
                 # Handle payment success
                 # You might want to update your database or perform other actions here
                 return HttpResponseRedirect('http://localhost:3000/success')
@@ -115,3 +121,28 @@ def change_data_type(email,subscripton_type):
             puzzle_lock = UserDataTableStatus.objects.get(user=user,data_table=puzzle)
             puzzle_lock.puzzle_locked = False
             puzzle_lock.save()
+
+@csrf_exempt
+def get_payment_history(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        try:
+            user = CustomUser.objects.get(email=email)
+            user_payment_history = PaymentHistory.objects.filter(user=user)
+            payment_history_data = []
+
+            for history in user_payment_history:
+                payment_data = {
+                    'date': history.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+                    'action': 'Payment',
+                    'transaction_id': history.transaction_id,
+                    'amount': history.plan.plan_price
+                }
+                payment_history_data.append(payment_data)
+
+            return JsonResponse({'payment_history': payment_history_data})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
