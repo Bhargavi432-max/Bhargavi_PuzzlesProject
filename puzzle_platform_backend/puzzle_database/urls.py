@@ -27,8 +27,6 @@ urlpatterns = [
     path('get_subscription_details/', user_help_pages.get_subscription_details, name='get_subscription_details'),
     path('get_all_plans/', user_help_pages.get_all_plans, name='get_all_plans'),
 
-    
-
     # Puzzle data and statistics URLs
     path('get_ids/', views.get_all_full_ids, name='get_ids'),
     path('get_user_statistics/', views.get_user_statistics, name='get_user_statistics'),
@@ -39,8 +37,6 @@ urlpatterns = [
     path('link_subscription_user/', views.link_subscription_user, name='link_subscription_user'),
     path('buy_puzzle/', views.buy_puzzle, name='buy_puzzle'),
     path('check_puzzle_locked/', views.check_puzzle_locked, name='check_puzzle_locked'),
-
-    
 
     # Json File Reading URLs
     path('read_json_file_view/', read_json_data.read_json_file_view, name='read_json_file_view'),

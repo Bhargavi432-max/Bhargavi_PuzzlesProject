@@ -109,10 +109,13 @@ def user_login(request):
         user = authenticate_user(email, password)
         if user is not None:
             if user.is_active:
-                user.login_status = True
-                user.save()
-                # login(request, user)
-                return JsonResponse({'message': 'User login successful', 'login_status': user.login_status})
+                if user.is_twostep_active:
+                    return JsonResponse({'message': 'Need two step verification', 'login_status': user.login_status,'twostep': user.is_twostep_active})
+                else:
+                    user.login_status = True
+                    user.save()
+                    # login(request, user)
+                    return JsonResponse({'message': 'User login successful', 'login_status': user.login_status,'twostep': user.is_twostep_active})
             else:
                 return JsonResponse({'message': 'User account is not active', 'login_status': False})
         

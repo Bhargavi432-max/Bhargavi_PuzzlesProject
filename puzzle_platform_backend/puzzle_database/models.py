@@ -13,6 +13,7 @@ class CustomUser(models.Model):
     profile_image = models.ImageField(upload_to='puzzle_frontend/src/profile_image', null=True, blank=True)
     education = models.CharField(max_length=100, null=True, blank=True)
     college_name = models.CharField(max_length=150, null=True, blank=True)
+    is_twostep_active = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
