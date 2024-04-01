@@ -446,9 +446,15 @@ const Content = ({ selectedTask, puzzleData }) => {
                 {i + index + 1}
               </button>
               {i === 0 && ( // Conditionally add tooltip to buttons in the first row
-            <div className={`tooltip tooltip-bottom`}>{selectedPuzzle?.puzzle_id}</div>
+            <div className="tooltip tooltip-bottom">
+              <div>Puzzle Count: {puzzle.puzzle_count}</div>
+              <div>Video Count: {puzzle.video_count}</div>
+            </div>
           )}
-              <div className="tooltip">{selectedPuzzle?.puzzle_id}</div>
+              <div className="tooltip">
+              <div>Puzzle Count: {puzzle.puzzle_count}</div>
+              <div>Video Count: {puzzle.video_count}</div>
+              </div>
               {puzzle.puzzle_locked && (
                 <img src={LockIcon} className="lock-icon" alt="Locked" />
               )}

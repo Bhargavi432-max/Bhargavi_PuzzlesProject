@@ -235,7 +235,7 @@
 .question-question {
   margin-top: 15px;
   font-size: 12px;
-  font-family: "Acme-Regular", Helvetica;
+  font-family: Helvetica;
   justify-content: flex-start; /* Align content to start from the left */
   text-align: left; /* Ensure text starts from the left */
   margin-left: 10px;
@@ -490,6 +490,16 @@
   bottom: calc(100% + 5px); /* Position the tooltip just above the button */
   left: 50%;
   transform: translateX(-50%);
+  height: 30px; /* Set height to auto to accommodate multiple lines */
+  width: 100px; /* Set width to auto to accommodate longer content */
+  max-width: 200px;
+  font-size: small; /* Limit maximum width to prevent tooltip from becoming too wide */
+}
+
+/* Show the tooltip when hovering over the button container */
+.button-container:hover .tooltip {
+  visibility: visible;
+  width: 100px;
 }
 
 /* Tooltip tip */
@@ -504,13 +514,10 @@
   border-color: rgb(255, 255, 255) transparent transparent transparent; /* Triangle tip with transparent top border */
 }
 
-
-/* Show the tooltip when hovering over the button container */
-.button-container:hover .tooltip {
-  visibility: visible;
-}
-.tooltip tooltip-bottom {
-  bottom: calc(100% + 5px);
+/* Position the tooltip below the button container */
+.tooltip.tooltip-bottom::before {
+  bottom: calc(100% - 5px); /* Adjust to position the tooltip just above the button */
   left: 50%;
   transform: translateX(-50%);
+  width: 100px;
 }
