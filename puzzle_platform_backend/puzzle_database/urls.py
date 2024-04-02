@@ -7,8 +7,8 @@ urlpatterns = [
     path('user_login/', user_validation.user_login, name='user_login'),
     path('get_user_info/', user_validation.get_user_info, name='get_user_info'),
     path('get_user_details/', user_validation.get_user_details, name='get_user_details'),
-    path('get_twostep_status/', views.get_twostep_status, name='get_twostep_status'),
-    path('update_twostep_status/', views.update_twostep_status, name='update_twostep_status'),
+    path('get_twostep_status/', user_validation.get_twostep_status, name='get_twostep_status'),
+    path('update_twostep_status/', user_validation.update_twostep_status, name='update_twostep_status'),
 
     
      # Password management URLs
