@@ -201,7 +201,7 @@ def get_twostep_status(request):
 
 @csrf_exempt
 def update_twostep_status(request):
-    if request.method == 'PUT':
+    if request.method == 'POST':
         data = json.loads(request.body)
         email = data.get('email')
         is_twostep_active = data.get('is_twostep_active')
