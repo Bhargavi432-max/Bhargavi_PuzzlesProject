@@ -1,0 +1,91 @@
+/* SecurityPage.css */
+.securtytext-box {
+    display: flex;
+    border-bottom: rgba(141, 141, 141, 0.473) 3px solid;
+    height: 30px;
+  }
+  
+  .security-teaxt {
+    top: 10px;
+    left: 0;
+  }
+  
+  .toggle-slider {
+    display: flex;
+    align-items: center;
+  }
+  
+  .toggle-slider span {
+    margin-right: 100px;
+  }
+  
+  .slider {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 34px;
+    cursor: pointer;
+    transition: 0.4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: '';
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+  }
+  
+  input[type='checkbox'] {
+    display: none;
+  }
+  
+  input[type='checkbox']:checked + .slider {
+    background-color: #2196f3;
+  }
+  
+  input[type='checkbox']:checked + .slider:before {
+    transform: translateX(16px);
+  }
+  
+  .change-password-button {
+    width: 144.224px;
+    height: 34.651px;
+    border-radius: 6.556px;
+    background: rgba(79, 128, 225, 0.15);
+    border: none;
+    color: #224893;
+    font-family: Inter;
+    font-size: 13.018px;
+    font-style: normal;
+    font-weight: 500;
+
+  }
+.verification-option{
+    display: flex;
+    padding: 20px 0;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 14.984px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20.603px; /* 137.5% */
+    text-decoration-line: underline;
+}
+.security-option{
+    margin-bottom: 50px;
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 14.984px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20.603px; /* 137.5% */
+}
