@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import './PersonalInformationPage.css';
+import image from "../profile_image/Screenshot_3_iIsJJSy.png";
 
 const PersonalInformationPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [imagepath ,setImagePath]= useState(null);
   const [editedInfo, setEditedInfo] = useState({
     username: '',
     email: '',
@@ -35,19 +37,23 @@ const PersonalInformationPage = () => {
       if (data.success) {
         console.log({data});
         const userData = data.user_data;
+        const imageFileName = userData.profile_image;
+            const filePath = imageFileName;
+            const filename = filePath.split("/").pop();
+            const path = require("../profile_image/" + filename);
+            setImagePath(path);
         setUserInfo({
           username: userData.username,
           email: userData.email,
           education: userData.education,
           collegeName: userData.college_name,
-          imageFile: userData.profile_image
         });
         setEditedInfo({
           username: userData.username,
           email: userData.email,
           education: userData.education,
           collegeName: userData.college_name,
-          imageFile: userData.profile_image, // Initialize imageFile as null
+          imageFile: imagepath // Initialize imageFile as null
         });
       } else {
         console.error('Failed to fetch user information:', data.error);
@@ -107,7 +113,6 @@ const PersonalInformationPage = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div>
@@ -116,30 +121,46 @@ const PersonalInformationPage = () => {
       </div>
       {userInfo && !isEditing && (
         <div>
-          <h2>General Information</h2>
-          <div>
-            <p>Username: {userInfo.username}</p>
-            <p>Email: {userInfo.email}</p>
-            <p>Education: {userInfo.education}</p>
-            {userInfo.collegeName && <p>College Name: {userInfo.collegeName}</p>}
-            <img src={userInfo.imageFile} alt="User" />
+        <div className='maintext-personal'><h4 className='text-personal'>General Information</h4></div>
+        <div className='details-container'>
+          <div className='person-image'>
+          <img src={imagepath} alt="User" />
           </div>
+          <div className='details-box'>
+        <p>Username: {userInfo.username}</p>
+        <p>Email: {userInfo.email}</p>
+        <p>Education: {userInfo.education}</p>
+        {userInfo.collegeName && <p>College Name: {userInfo.collegeName}</p>}
+      </div>
         </div>
-      )}
+      </div>
+    )}
       {isEditing && (
         <div>
-          <h2>Edit Information</h2>
+          <div className='text-edit'><div className='text-editinfo'>Edit Information</div></div>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="username">Username:</label>
+          <div className='edit-from'> 
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
             <input type="text" name="username" value={editedInfo.username} onChange={handleInputChange} />
-            <label htmlFor="email">Email:</label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input type="email" name="email" value={editedInfo.email} onChange={handleInputChange} />
-            <label htmlFor="education">Education:</label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="education">Education</label>
             <input type="text" name="education" value={editedInfo.education} onChange={handleInputChange} />
-            <label htmlFor="collegeName">College Name:</label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="collegeName">College Name</label>
             <input type="text" name="collegeName" value={editedInfo.collegeName} onChange={handleInputChange} />
-            <label htmlFor="imageFile">Profile Picture:</label>
-            <input type="file" name="imageFile"  onChange={handleInputChange} accept="image/*" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="imageFile">Profile Picture</label>
+            <input type="file" name="imageFile" onChange={handleInputChange} accept="image/*" />
+          </div>
+          </div> 
             <button type="submit" disabled={loading}>Save</button>
             {error && <p className="error-message">{error}</p>}
           </form>
@@ -147,6 +168,7 @@ const PersonalInformationPage = () => {
       )}
     </div>
   );
+  
 };
 
 export default PersonalInformationPage;
