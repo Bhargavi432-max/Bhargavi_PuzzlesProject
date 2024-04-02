@@ -15,7 +15,7 @@ function HomePage( ) {
   };
 
   const Navbar = () => {
-    const pages = ['Dashboard', 'Task Level', 'My Task', 'Help and Support', 'Wallet', 'Settings', 'Sign Out'];
+    const pages = ['Dashboard', 'Task Level', 'Help and Support', 'Wallet', 'Settings'];
 
     return (
       <div className="home-nav">
@@ -36,16 +36,12 @@ function HomePage( ) {
         return <DashboardPage />;
       case 'Task Level':
         return <TaskLevel />;
-      case 'My Task':
-        return <div>My Task Page</div>;
       case 'Help and Support':
         return <Helpandsupport />;
       case 'Wallet':
         return  <Wallet />;
       case 'Settings':
         return <SettingsPage />;
-      case 'Sign Out':
-        return <div>Sign Out Page</div>;
       default:
         return null;
     }

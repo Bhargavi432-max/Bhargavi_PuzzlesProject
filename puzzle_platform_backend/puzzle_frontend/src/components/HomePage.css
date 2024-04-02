@@ -24,6 +24,7 @@
   cursor: pointer;
   font-size: 13px;
   font-family: "Poppins-semiBold", Helvetica;
+  margin-top: 15px;
 }
 
 .home-nav li:hover {
