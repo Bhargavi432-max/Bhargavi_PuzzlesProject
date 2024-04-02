@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import './PersonalInformationPage.css';
-import image from "../profile_image/Screenshot_3_iIsJJSy.png";
+import def from "./defualtImage.jpg";
 
 const PersonalInformationPage = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -38,10 +38,15 @@ const PersonalInformationPage = () => {
         console.log({data});
         const userData = data.user_data;
         const imageFileName = userData.profile_image;
-            const filePath = imageFileName;
-            const filename = filePath.split("/").pop();
-            const path = require("../profile_image/" + filename);
-            setImagePath(path);
+        if (imageFileName) {
+          const filePath = imageFileName;
+          const filename = filePath.split("/").pop();
+          const path = require("../profile_image/" + filename);
+          setImagePath(path);
+        } else {
+          // Set default image path if no image is provided
+          setImagePath(def);
+        }
         setUserInfo({
           username: userData.username,
           email: userData.email,
@@ -124,7 +129,7 @@ const PersonalInformationPage = () => {
         <div className='maintext-personal'><h4 className='text-personal'>General Information</h4></div>
         <div className='details-container'>
           <div className='person-image'>
-          <img src={imagepath} alt="User" />
+          <img src={imagepath || def} alt="User" />
           </div>
           <div className='details-box'>
         <p>Username: {userInfo.username}</p>
