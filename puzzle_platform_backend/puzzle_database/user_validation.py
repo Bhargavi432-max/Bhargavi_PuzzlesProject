@@ -137,7 +137,7 @@ def get_user_info(request):
         data = json.loads(request.body)
         print(data)
         email = data.get('email')
-        image_url = data.get('imageFile')
+        image_url =  'puzzle_frontend/src/profile_image/'+'tmach.png'
         college_name = data.get('collegeName')
         education = data.get('education')
         print(image_url)
@@ -181,3 +181,41 @@ def get_user_details(request):
             return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
     else:
         return JsonResponse({'success': False, 'error': 'Only POST requests are allowed'}, status=405)
+
+
+@csrf_exempt
+def get_twostep_status(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        if email is None:
+            return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            return JsonResponse({'success': True, 'is_twostep_active': user.is_twostep_active})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+    else:
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+
+@csrf_exempt
+def update_twostep_status(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        email = data.get('email')
+        is_twostep_active = data.get('is_twostep_active')
+        if email is None:
+            return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
+        if is_twostep_active is None:
+            return JsonResponse({'success': False, 'error': 'is_twostep_active is required'}, status=400)
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            user.is_twostep_active = is_twostep_active
+            user.save()
+            return JsonResponse({'success': True, 'message': "is_twostep_active updated successfully"})
+        except CustomUser.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+    else:
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
