@@ -14,6 +14,7 @@ import { EmailProvider } from "./components/EmailContext";
 import HomePage from "./components/HomePage";
 import PaymentFailPage from "./components/PaymentFailPage";
 import PaymentSuccessPage from "./components/PaymentSuccessPage";
+import TwoStepOtp from "./components/TwoStepOtp";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path ="/home" element={<HomePage/>} />
             <Route path="/fail" element={<PaymentFailPage />} />
             <Route path ="/success" element={<PaymentSuccessPage/>} />
+            <Route path ="/twostepotp" element={<TwoStepOtp/>} />
           </Routes>
         </EmailProvider>
       </div>
