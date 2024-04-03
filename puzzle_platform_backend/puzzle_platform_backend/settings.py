@@ -127,18 +127,19 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:3000",  # Allow requests from this origin
 ]
 
+# Email settings for Django
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER ='finalproject565@gmail.com'
-EMAIL_HOST_PASSWORD ='nkbzlbngoxdkmxxi'
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
+EMAIL_PORT = 587  # Gmail SMTP port
+EMAIL_USE_TLS = True  # Use TLS encryption for secure communication
+EMAIL_HOST_USER ='finalproject565@gmail.com'  # Gmail account to send emails from
+EMAIL_HOST_PASSWORD ='nkbzlbngoxdkmxxi'  # Password for the Gmail account
 
-RAZOR_KEY_ID = 'rzp_live_eSbRcu4kQn8Sm3'
-RAZOR_KEY_SECRET = 'AJcGwBS3OuidpfkPs5effJqW'
+# Razorpay API credentials
+RAZOR_KEY_ID = 'rzp_live_eSbRcu4kQn8Sm3'  # Razorpay API key ID
+RAZOR_KEY_SECRET = 'AJcGwBS3OuidpfkPs5effJqW'  # Razorpay API key secret

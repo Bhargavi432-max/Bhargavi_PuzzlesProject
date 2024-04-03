@@ -18,6 +18,6 @@ from django.contrib import admin
 from django.urls import path,include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('puzzle_database.urls'))
+    path('admin/', admin.site.urls),                # Admin site URL
+    path('api/', include('puzzle_database.urls'))   # Include URLs from the puzzle_database app under the /api/
 ]
