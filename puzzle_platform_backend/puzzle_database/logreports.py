@@ -15,16 +15,17 @@ def log_login_register_otp(request):
             data = json.loads(request.body)
             user_email = data.get('email')
             action_item = data.get('action_item')
-            print(user_email,action_item)
-            user = CustomUser.objects.get(email=user_email)
-            print(user)
+
+            # Retrieve user object based on the provided email
+            user = CustomUser.objects.get(email=user_email) 
+
+             # Create a LogReport instance to log the action
             log_report = LogReport(
                 user=user,
                 action_item=action_item,
             )
-            print(log_report)
-            log_report.save()
-            print(log_report)
+            log_report.save()    
+
             return JsonResponse({'status': True, 'message': 'User login status log entered'})
 
         except CustomUser.DoesNotExist:
@@ -44,16 +45,16 @@ def log_task_click(request):
             user_email = data.get('email')
             task_id = data.get('task_id')
             action_item = data.get('action_item')   
-            print('Task Click')
-            print(user_email,task_id,action_item)
+
+            # Retrieve user object based on the provided email
             user = CustomUser.objects.get(email=user_email)
 
+            # Create a LogReport instance to log the task click action
             log_entry = LogReport(
                 user=user,
                 task_id=task_id,
                 action_item=action_item,
             )
-            print(log_entry)
             log_entry.save()
 
             return JsonResponse({'status': True, 'message': 'Task click log entered'})
@@ -65,6 +66,7 @@ def log_task_click(request):
 
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
+
 
 # This function enter puzzle data log reports.
 @csrf_exempt

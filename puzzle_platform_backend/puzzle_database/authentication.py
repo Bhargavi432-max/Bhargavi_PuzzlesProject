@@ -4,7 +4,7 @@ from .models import CustomUser, Admin
 # This function is used to authenticate an admin based on email and password.
 def authenticate_admin(email, password):
     try:
-        admin = Admin.objects.get(admin_email=email)
+        admin = Admin.objects.get(admin_email=email)  # Retrieve admin based on provided email
         if admin.admin_password == password:
             return admin
         else:
@@ -15,7 +15,7 @@ def authenticate_admin(email, password):
 # This function is used to authenticate a custom user based on email and password.
 def authenticate_user(email, password):
     try:
-        user = CustomUser.objects.get(email=email)
+        user = CustomUser.objects.get(email=email)  # Retrieve user based on provided email
         if check_password(password, user.password):
             return user
         else:

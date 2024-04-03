@@ -126,7 +126,9 @@ def change_data_type(email,subscripton_type):
 def get_payment_history(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        print(data)
         email = data.get('email')
+        print(email)
         try:
             user = CustomUser.objects.get(email=email)
             user_payment_history = PaymentHistory.objects.filter(user=user)
@@ -140,9 +142,10 @@ def get_payment_history(request):
                     'amount': history.plan.plan_price
                 }
                 payment_history_data.append(payment_data)
+                print(payment_history_data)
 
-            return JsonResponse({'payment_history': payment_history_data})
+            return JsonResponse({'success':True,'payment_history': payment_history_data})
         except CustomUser.DoesNotExist:
-            return JsonResponse({'error': 'User not found'}, status=404)
+            return JsonResponse({'success':False,'error': 'User not found'}, status=404)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
