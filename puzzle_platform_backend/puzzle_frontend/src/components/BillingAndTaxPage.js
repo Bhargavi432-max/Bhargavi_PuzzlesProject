@@ -1,13 +1,14 @@
-// BillingAndTaxPage.js
-import React ,{useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
+import './BillingAndTaxPage.css'; // Import the CSS file for styling
 
 const BillingAndTaxPage = () => {
+  const [paymentHistory, setPaymentHistory] = useState([]);
+
   useEffect(() => {
-    // Fetch user information from the backend when the component mounts
-    fetchbilldetails();
+    fetchBillDetails();
   }, []);
 
-  const fetchbilldetails = async () => {
+  const fetchBillDetails = async () => {
     const email = localStorage.getItem('email');
     try {
       const response = await fetch('http://127.0.0.1:8000/api/get_payment_history/', {
@@ -19,17 +20,40 @@ const BillingAndTaxPage = () => {
       });
       const data = await response.json();
       if (data.success) {
-        console.log({data});
+        setPaymentHistory(data.payment_history);
       } else {
-        console.error('Failed to fetch user information:', data.error);
+        console.error('Failed to fetch payment history:', data.error);
       }
     } catch (error) {
-      console.error('Error fetching user information:', error);
+      console.error('Error fetching payment history:', error);
     }
   };
+
   return (
     <div>
       <h2>Billing and Tax Page</h2>
+      <div className="table-container"> {/* Wrap the table in a container */}
+        <table className="payment-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Action</th>
+              <th>Transaction ID</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paymentHistory.map((payment, index) => (
+              <tr key={index}>
+                <td>{payment.date}</td>
+                <td>{payment.action}</td>
+                <td>{payment.transaction_id}</td>
+                <td>{payment.amount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
