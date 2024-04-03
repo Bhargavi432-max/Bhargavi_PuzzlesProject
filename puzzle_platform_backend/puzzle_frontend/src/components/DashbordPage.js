@@ -55,11 +55,12 @@ const DashboardPage = () => {
               {responseData?.user_statistics.username}
             </div>
             <div className="user-branch">
-              <FaGraduationCap className="icon" /> B.E computer science
+              <FaGraduationCap className="icon" />
+              {responseData?.user_statistics.education}
             </div>
             <div className="user-clg">
-              <FaUniversity className="icon" /> SRM institute of science and
-              technology
+              <FaUniversity className="icon" />{" "}
+              {responseData?.user_statistics.college_name}
             </div>
           </div>
         </div>

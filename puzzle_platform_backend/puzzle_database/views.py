@@ -119,6 +119,8 @@ def get_user_statistics(request):
                 'percentage_completed_by_level': percentage_completed_by_level,
                 'completed_each_task':completed_in_tasks,
                 'username':user.username,
+                'college_name':user.college_name,
+                'education':user.education,
             }
             print(user_statistics)
 
