@@ -46,10 +46,13 @@ export const Login = () => {
           setEmailContext(email);
           localStorage.setItem("email", email);
           toast.success("Login Successful", { autoClose: 1000 });
-
-          setTimeout(() => {
-            navigate("/puzzlepage");
-          }, 1000);
+          if (data.twostep) {
+            navigate("/twostepotp");
+          } else {
+            setTimeout(() => {
+              navigate("/puzzlepage");
+            }, 1000);
+          }
         } else {
           // setError(data.message);
           toast.error(data.message);
