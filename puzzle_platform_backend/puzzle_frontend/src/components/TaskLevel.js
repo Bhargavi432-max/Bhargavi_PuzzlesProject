@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Doughnut } from "react-chartjs-2"; // Import Doughnut from react-chartjs-2
 import "./TaskLevel.css"; // Import CSS file
 import TimeTakenChart from "./AreaChart";
@@ -6,9 +6,10 @@ import TaskDataChart from "./TaskDataChart";
 
 function TaskLevel() {
   const [responseData, setResponseData] = useState(null);
+  const [activeButton, setActiveButton] = useState(null);
   const email = localStorage.getItem("email");
 
-  const handleClick = async (taskId) => {
+  const handleClick = async (taskId, index) => {
     try {
       const response = await fetch(
         "http://127.0.0.1:8000/api/get_user_taskwise_statistics/",
@@ -28,6 +29,7 @@ function TaskLevel() {
         const data = await response.json();
         console.log(data);
         setResponseData(data);
+        setActiveButton(index);
       } else {
         console.error("Error fetching data:", response.statusText);
       }
@@ -68,7 +70,11 @@ function TaskLevel() {
     <div className="task-level-container">
       <div className="button-container">
         {[...Array(25)].map((_, index) => (
-          <button className="butoon-level" key={index} onClick={() => handleClick(index + 1)}>
+          <button
+            className={`button-level${activeButton === index ? " active" : ""}`} // Apply 'active' class if the button is active
+            key={index}
+            onClick={() => handleClick(index + 1, index)}
+          >
             Task {index + 1}
           </button>
         ))}
@@ -78,10 +84,6 @@ function TaskLevel() {
           <div>
             <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="chart-details">
-                {/* <div className="chart-name-details">
-                  <h5 className="stat-text">Statistics</h5>
-                  <h3 className="det-text">View Count</h3>
-                </div> */}
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div className="chart-levels">{renderLegend()}</div>
 
@@ -131,11 +133,19 @@ function TaskLevel() {
                 </div>
               </div>
               <div className="timetakenchart">
-              <TimeTakenChart timeTakenData={responseData.user_statistics.time_taken} />
+                <TimeTakenChart
+                  timeTakenData={
+                    responseData.user_statistics.time_taken
+                  }
+                />
               </div>
             </div>
             <div className="linechart">
-            <TaskDataChart completedPuzzlesByDate={responseData.user_statistics.completed_puzzles_by_date} />
+              <TaskDataChart
+                completedPuzzlesByDate={
+                  responseData.user_statistics.completed_puzzles_by_date
+                }
+              />
             </div>
           </div>
         ) : (
