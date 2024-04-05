@@ -12,151 +12,6 @@ import os
 from django.core import serializers
 
 
-# This function handles the user registration.
-@csrf_exempt
-def register_user(request):
-    if request.method == 'POST':
-        try:
-            # Load request body data
-            data = json.loads(request.body)
-            # Extract user details from request body
-            username = data.get('username')
-            password = data.get('password')
-            email = data.get('email')
-            mobile_number = data.get('mobile_number')
-
-            # Check if all required fields are provided
-            if not (username and email and password and mobile_number):
-                return JsonResponse({'status': False, 'message': 'All fields are required'})
-
-            # Check if username already exists
-            if CustomUser.objects.filter(username=username).exists():
-                return JsonResponse({'status': False, 'message': 'Username already exists'})
-            # Check if email already exists
-            if CustomUser.objects.filter(email=email).exists():
-                return JsonResponse({'status': False, 'message': 'Email already exists'})
-            # Check if mobile number format is valid
-            if not re.match(r'^[6-9]\d{9}$', mobile_number):
-                return JsonResponse({'status': False, 'message': 'Invalid mobile number format'})
-
-            # Generate OTP for account activation
-            otp = str(random.randint(100000, 999999))
-
-            # Hash password for security
-            hashed_password = make_password(password)
-            # Create new user with provided details
-            new_user = CustomUser.objects.create(
-                username=username,
-                email=email,
-                password=hashed_password,
-                mobile_number=mobile_number,
-                otp=otp,
-                is_active=False
-            )
-
-            # Email message content with OTP
-            html_message = f"""
-                <html>
-                    <head>
-                        <style>
-                            body {{
-                                font-family: 'Arial', sans-serif;
-                                background-color: #f4f4f4;
-                                color: #333;
-                            }}
-                            .container {{
-                                max-width: 600px;
-                                margin: 0 auto;
-                                padding: 20px;
-                                background-color: #fff;
-                                border-radius: 5px;
-                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                            }}
-                            .logo {{
-                                max-width: 100px;
-                                height: auto;
-                                margin-bottom: 20px;
-                            }}
-                            .otp-message {{
-                                font-size: 16px;
-                                color: #333;
-                                margin-bottom: 20px;
-                            }}
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <p class="otp-message">Dear user, your OTP for account activation at T-Machine School of Python is: <strong>{otp}</strong></p>
-                        </div>
-                    </body>
-                </html>
-                """
-
-            # Send email with OTP for account activation
-            send_mail(
-                'Account Activation OTP',
-                'Plain text version of the message (not displayed in HTML-enabled clients)',
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-                fail_silently=False,
-                html_message=html_message,
-            )
-            return JsonResponse({'status': True, 'message': 'User registered successfully. Please check your email for OTP.'})
-        except json.JSONDecodeError:
-            return JsonResponse({'status': False, 'message': 'Invalid JSON format in the request body'}, status=400)
-        except Exception as e:
-            return JsonResponse({'status': False, 'message': f'Error occurred while registering user: {str(e)}'}, status=500)
-
-    else:
-        # Handle non-POST requests
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=400)
-
-
-# This function handles user login.
-@csrf_exempt
-def user_login(request):
-    if request.method == 'POST':
-        try:
-            # Load request body as JSON data
-            data = json.loads(request.body)
-            # Extract email and password from JSON data
-            email = data.get('email')
-            password = data.get('password')
-            
-            # Authenticate user with provided credentials
-            user = authenticate_user(email, password)
-            if user is not None:
-                if user.is_active:
-                    if user.is_twostep_active:
-                        # If two-step verification is active, return a message indicating it
-                        return JsonResponse({'message': 'Need two-step verification', 'login_status': user.login_status, 'twostep': user.is_twostep_active})
-                    else:
-                        # Update user login status and return a successful login message
-                        user.login_status = True
-                        user.save()
-                        return JsonResponse({'message': 'User login successful', 'login_status': user.login_status, 'twostep': user.is_twostep_active})
-                else:
-                    # If user account is not active, return a message indicating it
-                    return JsonResponse({'message': 'User account is not active', 'login_status': False})
-            
-            # Authenticate admin with provided credentials
-            admin = authenticate_admin(email, password)
-            if admin is not None:
-                # Update admin login status and return a successful login message
-                admin.login_status = True
-                admin.save()
-                return JsonResponse({'message': 'Admin login successful', 'login_status': admin.login_status})
-
-            # If authentication fails, return a message indicating invalid credentials
-            return JsonResponse({'message': 'Invalid username or password', 'login_status': False})
-        except json.JSONDecodeError:
-            # If JSON decoding fails, return an error message
-            return JsonResponse({'message': 'Invalid JSON format in the request body'}, status=400)
-    else:
-        # If request method is not POST, return a message indicating only POST requests are allowed
-        return JsonResponse({'message': 'Only POST requests are allowed', 'login_status': False})
-
-    
 
 # This function retrieves user information and updates it if necessary.
 @csrf_exempt 
@@ -230,6 +85,8 @@ def get_user_details(request):
         # If request method is not POST, return a message indicating only POST requests are allowed
         return JsonResponse({'success': False, 'error': 'Only POST requests are allowed'}, status=405)
 
+
+# View for getting 2 step verification.
 @csrf_exempt
 def get_twostep_status(request):
     if request.method == 'POST':
@@ -257,6 +114,7 @@ def get_twostep_status(request):
         # If request method is not POST, return a message indicating only POST requests are allowed
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
+# View for updating 2 step verification.
 @csrf_exempt
 def update_twostep_status(request):
     if request.method == 'POST':
