@@ -10,7 +10,7 @@
     border: 1px solid #ccc;
     padding: 10px;
     height: 100px;
-    width: 1020px;
+    width: 1025px;
     border-radius: 10px;
     background-color: #D3D8F9;
     margin-left: 30px;
@@ -35,7 +35,7 @@
 .username {
     color: #3B4AB4;
     font-family: "Inter-SemiBold", Helvetica;
-    font-size: 27.1px;
+    font-size: 26px;
     font-weight: 600;
     margin-right: 100px; /* Adjust as needed */
 }

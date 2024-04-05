@@ -109,7 +109,7 @@ const BalancePage = () => {
           </div>
         </div>
       )}
-      <h1>Balance:</h1>
+      <h1>Add money to Wallet</h1>
       <input
         type="text"
         value={balance}

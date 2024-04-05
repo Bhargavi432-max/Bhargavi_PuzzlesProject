@@ -38,3 +38,15 @@
     margin-right: 100px; /* Adjust as needed */
     margin-top: 20px;
 }
+.wallet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 100px;
+    width: 1000px;
+    border-radius: 10px;
+    background-color: #D3D8F9;
+    margin-left: 20px;
+}
