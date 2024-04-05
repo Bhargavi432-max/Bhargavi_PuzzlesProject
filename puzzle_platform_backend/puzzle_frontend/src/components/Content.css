@@ -84,7 +84,7 @@
     display: flex;
     justify-content: flex-start;
     gap: 17px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 .puzzle-details {
   display: flex;
@@ -470,8 +470,13 @@
   .button-container {
     width: 50%; /* Each container takes up 50% of the width */
     margin-bottom: 10px; /* Add margin between rows */
-
   }
+  .button-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: 17px;
+    flex-wrap: nowrap;
+}
 }
 .button-container {
   position: relative;
