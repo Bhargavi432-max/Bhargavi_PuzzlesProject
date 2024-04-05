@@ -11,13 +11,23 @@ const SettingsPage = () => {
   const handleSettingChange = (settingName) => {
     setActiveSetting(settingName);
   };
+  const handleSave = () => {
+    // Perform save operation or any other logic here
+    
+    // Refresh the page
+    window.location.reload();
+    
+    // Set active setting back to 'Personal Information'
+    setActiveSetting('Personal Information');
+  };
+  
 
   return (
     <div className="settings-page">
       <div className="settings-header">
         <div className='setting-text'>Manage your account settings</div>
         <div className="settings-buttons">
-          <button className="save-button">Save Changes</button>
+          <button className="save-button" onClick={handleSave}>Save Changes</button>
           <button className="cancel-button">Cancel</button>
         </div>
       </div>
