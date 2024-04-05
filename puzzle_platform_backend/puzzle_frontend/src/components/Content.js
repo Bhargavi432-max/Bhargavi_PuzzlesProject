@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import LockIcon from "./Images/Vector.png";
 import "./Content.css";
-import HomePage from "./HomePage";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { LogarithmicScale } from "chart.js";
 
 const Content = ({ selectedTask, puzzleData }) => {
   const [videoWatchCount, setVideoWatchCount] = useState(0);
@@ -445,15 +443,24 @@ const Content = ({ selectedTask, puzzleData }) => {
                 <div className="tooltip-first-button">
                   {/* Render tooltip for the first button */}
                   <div className="tooltip-content">
-                  <div>Puzzle Count: {puzzle.puzzle_count}</div>
+                      <div>{puzzle.puzzle_name}</div>
+                      <div>Video Count: {puzzle.video_count}</div>
+                    </div>
+                </div>
+              )}
+              {(index === 5 && i===0)  && (
+                <div className="tooltip-last-button">
+                  {/* Render tooltip for the first button */}
+                  <div className="tooltip-content">
+                    <div>{puzzle.puzzle_name}</div>
                     <div>Video Count: {puzzle.video_count}</div>
                   </div>
                 </div>
               )}
-              {(i === 0 && index !==0) && (
+              {(i === 0 && index !==0 && !((i + index + 1) % 6 === 0)) && (
                 <div className="tooltips">
                   <div className="tooltips-content">
-                    <div>Puzzle Count: {puzzle.puzzle_count}</div>
+                    <div>{puzzle.puzzle_name}</div>
                     <div>Video Count: {puzzle.video_count}</div>
                   </div>
                 </div>
@@ -461,23 +468,27 @@ const Content = ({ selectedTask, puzzleData }) => {
               {(i !== 0 && index === 0) && (
                 <div className="tooltip-right"> {/* Render tooltip to the right */}
                   <div className="tooltip-content">
-                    <div>Puzzle Count: {puzzle.puzzle_count}</div>
+                    <div>{puzzle.puzzle_name}</div>
                     <div>Video Count: {puzzle.video_count}</div>
                   </div>
                 </div>
               )}
-              {(i !== 0 && index !== 0) && (
+              { (i + index + 1) % 6 === 0 && (
+                <div className="tooltip-left"> {/* Render tooltip to the left */}
+                  <div className="tooltip-content">
+                    <div>{puzzle.puzzle_name}</div>
+                    <div>Video Count: {puzzle.video_count}</div>
+                  </div>
+                </div>
+              )}
+              {(i !== 0 && index !== 0 && !((i + index + 1) % 6 === 0)) && (
                 <div className="tooltip"> {/* Render tooltip to the right */}
                   <div className="tooltip-content">
-                    <div>Puzzle Count: {puzzle.puzzle_count}</div>
+                    <div>{puzzle.puzzle_name}</div>
                     <div>Video Count: {puzzle.video_count}</div>
                   </div>
                 </div>
               )}
-              {/* <div className="tooltip">
-                <div>Puzzle Count: {puzzle.puzzle_count}</div>
-                <div>Video Count: {puzzle.video_count}</div>
-              </div> */}
               {puzzle.puzzle_locked && (
                 <img src={LockIcon} className="lock-icon" alt="Locked" />
               )}

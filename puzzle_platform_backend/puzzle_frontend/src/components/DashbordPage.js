@@ -102,8 +102,8 @@ const DashboardPage = () => {
           </div>
         </div>
         <div className="rank-container">
-          <div className="rank-details">rankcontainer
-          <img src={Logo} alt="Rank" style={{width:"100px",height:"50px" , marginTop:"30px"}}></img>
+          <div className="rank-details">
+            <img src={Logo} alt="Rank" style={{width:"200px",height:"80px" , padding:"20px"}}></img>
           </div>
         </div>
       </div>
