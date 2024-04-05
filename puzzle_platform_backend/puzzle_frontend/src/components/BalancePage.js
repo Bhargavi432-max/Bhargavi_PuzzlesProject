@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import useRazorpay from "react-razorpay";
 import def from "./defualtImage.jpg";
 import "./BalancePage.css";
 
@@ -7,6 +8,7 @@ const BalancePage = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [imagepath, setImagePath] = useState(null);
+  const [Razorpay] = useRazorpay(); 
   
   useEffect(() => {
     // Fetch user data and subscription plans when component mounts
@@ -78,8 +80,49 @@ const BalancePage = () => {
     return <div>Error: {error}</div>;
   }
 
-  const handleSave = () => {
-    // Add your save logic here
+  const handleSave = async () => {
+    if (balance <= 0) {
+      setError("Please enter a valid positive number for balance.");
+      return;
+    }
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/order_create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: balance,
+          email: localStorage.getItem("email"),
+          pay_type: 'wallet',
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch Razorpay payment details");
+      }
+  
+      const paymentDetails = await response.json();
+  
+      if (!window.Razorpay) {
+        throw new Error("Razorpay library not loaded");
+      }
+  
+      const options = {
+        key: paymentDetails.razorpay_merchant_key,
+        amount: paymentDetails.razorpay_amount,
+        currency: paymentDetails.currency,
+        name: "Dj Razorpay",
+        order_id: paymentDetails.razorpay_order_id,
+        callback_url: paymentDetails.callback_url,
+      };
+  
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.error("Error:", error);
+      setError("An error occurred while processing the donation.");
+    }
     console.log('Balance saved:', balance);
   };
 

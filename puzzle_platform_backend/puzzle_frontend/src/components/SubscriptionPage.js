@@ -118,6 +118,7 @@ function Wallet() {
         body: JSON.stringify({
           amount: subscriptionData.planPrice,
           email: subscriptionData.email,
+          pay_type: "subscription",
         }),
       });
 
@@ -148,18 +149,21 @@ function Wallet() {
     }
   };
   const fetchUserInfo = async () => {
-    const email = localStorage.getItem('email');
+    const email = localStorage.getItem("email");
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/get_user_details/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/get_user_details/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
       const data = await response.json();
       if (data.success) {
-        console.log({data});
+        console.log({ data });
         const userData = data.user_data;
         const imageFileName = userData.profile_image;
         if (imageFileName) {
@@ -172,10 +176,10 @@ function Wallet() {
           setImagePath(def);
         }
       } else {
-        console.error('Failed to fetch user information:', data.error);
+        console.error("Failed to fetch user information:", data.error);
       }
     } catch (error) {
-      console.error('Error fetching user information:', error);
+      console.error("Error fetching user information:", error);
     }
   };
 
@@ -192,9 +196,9 @@ function Wallet() {
       <ToastContainer />
       <div className="wallet-header">
         <div className="user-info">
-            <div className="prof-image">
-              <img src={imagepath || def} alt="ProfileImage" />
-            </div>
+          <div className="prof-image">
+            <img src={imagepath || def} alt="ProfileImage" />
+          </div>
           <div className="user-subdetails">
             <div className="username">Hello, {userData.name}</div>
             <div className="wallet-balance">
