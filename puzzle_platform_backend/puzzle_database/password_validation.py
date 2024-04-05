@@ -21,8 +21,10 @@ def change_password(request):
         if not (email and old_password and new_password):
             return JsonResponse({'status': False,'message': 'All fields are required'})
 
+        # Authenticate user
         user = authenticate_user(email, old_password)
         if user is not None:
+            # Hash new password and update user's password
             hashed_new_password = make_password(new_password)
             user.password = hashed_new_password
             user.save()
@@ -45,10 +47,12 @@ def forgot_password(request):
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User with this email does not exist'})
 
+        # Generate OTP
         otp = str(random.randint(100000, 999999))
         user.otp = otp
         user.save()
 
+        # Send OTP to user's email
         subject = 'Password Reset OTP'
         message = f'Your OTP for password reset is: {otp}'  
         email_from = settings.DEFAULT_FROM_EMAIL
@@ -96,6 +100,7 @@ def reset_password(request):
             if new_password != confirm_password:
                 return JsonResponse({'status': False, 'message': 'Passwords do not match'})
 
+            # Hash new password and update user's password
             hashed_new_password = make_password(new_password)
             user.password = hashed_new_password
             user.save()
@@ -120,8 +125,9 @@ def verify_otp(request):
             if user.otp == otp:
                 user.is_active = True
                 user.otp = None
-                user.save()
-                
+                user.save() 
+
+                # Create default subscription and user profile
                 free_plan = PlanTable.objects.get(plan_type='FREE')
                 Subscription.objects.create(user=user, plan_data=free_plan)
                 UserProfile.objects.create(user=user,wallet=0)
@@ -146,6 +152,7 @@ def send_otp_via_email(request):
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User with this email does not exist'})
 
+        # Generate OTP and send it to user's email
         otp = str(random.randint(100000, 999999))
         user.otp = otp
         user.save()
