@@ -8,13 +8,13 @@ const TaskLevelPage = ({ percentageCompletedByLevel }) => {
         <div className="text-pie">High Score</div>
         <div className="big-text">Difficulty Level</div>
         <div className="circle" id="greenCircle">
-          {percentageCompletedByLevel && percentageCompletedByLevel.HARD}%
+          {percentageCompletedByLevel && percentageCompletedByLevel.HARD.toFixed(2)}%
         </div>
         <div className="circle" id="yellowCircle">
-          {percentageCompletedByLevel && percentageCompletedByLevel.MEDIUM}%
+          {percentageCompletedByLevel && percentageCompletedByLevel.MEDIUM.toFixed(2)}%
         </div>
         <div className="circle" id="purpleCircle">
-          {percentageCompletedByLevel && percentageCompletedByLevel.EASY}%
+          {percentageCompletedByLevel && percentageCompletedByLevel.EASY.toFixed(2)}%
         </div>
       </div>
     </div>
