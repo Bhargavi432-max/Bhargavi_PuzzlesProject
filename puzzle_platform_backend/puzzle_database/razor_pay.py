@@ -4,7 +4,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest, JsonResponse,HttpResponseRedirect
 import json
-from .models import CustomUser,Subscription,PlanTable,UserDataTableStatus,DataTable,PaymentHistory
+from .models import CustomUser,Subscription,PlanTable,UserDataTableStatus,DataTable,PaymentHistory,UserProfile
 
 # Authorize razorpay client with API Keys.
 razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
@@ -19,6 +19,7 @@ def order_create(request):
             data = json.loads(request.body)
             amount = data.get('amount')
             email =data.get('email')
+            pay_type =data.get('pay_type')
             amount=int(float(amount)) # Convert amount to integer
             currency = 'INR'
             
@@ -34,7 +35,7 @@ def order_create(request):
                 'razorpay_merchant_key': settings.RAZOR_KEY_ID,
                 'razorpay_amount': amount,
                 'currency': currency,
-                'callback_url': 'http://127.0.0.1:8000/api/paymenthandler/'+email+'/'+str(amount)+'/'
+                'callback_url': 'http://127.0.0.1:8000/api/paymenthandler/'+email+'/'+str(amount)+'/'+pay_type+'/'
             }
             print(context)
             return JsonResponse(context)
@@ -47,13 +48,14 @@ def order_create(request):
 
 # View for handling payment completion.
 @csrf_exempt
-def paymenthandler(request, email, amount):
+def paymenthandler(request, email, amount,pay_type):
     if request.method == "POST":
         try:
             # Extract payment details from the request
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')
             signature = request.POST.get('razorpay_signature', '')
+            pay_type = pay_type
             
             # Verify the payment signature
             params_dict = {
@@ -67,17 +69,24 @@ def paymenthandler(request, email, amount):
             if result is not None:
                 # Update user's subscription and payment history
                 user = CustomUser.objects.get(email=email)
-                plan = PlanTable.objects.get(plan_price=amount)
-                subscription = Subscription.objects.get(user=user)
-                subscription.plan_data = plan
-                subscription.save()
-                payment_history = PaymentHistory.objects.create(
-                    user=user,
-                    plan=plan,
-                    transaction_id=payment_id
-                )
-                # Change puzzle status based on subscription type
-                change_data_type(email, plan.plan_type)
+                if pay_type == 'wallet':
+                    print('Money Added to Wallet')
+                    wallet_balance = UserProfile.objects.get(user=user)
+                    wallet_balance.wallet += int(amount)
+                    wallet_balance.save()
+                else:
+                    print('Subscription Applied')
+                    plan = PlanTable.objects.get(plan_price=amount)
+                    subscription = Subscription.objects.get(user=user)
+                    subscription.plan_data = plan
+                    subscription.save()
+                    payment_history = PaymentHistory.objects.create(
+                        user=user,
+                        plan=plan,
+                        transaction_id=payment_id
+                    )
+                    # Change puzzle status based on subscription type
+                    change_data_type(email, plan.plan_type)
 
                 # Redirect to success page
                 return HttpResponseRedirect('http://localhost:3000/success')

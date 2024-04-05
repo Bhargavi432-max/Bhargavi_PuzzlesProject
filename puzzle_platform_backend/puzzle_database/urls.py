@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views,password_validation,user_validation,read_json_data,logreports,user_help_pages,razor_pay,login_views,register_views,puzzle_page_views
+from . import views,password_validation,user_validation,read_json_data,logreports,user_help_pages,razor_pay,login_views,register_views,puzzle_page_views,home_views
 
 urlpatterns = [
 
@@ -32,7 +32,6 @@ urlpatterns = [
     path('reset_password/', password_validation.reset_password, name='reset_password'),
     path('check_otp/', password_validation.check_otp, name='check_otp'),
 
-
      # User help and support URLs
     path('add_faq/', user_help_pages.add_faq, name='add_faq'),
     path('get_faq/', user_help_pages.retrieve_faqs, name='get_faq'),
@@ -58,7 +57,10 @@ urlpatterns = [
 
     # Payment Handle URLs
     path('order_create/', razor_pay.order_create, name='order_create'),
-    path('paymenthandler/<str:email>/<str:amount>/', razor_pay.paymenthandler, name='paymenthandler'),
-    path('get_payment_history/', razor_pay.get_payment_history, name='get_payment_history')
+    path('paymenthandler/<str:email>/<str:amount>/<str:pay_type>/', razor_pay.paymenthandler, name='paymenthandler'),
+    path('get_payment_history/', razor_pay.get_payment_history, name='get_payment_history'),
+
+    # Home Page related URLs
+    path('get_wallet_balance/', home_views.get_wallet_balance, name='get_payment_history'),
 
 ]
