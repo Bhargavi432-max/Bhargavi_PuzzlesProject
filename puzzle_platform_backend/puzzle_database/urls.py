@@ -5,8 +5,6 @@ urlpatterns = [
 
     # Login related URLs
     path('user_login/', login_views.user_login, name='user_login'),
-    path('get_twostep_status/', login_views.get_twostep_status, name='get_twostep_status'),
-    path('update_twostep_status/', login_views.update_twostep_status, name='update_twostep_status'),
     path('send_otp_via_email/', login_views.send_otp_via_email, name='send_otp_via_email'),
     path('login_verify_otp/', login_views.login_verify_otp, name='login_verify_otp'),
 
@@ -26,6 +24,7 @@ urlpatterns = [
     path('get_user_info/', user_validation.get_user_info, name='get_user_info'),
     path('get_user_details/', user_validation.get_user_details, name='get_user_details'),
     path('get_twostep_status/', user_validation.get_twostep_status, name='get_twostep_status'),
+    path('update_twostep_status/', user_validation.update_twostep_status, name='update_twostep_status'),
     
      # Password management URLs
     path('change_password/', password_validation.change_password, name='change_password'),
