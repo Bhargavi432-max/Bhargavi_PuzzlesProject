@@ -24,32 +24,25 @@ const PersonalInformationPage = () => {
   }, []);
 
   const fetchUserInfo = async () => {
-    const email = localStorage.getItem("email");
+    const email = localStorage.getItem('email');
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/get_user_details/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
+      const response = await fetch('http://127.0.0.1:8000/api/get_user_details/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
       const data = await response.json();
       if (data.success) {
-        console.log({ data });
+        console.log({data});
         const userData = data.user_data;
         const imageFileName = userData.profile_image;
-        console.log(imageFileName);
         if (imageFileName) {
           const filePath = imageFileName;
           const filename = filePath.split("/").pop();
-          console.log(filename);
-          // const path = require(`../profile_image${filename}`);
-          // console.log(path);
-          // setImagePath(path);
-          setImagePath(`../profile_image/${imageFileName}`);
+          const path = require("../profile_image/" + filename);
+          setImagePath(path);
         } else {
           // Set default image path if no image is provided
           setImagePath(def);
@@ -65,15 +58,16 @@ const PersonalInformationPage = () => {
           email: userData.email,
           education: userData.education,
           collegeName: userData.college_name,
-          imageFile: imagepath, // Initialize imageFile as null
+          imageFile: imagepath // Initialize imageFile as null
         });
       } else {
-        console.error("Failed to fetch user information:", data.error);
+        console.error('Failed to fetch user information:', data.error);
       }
     } catch (error) {
-      console.error("Error fetching user information:", error);
+      console.error('Error fetching user information:', error);
     }
   };
+
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -106,7 +100,7 @@ const PersonalInformationPage = () => {
       formData.append("education", editedInfo.education);
       formData.append("collegeName", editedInfo.collegeName);
       formData.append("imageFile", editedInfo.imageFile); // Append image file to FormData
-
+      console.log({"edited":{formData}});
       const response = await fetch("http://127.0.0.1:8000/api/get_user_info/", {
         method: "POST",
         body: formData,
