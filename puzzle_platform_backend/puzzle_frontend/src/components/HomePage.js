@@ -5,6 +5,7 @@ import Wallet from "./SubscriptionPage";
 import DashboardPage from "./DashbordPage";
 import SettingsPage from './SettingsPage';
 import TaskLevel from './TaskLevel';
+import BalancePage from './BalancePage';
 
 function HomePage() {
   const [activePage, setActivePage] = useState('Dashboard');
@@ -22,7 +23,7 @@ function HomePage() {
   };
 
   const Navbar = () => {
-    const pages = ['Dashboard', 'Task Level', 'Help and Support', 'Wallet', 'Settings'];
+    const pages = ['Dashboard', 'Task Level', 'Help and Support', 'Wallet','Subscription', 'Settings'];
 
     return (
       <div className="home-nav">
@@ -47,6 +48,8 @@ function HomePage() {
         return <Helpandsupport />;
       case 'Wallet':
         return <Wallet />;
+      case 'Subscription':
+        return <BalancePage />;
       case 'Settings':
         return <SettingsPage />;
       default:
