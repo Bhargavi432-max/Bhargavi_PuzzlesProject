@@ -31,6 +31,7 @@
   box-shadow: 4px 4px 15px #00000040;
   background-color:rgba(139, 153, 255, 0.33);
   height: 200px;
+  width: 330px;
   border-color: #c6c6c6;
   
 }
@@ -468,13 +469,13 @@
   }
 
   .button-container {
-    width: 50%; /* Each container takes up 50% of the width */
+    width: 55%; /* Each container takes up 50% of the width */
     margin-bottom: 10px; /* Add margin between rows */
   }
   .button-row {
     display: flex;
     justify-content: flex-start;
-    gap: 17px;
+    gap: 16px;
     flex-wrap: nowrap;
 }
 }
@@ -615,4 +616,19 @@
   width: 100px; /* Set width to auto to accommodate longer content */
   max-width: 200px;
   font-size: small; /* Limit maximum width to prevent tooltip from becoming too wide */
+}
+@media screen and (max-width: 1024px) and (max-height: 768px) {
+  .difficulty-box-container {
+    width:32%; /* Increase the width of the box */
+    margin-left: 0;
+  }
+  .difficulty-box {
+    width:33%;
+  }
+  .button-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+    flex-wrap: nowrap;
+}
 }
