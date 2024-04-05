@@ -152,14 +152,16 @@ const BalancePage = () => {
           </div>
         </div>
       )}
-      <h1>Add money to Wallet</h1>
-      <input
-        type="text"
-        value={balance}
-        onChange={(e) => setBalance(e.target.value)}
-        placeholder="Enter balance"
-      />
-      <button onClick={handleSave}>Save</button>
+      <div className="balance-input-container">
+        <h2>Add money to Wallet</h2>
+        <input
+          type="text"
+          value={balance}
+          onChange={(e) => setBalance(e.target.value)}
+          placeholder="Enter balance"
+        />
+        <button onClick={handleSave}>Save</button>
+      </div>
     </div>
   );
 };
