@@ -10,10 +10,10 @@
     border: 1px solid #ccc;
     padding: 10px;
     height: 100px;
-    width: 1000px;
+    width: 1020px;
     border-radius: 10px;
     background-color: #D3D8F9;
-    margin-left: 40px;
+    margin-left: 30px;
 }
 
 .prof-image img {
@@ -62,7 +62,7 @@
     height: 96px;
     width: 150px;
     text-align: right;
-    margin-right: 30px;
+    margin-right: 100px;
 }
 
 .message {

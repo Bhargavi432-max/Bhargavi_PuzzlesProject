@@ -23,3 +23,18 @@
     margin-right: 100px; /* Adjust as needed */
     width: 150px;
 }
+.text{
+    color: #3B4AB4;
+    font-size: 22px;
+    font-family: "Inter-SemiBold", Helvetica;
+    left:0;
+}
+.wallet-balances{
+    display: flex;
+    color: #686464;
+    font-size: 25px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 500;
+    margin-right: 100px; /* Adjust as needed */
+    margin-top: 20px;
+}

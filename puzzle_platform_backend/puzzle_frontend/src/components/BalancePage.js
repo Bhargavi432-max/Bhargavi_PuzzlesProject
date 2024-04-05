@@ -93,9 +93,8 @@ const BalancePage = () => {
             </div>
             <div className="user-subdetails">
               <div className="username-Balance">Hello, {userData.name}</div>
-              <div className="wallet-balance">
-                <span className="text">Wallet Balance</span>
-                <br />
+              <div className="wallet-balances">
+                <span className="text">Wallet Balance:</span>
                 {userData.wallet}
               </div>
               {/* <div className="subscription">
