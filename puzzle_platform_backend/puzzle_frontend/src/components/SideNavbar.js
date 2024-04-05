@@ -51,7 +51,7 @@ const SideNavbar = ({
               {`Task ${task.id}`}
               <span className="arrow"></span>
             </button>
-            <div className="tooltips">{`Task ${task.id}`}</div>
+            <div className="tooltipside">{`Task ${task.id}`}</div>
           </div>
         ))}
       </div>

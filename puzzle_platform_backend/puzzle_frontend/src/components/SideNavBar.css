@@ -135,7 +135,7 @@
     align-items: center;
   }
   /* Tooltip container */
-.tooltips {
+.tooltipside {
   visibility: hidden;
   background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0);
@@ -150,7 +150,7 @@
 }
 
 /* Tooltip tip */
-.tooltips::after {
+.tooltipside::after {
   content: '';
   position: absolute;
   top: 100%; /* Position the tip just below the tooltip body */
@@ -162,6 +162,25 @@
 }
 
 /* Show the tooltip when hovering over the button container */
-.button-container:hover .tooltips {
+.button-container:hover .tooltipside {
   visibility: visible;
+}
+/* Show the tooltip when hovering over the first button container */
+.button-container:first-child:hover .tooltipside {
+  visibility: visible;
+  bottom: auto;
+  top: calc(100% + 5px); /* Position the tooltip just below the button */
+}
+
+/* Tooltip tip for the first button */
+.button-container:first-child .tooltipside::after {
+  content: '';
+  position: absolute;
+  top:-10px;
+  bottom: 100%; /* Position the tip just below the tooltip body */
+  left: 50%;
+  margin-left: -5px; /* Adjust the margin to position the tip horizontally */
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgb(255, 255, 255) transparent; /* Triangle tip with transparent bottom border */
 }
