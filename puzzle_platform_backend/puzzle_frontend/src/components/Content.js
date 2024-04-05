@@ -535,7 +535,9 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
   const handleClosePopup = () => {
     setPopupMessage(null);
+    localStorage.setItem('activePage', "Wallet");
     navigate("/home");
+   
   };
   const handlebuypuzzle = () => {
     console.log("details", email, selectedPuzzle.puzzle_id, selectedTask.id);

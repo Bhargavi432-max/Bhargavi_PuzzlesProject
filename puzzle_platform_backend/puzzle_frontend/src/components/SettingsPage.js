@@ -7,13 +7,14 @@ import "./SettingsPage.css";
 
 const SettingsPage = () => {
   const [activeSetting, setActiveSetting] = useState('Personal Information');
+  // const [activePage, setActivePage]=useState("Personal Information")
 
   const handleSettingChange = (settingName) => {
     setActiveSetting(settingName);
   };
   const handleSave = () => {
     // Perform save operation or any other logic here
-    
+    localStorage.setItem('activePage', "Settings");
     // Refresh the page
     window.location.reload();
     
