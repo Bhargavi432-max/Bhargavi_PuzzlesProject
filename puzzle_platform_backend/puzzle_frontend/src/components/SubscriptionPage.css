@@ -19,6 +19,7 @@
 .prof-image img {
     height: 90px;
     width: 90px;
+    border-radius: 48.91%;
 }
 
 .user-info {
@@ -59,8 +60,9 @@
 .message-con {
     padding-top: 15px;
     height: 96px;
-    width: 100px;
+    width: 150px;
     text-align: right;
+    margin-right: 30px;
 }
 
 .message {
@@ -68,6 +70,7 @@
     font-size: 30px;
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 700;
+    text-align: right;
 }
 
 .subscription-plans {

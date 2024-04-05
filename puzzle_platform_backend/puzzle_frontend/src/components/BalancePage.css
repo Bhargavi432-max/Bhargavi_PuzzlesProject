@@ -1,0 +1,25 @@
+.Balance{
+    margin-top: 5px;
+    padding: 20px;
+}
+.message-Balance {
+    padding-top: 15px;
+    height: 96px;
+    width: 100px;
+    text-align: right;
+}
+
+.message-BalanceText {
+    color: #3B4AB4;
+    font-size: 30px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 700;
+}
+.username-Balance{
+    color: #3B4AB4;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 27.1px;
+    font-weight: 600;
+    margin-right: 100px; /* Adjust as needed */
+    width: 150px;
+}

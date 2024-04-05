@@ -169,15 +169,15 @@ function Wallet() {
               <br />
               {userData.wallet}
             </div>
-            <div className="subscription">
+            {/* <div className="subscription">
               <span className="text">Current Plan </span>
               <br />
               {userData.plan_type}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="message-con">
-          <div className="message">My Wallet</div>
+          <div className="message">My Subscription</div>
         </div>
       </div>
       <div className="subscription-plans">

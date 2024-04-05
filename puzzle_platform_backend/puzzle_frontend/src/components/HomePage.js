@@ -47,9 +47,9 @@ function HomePage() {
       case 'Help and Support':
         return <Helpandsupport />;
       case 'Wallet':
-        return <Wallet />;
+        return <BalancePage  />;
       case 'Subscription':
-        return <BalancePage />;
+        return <Wallet />;
       case 'Settings':
         return <SettingsPage />;
       default:
