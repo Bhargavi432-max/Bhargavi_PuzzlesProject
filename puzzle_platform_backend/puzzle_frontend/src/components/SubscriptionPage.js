@@ -3,19 +3,21 @@ import "./SubscriptionPage.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useRazorpay from "react-razorpay";
-import ProfileImage from "./Images/Profile photo.svg";
 import { FaCheck } from "react-icons/fa";
+import def from "./defualtImage.jpg";
 
 function Wallet() {
   const [Razorpay] = useRazorpay();
   const [userData, setUserData] = useState(null);
   const [plans, setPlans] = useState([]);
   const [error, setError] = useState(null);
+  const [imagepath, setImagePath] = useState(null);
 
   useEffect(() => {
     // Fetch user data and subscription plans when component mounts
     fetchUserData();
     fetchAllPlans();
+    fetchUserInfo();
   }, []);
 
   const fetchUserData = () => {
@@ -145,6 +147,37 @@ function Wallet() {
       setError("An error occurred while processing the donation.");
     }
   };
+  const fetchUserInfo = async () => {
+    const email = localStorage.getItem('email');
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/get_user_details/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+      const data = await response.json();
+      if (data.success) {
+        console.log({data});
+        const userData = data.user_data;
+        const imageFileName = userData.profile_image;
+        if (imageFileName) {
+          const filePath = imageFileName;
+          const filename = filePath.split("/").pop();
+          const path = require("../profile_image/" + filename);
+          setImagePath(path);
+        } else {
+          // Set default image path if no image is provided
+          setImagePath(def);
+        }
+      } else {
+        console.error('Failed to fetch user information:', data.error);
+      }
+    } catch (error) {
+      console.error('Error fetching user information:', error);
+    }
+  };
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -159,9 +192,9 @@ function Wallet() {
       <ToastContainer />
       <div className="wallet-header">
         <div className="user-info">
-          <div className="prof-image">
-            <img src={ProfileImage} alt="ProfileImage" />
-          </div>
+            <div className="prof-image">
+              <img src={imagepath || def} alt="ProfileImage" />
+            </div>
           <div className="user-subdetails">
             <div className="username">Hello, {userData.name}</div>
             <div className="wallet-balance">

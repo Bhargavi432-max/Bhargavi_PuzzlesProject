@@ -4,12 +4,18 @@ import LineChart from "./Linechart";
 import TaskLevelPage from "./OverallPie";
 import "./DashbordPage.css"; // Import CSS for styling
 import RingPieChart from "./TimespentChart";
-import Profile from "./Images/Profile photo.svg";
+import def from "./defualtImage.jpg";
 import { FaUser, FaGraduationCap, FaUniversity } from "react-icons/fa";
+import Logo from "./Images/LogoSVS.png";
 
 const DashboardPage = () => {
   const [responseData, setResponseData] = useState(null); // State for response data
   const email = localStorage.getItem("email"); // Example email, replace with actual email
+  const [imagepath, setImagePath] = useState(null);
+  useEffect(() => {
+    // Fetch user data and subscription plans when component mounts
+    fetchUserInfo();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,14 +47,45 @@ const DashboardPage = () => {
 
     fetchData();
   }, [email]);
+  const fetchUserInfo = async () => {
+    const email = localStorage.getItem('email');
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/get_user_details/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+      const data = await response.json();
+      if (data.success) {
+        console.log({data});
+        const userData = data.user_data;
+        const imageFileName = userData.profile_image;
+        if (imageFileName) {
+          const filePath = imageFileName;
+          const filename = filePath.split("/").pop();
+          const path = require("../profile_image/" + filename);
+          setImagePath(path);
+        } else {
+          // Set default image path if no image is provided
+          setImagePath(def);
+        }
+      } else {
+        console.error('Failed to fetch user information:', data.error);
+      }
+    } catch (error) {
+      console.error('Error fetching user information:', error);
+    }
+  };
 
   return (
     <div className="dashboard-page">
       <div className="user-rank-container">
         <div className="user-details-container">
-          <div className="profile-image">
-            <img src={Profile} alt="profile" className="prof-pic" />
-          </div>
+            <div className="prof-images">
+              <img className="prof-Dash" src={imagepath || def} alt="ProfileImage" />
+            </div>
           <div className="user-details">
             <div className="dashboard-username">
               <FaUser className="icon" />{" "}
@@ -64,7 +101,11 @@ const DashboardPage = () => {
             </div>
           </div>
         </div>
-        <div className="rank-container">rankcontainer</div>
+        <div className="rank-container">
+          <div className="rank-details">rankcontainer
+          <img src={Logo} alt="Rank" style={{width:"100px",height:"50px" , marginTop:"30px"}}></img>
+          </div>
+        </div>
       </div>
       <div className="content">
         <div className="box-structure">
