@@ -501,7 +501,6 @@
   visibility: visible;
   width: 100px;
 }
-
 /* Tooltip tip */
 .tooltip::after {
   content: '';
@@ -513,11 +512,102 @@
   border-style: solid;
   border-color: rgb(255, 255, 255) transparent transparent transparent; /* Triangle tip with transparent top border */
 }
+.tooltips::after {
+  content: " ";
+  position: absolute;
+  /* bottom: 100%; */
+  top:-10px;/* At the top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgb(255, 255, 255) transparent;
+}
+.button-container:hover .tooltips {
+  visibility: visible;
+}
 
-/* Position the tooltip below the button container */
-.tooltip.tooltip-bottom::before {
-  bottom: calc(100% - 5px); /* Adjust to position the tooltip just above the button */
+.tooltips {
+  visibility: hidden;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 999;
+  top: calc(100% + 5px); /* Position the tooltip just above the button */
   left: 50%;
   transform: translateX(-50%);
+  height: 30px; /* Set height to auto to accommodate multiple lines */
+  width: 100px; /* Set width to auto to accommodate longer content */
+  max-width: 200px;
+  font-size: small; /* Limit maximum width to prevent tooltip from becoming too wide */
+}
+
+.tooltip-right {
+  visibility: hidden;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 6px 6px 6px 0; 
+  padding: 5px;
+  position: absolute;
+  z-index: 999;
+  bottom: calc(100% + 5px); /* Position the tooltip just above the button */
+  left: 67px;
+  transform: translateX(-50%);
+  height: 30px; /* Set height to auto to accommodate multiple lines */
+  width: 100px; /* Set width to auto to accommodate longer content */
+  max-width: 200px;
+  font-size: small; /* Limit maximum width to prevent tooltip from becoming too wide */
+}
+
+/* Show the tooltip when hovering over the button container */
+.button-container:hover .tooltip-right {
+  visibility: visible;
   width: 100px;
+}
+/* Tooltip tip */
+.tooltip-right::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* Position the tip just below the tooltip body */
+  left: 5%;
+  margin-left: -5px; /* Adjust the margin to position the tip horizontally */
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgb(255, 255, 255) transparent transparent transparent; /* Triangle tip with transparent top border */
+}
+.tooltip-first-button::after {
+  content: " ";
+  position: absolute;
+  /* bottom: 100%; */
+  top:-10px;/* At the top of the tooltip */
+  left: 5px;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgb(255, 255, 255) transparent;
+}
+.button-container:hover .tooltip-first-button {
+  visibility: visible;
+}
+
+.tooltip-first-button {
+  visibility: hidden;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 0 6px 6px 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 999;
+  top: calc(100% + 5px); /* Position the tooltip just above the button */
+  left:64px;
+  transform: translateX(-50%);
+  height: 30px; /* Set height to auto to accommodate multiple lines */
+  width: 100px; /* Set width to auto to accommodate longer content */
+  max-width: 200px;
+  font-size: small; /* Limit maximum width to prevent tooltip from becoming too wide */
 }
