@@ -298,3 +298,48 @@ def check_puzzle_locked(request):
     
     else:
         return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'})
+
+
+# View for asking question if a puzzle is completed by a user.
+@csrf_exempt
+def get_puzzle_question(request):
+    if request.method == 'POST':
+        try:
+            # Load request data
+            data = json.loads(request.body)
+            user_email = data.get('email')
+            puzzle_id = data.get('puzzle_id')
+            task_id = data.get('task_id')
+
+            # Check if all required fields are present
+            if not user_email or not puzzle_id or not task_id:
+                return JsonResponse({'status': False, 'message': 'Missing required fields'}, status=400)
+
+            # Get user
+            try:
+                user = CustomUser.objects.get(email=user_email)
+            except CustomUser.DoesNotExist:
+                return JsonResponse({'status': False, 'message': 'User not found'}, status=404)
+
+            # Get puzzle
+            try:
+                puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
+            except DataTable.DoesNotExist:
+                return JsonResponse({'status': False, 'message': 'Puzzle not found'}, status=404)
+
+            # Check if puzzle is completed by the user
+            if puzzle.completion_status:
+                # return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'puzzle_answer': puzzle.puzzle_answer})
+                return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'puzzle_answer': "puzzle_answer"})
+
+            else:
+                return JsonResponse({'status': False, 'message': "Puzzle not completed"})
+
+        except json.decoder.JSONDecodeError:
+            return JsonResponse({'status': False, 'message': 'Invalid JSON format'}, status=400)
+        
+        except Exception as e:
+            return JsonResponse({'status': False, 'message': 'An unexpected error occurred', 'details': str(e)}, status=500)
+    
+    else:
+        return JsonResponse({'status': False, 'message': 'Only POST requests are allowed'}, status=405)

@@ -19,6 +19,7 @@ urlpatterns = [
     path('get_task_status/', puzzle_page_views.get_task_status, name='get_task_statuses'),
     path('buy_puzzle/', puzzle_page_views.buy_puzzle, name='buy_puzzle'),
     path('check_puzzle_locked/', puzzle_page_views.check_puzzle_locked, name='check_puzzle_locked'),
+    path('get_puzzle_question/', puzzle_page_views.get_puzzle_question, name='get_puzzle_question'),
 
      # User authentication related URLs
     path('get_user_info/', user_validation.get_user_info, name='get_user_info'),
