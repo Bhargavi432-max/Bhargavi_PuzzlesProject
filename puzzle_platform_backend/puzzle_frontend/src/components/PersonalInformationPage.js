@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import './PersonalInformationPage.css';
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import "./PersonalInformationPage.css";
 import def from "./defualtImage.jpg";
 
 const PersonalInformationPage = () => {
@@ -9,13 +9,13 @@ const PersonalInformationPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [imagepath ,setImagePath]= useState(null);
+  const [imagepath, setImagePath] = useState(null);
   const [editedInfo, setEditedInfo] = useState({
-    username: '',
-    email: '',
-    education: '',
-    collegeName: '',
-    imageFile: null // Store file object here
+    username: "",
+    email: "",
+    education: "",
+    collegeName: "",
+    imageFile: null, // Store file object here
   });
 
   useEffect(() => {
@@ -24,25 +24,32 @@ const PersonalInformationPage = () => {
   }, []);
 
   const fetchUserInfo = async () => {
-    const email = localStorage.getItem('email');
+    const email = localStorage.getItem("email");
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/get_user_details/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/get_user_details/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
       const data = await response.json();
       if (data.success) {
-        console.log({data});
+        console.log({ data });
         const userData = data.user_data;
         const imageFileName = userData.profile_image;
+        console.log(imageFileName);
         if (imageFileName) {
           const filePath = imageFileName;
           const filename = filePath.split("/").pop();
-          const path = require("../profile_image/" + filename);
-          setImagePath(path);
+          console.log(filename);
+          // const path = require(`../profile_image${filename}`);
+          // console.log(path);
+          // setImagePath(path);
+          setImagePath(`../profile_image/${imageFileName}`);
         } else {
           // Set default image path if no image is provided
           setImagePath(def);
@@ -58,13 +65,13 @@ const PersonalInformationPage = () => {
           email: userData.email,
           education: userData.education,
           collegeName: userData.college_name,
-          imageFile: imagepath // Initialize imageFile as null
+          imageFile: imagepath, // Initialize imageFile as null
         });
       } else {
-        console.error('Failed to fetch user information:', data.error);
+        console.error("Failed to fetch user information:", data.error);
       }
     } catch (error) {
-      console.error('Error fetching user information:', error);
+      console.error("Error fetching user information:", error);
     }
   };
 
@@ -74,16 +81,16 @@ const PersonalInformationPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-  
-    if (name === 'imageFile') {
+
+    if (name === "imageFile") {
       setEditedInfo({
         ...editedInfo,
-        [name]: files[0] // Store the selected file
+        [name]: files[0], // Store the selected file
       });
     } else {
       setEditedInfo({
         ...editedInfo,
-        [name]: value
+        [name]: value,
       });
     }
   };
@@ -92,16 +99,19 @@ const PersonalInformationPage = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    console.log({editedInfo});
-  
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/get_user_info/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(editedInfo)
+      const formData = new FormData();
+      formData.append("username", editedInfo.username);
+      formData.append("email", editedInfo.email);
+      formData.append("education", editedInfo.education);
+      formData.append("collegeName", editedInfo.collegeName);
+      formData.append("imageFile", editedInfo.imageFile); // Append image file to FormData
+
+      const response = await fetch("http://127.0.0.1:8000/api/get_user_info/", {
+        method: "POST",
+        body: formData,
       });
+
       const data = await response.json();
       if (response.ok && data.status === true) {
         console.log(data.message);
@@ -109,11 +119,11 @@ const PersonalInformationPage = () => {
         // Fetch user information again to display the latest data
         fetchUserInfo();
       } else {
-        setError(data.message || 'Failed to update user information');
+        setError(data.message || "Failed to update user information");
       }
     } catch (error) {
-      console.error('Error updating user information:', error);
-      setError('Failed to update user information. Please try again.');
+      console.error("Error updating user information:", error);
+      setError("Failed to update user information. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -121,59 +131,94 @@ const PersonalInformationPage = () => {
 
   return (
     <div>
-      <div className={isEditing ? 'edit-icon active' : 'edit-icon'} onClick={handleEditClick}>
-        <FontAwesomeIcon icon={faEdit} style={{ color: '#3B4AB4' }} />
+      <div
+        className={isEditing ? "edit-icon active" : "edit-icon"}
+        onClick={handleEditClick}
+      >
+        <FontAwesomeIcon icon={faEdit} style={{ color: "#3B4AB4" }} />
       </div>
       {userInfo && !isEditing && (
         <div>
-        <div className='maintext-personal'><h4 className='text-personal'>General Information</h4></div>
-        <div className='details-container'>
-          <div className='person-image'>
-          <img src={imagepath || def} alt="User" />
+          <div className="maintext-personal">
+            <h4 className="text-personal">General Information</h4>
           </div>
-          <div className='details-box'>
-        <p>Username: {userInfo.username}</p>
-        <p>Email: {userInfo.email}</p>
-        <p>Education: {userInfo.education}</p>
-        {userInfo.collegeName && <p>College Name: {userInfo.collegeName}</p>}
-      </div>
+          <div className="details-container">
+            <div className="person-image">
+              <img src={imagepath || def} alt="User" />
+            </div>
+            <div className="details-box">
+              <p>Username: {userInfo.username}</p>
+              <p>Email: {userInfo.email}</p>
+              <p>Education: {userInfo.education}</p>
+              {userInfo.collegeName && (
+                <p>College Name: {userInfo.collegeName}</p>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    )}
+      )}
       {isEditing && (
         <div>
-          <div className='text-edit'><div className='text-editinfo'>Edit Information</div></div>
+          <div className="text-edit">
+            <div className="text-editinfo">Edit Information</div>
+          </div>
           <form onSubmit={handleSubmit}>
-          <div className='edit-from'> 
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input type="text" name="username" value={editedInfo.username} onChange={handleInputChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input type="email" name="email" value={editedInfo.email} onChange={handleInputChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="education">Education</label>
-            <input type="text" name="education" value={editedInfo.education} onChange={handleInputChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="collegeName">College Name</label>
-            <input type="text" name="collegeName" value={editedInfo.collegeName} onChange={handleInputChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="imageFile">Profile Picture</label>
-            <input type="file" name="imageFile" onChange={handleInputChange} accept="image/*" />
-          </div>
-          </div> 
-            <button type="submit" disabled={loading}>Save</button>
+            <div className="edit-from">
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  value={editedInfo.username}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={editedInfo.email}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="education">Education</label>
+                <input
+                  type="text"
+                  name="education"
+                  value={editedInfo.education}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="collegeName">College Name</label>
+                <input
+                  type="text"
+                  name="collegeName"
+                  value={editedInfo.collegeName}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="imageFile">Profile Picture</label>
+                <input
+                  type="file"
+                  name="imageFile"
+                  onChange={handleInputChange}
+                  accept="image/*"
+                />
+              </div>
+            </div>
+            <button type="submit" disabled={loading}>
+              Save
+            </button>
             {error && <p className="error-message">{error}</p>}
           </form>
         </div>
       )}
     </div>
   );
-  
 };
 
 export default PersonalInformationPage;

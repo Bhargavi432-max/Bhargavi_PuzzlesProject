@@ -8,6 +8,7 @@ from django.conf import settings
 from .models import CustomUser
 from .authentication import authenticate_user,authenticate_admin
 import re
+import os
 from django.core import serializers
 
 
@@ -132,26 +133,33 @@ def user_login(request):
 
 @csrf_exempt 
 def get_user_info(request):
-    print("enter")
     if request.method == 'POST':
-        data = json.loads(request.body)
-        print(data)
-        email = data.get('email')
-        image_url =  'puzzle_frontend/src/profile_image/'+'tmach.png'
-        college_name = data.get('collegeName')
-        education = data.get('education')
-        print(image_url)
-
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        education = request.POST.get('education')
+        college_name = request.POST.get('collegeName')
+        imageFile = request.FILES.get('imageFile')
+        
         if email is None:
             return JsonResponse({'success': False, 'error': 'Email is required'}, status=400)
 
         try:
             user = CustomUser.objects.get(email=email)
-            user.profile_image = image_url
+            if imageFile:
+                # Generate a unique file name
+                file_name = str(user.user_id) + '_' + imageFile.name
+                # Define the directory where you want to save the image
+                save_path = os.path.join( 'puzzle_frontend/src/profile_image/', file_name)
+                # Write the image to the disk
+                with open(save_path, 'wb+') as destination:
+                    for chunk in imageFile.chunks():
+                        destination.write(chunk)
+                # Update the user profile image field with the relative path
+                user.profile_image = os.path.join('puzzle_frontend/src/profile_image/', file_name)
             user.college_name = college_name
             user.education = education
             user.save()
-            return JsonResponse({'success': True, 'message': "stored successful"})
+            return JsonResponse({'success': True, 'message': "User information stored successfully"})
         except CustomUser.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
     else:
@@ -176,6 +184,7 @@ def get_user_details(request):
                 'education': user.education,
                 'college_name': user.college_name,
             }
+            print(user_data)
             return JsonResponse({'success': True, 'user_data': user_data})
         except CustomUser.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
