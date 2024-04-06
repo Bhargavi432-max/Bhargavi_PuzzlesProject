@@ -6,7 +6,7 @@ import "./SettingsPage.css";
 
 const SettingsPage = () => {
   const [activeSetting, setActiveSetting] = useState('Personal Information');
-  const [isSaveEnabled, setIsSaveEnabled] = useState(false);
+  const [isSaveEnabled, setIsSaveEnabled] = useState(true);
   const [isEditingPersonalInfo, setIsEditingPersonalInfo] = useState(false);
 
   const handleSettingChange = (settingName) => {
