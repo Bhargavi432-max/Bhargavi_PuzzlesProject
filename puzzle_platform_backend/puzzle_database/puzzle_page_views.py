@@ -310,30 +310,22 @@ def get_puzzle_question(request):
             user_email = data.get('email')
             puzzle_id = data.get('puzzle_id')
             task_id = data.get('task_id')
-
             # Check if all required fields are present
             if not user_email or not puzzle_id or not task_id:
                 return JsonResponse({'status': False, 'message': 'Missing required fields'}, status=400)
-
             # Get user
             try:
                 user = CustomUser.objects.get(email=user_email)
             except CustomUser.DoesNotExist:
                 return JsonResponse({'status': False, 'message': 'User not found'}, status=404)
-
             # Get puzzle
             try:
                 puzzle = DataTable.objects.get(puzzle_id=puzzle_id, task_id=task_id)
             except DataTable.DoesNotExist:
                 return JsonResponse({'status': False, 'message': 'Puzzle not found'}, status=404)
 
-            # Check if puzzle is completed by the user
-            if puzzle.completion_status:
-                # return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'puzzle_answer': puzzle.puzzle_answer})
-                return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'options': puzzle.options,"correct_answer" :puzzle.correct_answer})
-
-            else:
-                return JsonResponse({'status': False, 'message': "Puzzle not completed"})
+            # return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'puzzle_answer': puzzle.puzzle_answer})
+            return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'options': puzzle.options,"correct_answer" :puzzle.correct_answer})
 
         except json.decoder.JSONDecodeError:
             return JsonResponse({'status': False, 'message': 'Invalid JSON format'}, status=400)
