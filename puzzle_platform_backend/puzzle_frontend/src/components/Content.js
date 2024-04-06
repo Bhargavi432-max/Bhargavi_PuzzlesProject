@@ -4,6 +4,7 @@ import "./Content.css";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import QuestionPopup from "./QuestionPopup.js";
 
 const Content = ({ selectedTask, puzzleData }) => {
   // const [videoWatchCount, setVideoWatchCount] = useState(0);
@@ -20,6 +21,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   const email = localStorage.getItem("email");
   const [startTime, setStartTime] = useState(null);
   const [nextPuzzleId, setNextPuzzleId] = useState(null);
+  const [showQuestionPopup, setShowQuestionPopup] = useState(false); // State to manage whether to display the QuestionPopup
   // const [completedPuzzles, setCompletedPuzzles] = useState([]);
   const [isupdateskip, setisupdateskip] = useState(false);
   const [completedPuzzles, setCompletedPuzzles] = useState(() => {
@@ -290,7 +292,12 @@ const Content = ({ selectedTask, puzzleData }) => {
       .map((val) => (val < 10 ? `0${val}` : val))
       .join(":");
   };
+  const handleCloseQuestionPopup = () => {
+    // Function to handle closing the QuestionPopup
+    setShowQuestionPopup(false);
+  };
   const handleVideoEnd = () => {
+    setShowQuestionPopup(true);
     const currentDateTime = new Date();
     const endTime =
       currentDateTime.toLocaleDateString("en-US", {
@@ -714,6 +721,14 @@ const Content = ({ selectedTask, puzzleData }) => {
       {renderPopup()}
       {selectedTask && renderDifficultyBoxButtons()}
       {renderPuzzleDetails()}
+      {showQuestionPopup && ( // Render QuestionPopup if showQuestionPopup is true
+        <QuestionPopup
+          email={email}
+          puzzleId={selectedPuzzle.puzzle_id}
+          taskId={selectedTask ? selectedTask.id : null}
+          onClose={handleCloseQuestionPopup}
+        />
+      )}
       <ToastContainer />
     </div>
   );
