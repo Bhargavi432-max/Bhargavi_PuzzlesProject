@@ -42,11 +42,12 @@
   .sidenavbar button {
     padding: 10px 15px;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 530;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: rgb(61, 61, 61);
+    color: rgb(29, 29, 29);
     background-color: #f0f0f0;
     border-radius: 5px;
     border: none;

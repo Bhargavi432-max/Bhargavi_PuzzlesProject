@@ -31,7 +31,7 @@ const BillingAndTaxPage = () => {
 
   return (
     <div>
-      <h2>Billing and Tax Page</h2>
+      <h2>Billing History</h2>
       <div className="table-container"> {/* Wrap the table in a container */}
         <table className="payment-table">
           <thead>

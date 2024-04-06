@@ -36,12 +36,12 @@ const SettingsPage = () => {
         <ul className="settings-menu">
           <li className={activeSetting === 'Personal Information' ? 'active' : ''} onClick={() => handleSettingChange('Personal Information')}>Personal Information</li>
           <li className={activeSetting === 'Security' ? 'active' : ''} onClick={() => handleSettingChange('Security')}>Security</li>
-          <li className={activeSetting === 'Billing and Tax' ? 'active' : ''} onClick={() => handleSettingChange('Billing and Tax')}>Billing and Tax</li>
+          <li className={activeSetting === 'Billing History' ? 'active' : ''} onClick={() => handleSettingChange('Billing History')}>Billing History</li>
         </ul>
         <div className="settings-details">
           {activeSetting === 'Personal Information' && <PersonalInformationPage />}
           {activeSetting === 'Security' && <SecurityPage />}
-          {activeSetting === 'Billing and Tax' && <BillingAndTaxPage />}
+          {activeSetting === 'Billing History' && <BillingAndTaxPage />}
         </div>
       </div>
     </div>

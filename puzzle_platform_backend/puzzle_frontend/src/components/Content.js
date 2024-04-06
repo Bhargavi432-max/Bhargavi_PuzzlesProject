@@ -6,9 +6,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Content = ({ selectedTask, puzzleData }) => {
-  const [videoWatchCount, setVideoWatchCount] = useState(0);
-  const [puzzleButtonClickCount, setPuzzleButtonClickCount] = useState(0);
-  const [puzzleCounts, setPuzzleCounts] = useState({});
+  // const [videoWatchCount, setVideoWatchCount] = useState(0);
+  // const [puzzleButtonClickCount, setPuzzleButtonClickCount] = useState(0);
+  const [puzzleCounts, setPuzzleCounts] = useState(puzzleData);
   const [isWatchedCompletely, setIsWatchedCompletely] = useState(false);
   const [isVideoStarted, setIsVideoStarted] = useState(false);
   const [selectedPuzzle, setSelectedPuzzle] = useState(null);
@@ -64,6 +64,21 @@ const Content = ({ selectedTask, puzzleData }) => {
       JSON.stringify(incompletedPuzzles)
     );
   }, [incompletedPuzzles]);
+  useEffect(() => {
+    localStorage.setItem("Puzzlecounts", JSON.stringify(puzzleCounts));
+  }, [puzzleCounts]);
+  useEffect(() => {
+    if (puzzleData) {
+      const initialCounts = {};
+      puzzleData.forEach((puzzle) => {
+          initialCounts[puzzle.puzzle_id] = {
+              videoWatchCount: puzzle.video_count || 0,
+              buttonClickCount: puzzle.puzzle_count || 0
+          };
+      });
+      setPuzzleCounts(initialCounts);
+    }
+  }, [puzzleData]);
 
   useEffect(() => {
     if (nextPuzzleId) {
@@ -179,6 +194,14 @@ const Content = ({ selectedTask, puzzleData }) => {
             },
           }));
         }
+        const updatedCounts = {
+          ...puzzleCounts,
+          [puzzleId]: {
+            ...puzzleCounts[puzzleId],
+            buttonClickCount: (puzzleCounts[puzzleId]?.buttonClickCount || 0) + 1,
+          },
+        };
+        setPuzzleCounts(updatedCounts);
     } else {
       setPopupMessage("Puzzle is Locked.Please Upgrade your plan to access it");
     }
@@ -444,7 +467,7 @@ const Content = ({ selectedTask, puzzleData }) => {
                   {/* Render tooltip for the first button */}
                   <div className="tooltip-content">
                       <div>{puzzle.puzzle_name}</div>
-                      <div>Video Count: {puzzle.video_count}</div>
+                      <div>Puzzle Count: {puzzleCounts[puzzle.puzzle_id]?.buttonClickCount || 0}</div>
                     </div>
                 </div>
               )}
@@ -453,7 +476,7 @@ const Content = ({ selectedTask, puzzleData }) => {
                   {/* Render tooltip for the first button */}
                   <div className="tooltip-content">
                     <div>{puzzle.puzzle_name}</div>
-                    <div>Video Count: {puzzle.video_count}</div>
+                    <div>Puzzle Count: {puzzleCounts[puzzle.puzzle_id]?.buttonClickCount || 0}</div>
                   </div>
                 </div>
               )}
@@ -461,7 +484,7 @@ const Content = ({ selectedTask, puzzleData }) => {
                 <div className="tooltips">
                   <div className="tooltips-content">
                     <div>{puzzle.puzzle_name}</div>
-                    <div>Video Count: {puzzle.video_count}</div>
+                    <div>Puzzle Count: {puzzleCounts[puzzle.puzzle_id]?.buttonClickCount || 0}</div>
                   </div>
                 </div>
               )}
@@ -469,7 +492,7 @@ const Content = ({ selectedTask, puzzleData }) => {
                 <div className="tooltip-right"> {/* Render tooltip to the right */}
                   <div className="tooltip-content">
                     <div>{puzzle.puzzle_name}</div>
-                    <div>Video Count: {puzzle.video_count}</div>
+                    <div>Puzzle Count: {puzzleCounts[puzzle.puzzle_id]?.buttonClickCount || 0}</div>
                   </div>
                 </div>
               )}
@@ -477,7 +500,7 @@ const Content = ({ selectedTask, puzzleData }) => {
                 <div className="tooltip-left"> {/* Render tooltip to the left */}
                   <div className="tooltip-content">
                     <div>{puzzle.puzzle_name}</div>
-                    <div>Video Count: {puzzle.video_count}</div>
+                    <div>Puzzle Count: {puzzleCounts[puzzle.puzzle_id]?.buttonClickCount || 0}</div>
                   </div>
                 </div>
               )}
@@ -485,7 +508,7 @@ const Content = ({ selectedTask, puzzleData }) => {
                 <div className="tooltip"> {/* Render tooltip to the right */}
                   <div className="tooltip-content">
                     <div>{puzzle.puzzle_name}</div>
-                    <div>Video Count: {puzzle.video_count}</div>
+                    <div>Puzzle Count: {puzzleCounts[puzzle.puzzle_id]?.buttonClickCount || 0}</div>
                   </div>
                 </div>
               )}
@@ -645,7 +668,7 @@ const Content = ({ selectedTask, puzzleData }) => {
           <div className="header-container">
             <h2 className="question-Name">Puzzle No: {puzzle_id_get_it()}</h2>
             <b>
-              <h2 className="question-code">
+              <h2 className="questions-code">
                 Interview No: {selectedPuzzleDetails.data.interview_code}
               </h2>
             </b>
@@ -659,9 +682,9 @@ const Content = ({ selectedTask, puzzleData }) => {
                 {selectedPuzzleDetails.data.question}
               </div>
               <div className="question-code">
-                <pre>
-                  {selectedPuzzleDetails.data.code.replace(/\r\n/g, "\n")}
-                </pre>
+                {selectedPuzzleDetails.data.code.split('\n').map((statement, index) => (
+                  <div key={index}>{statement.trim()}{index < selectedPuzzleDetails.data.code.split(',').length - 1 && ','}</div>
+                 ))}
               </div>
             </div>
           </div>
