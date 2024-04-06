@@ -330,7 +330,7 @@ def get_puzzle_question(request):
             # Check if puzzle is completed by the user
             if puzzle.completion_status:
                 # return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'puzzle_answer': puzzle.puzzle_answer})
-                return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'puzzle_answer': "puzzle_answer"})
+                return JsonResponse({'status': True, 'puzzle_question': puzzle.puzzle_question, 'options': puzzle.options,"correct_answer" :puzzle.correct_answer})
 
             else:
                 return JsonResponse({'status': False, 'message': "Puzzle not completed"})

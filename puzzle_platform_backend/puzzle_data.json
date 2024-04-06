@@ -11,7 +11,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-02",
@@ -21,7 +23,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-03",
@@ -31,7 +35,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-04",
@@ -41,7 +47,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-05",
@@ -51,7 +59,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-06",
@@ -61,7 +71,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-07",
@@ -71,7 +83,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-08",
@@ -81,7 +95,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-09",
@@ -91,7 +107,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-10",
@@ -101,7 +119,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-11",
@@ -111,7 +131,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-12",
@@ -121,7 +143,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-13",
@@ -131,7 +155,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-14",
@@ -141,7 +167,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T01-15",
@@ -151,7 +179,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "EASY",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-01",
@@ -161,7 +191,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-02",
@@ -171,7 +203,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-03",
@@ -181,7 +215,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-04",
@@ -191,7 +227,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-05",
@@ -201,7 +239,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-06",
@@ -211,7 +251,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-07",
@@ -221,7 +263,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-08",
@@ -231,7 +275,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-09",
@@ -241,7 +287,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-10",
@@ -251,7 +299,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-11",
@@ -261,7 +311,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-12",
@@ -271,7 +323,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-13",
@@ -281,7 +335,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-14",
@@ -291,7 +347,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T02-15",
@@ -301,7 +359,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "MEDIUM",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-01",
@@ -311,7 +371,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-02",
@@ -321,7 +383,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-03",
@@ -331,7 +395,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-04",
@@ -341,7 +407,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-05",
@@ -351,7 +419,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-06",
@@ -361,7 +431,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-07",
@@ -371,7 +443,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-08",
@@ -381,7 +455,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-09",
@@ -391,7 +467,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-10",
@@ -401,7 +479,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-11",
@@ -411,7 +491,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-12",
@@ -421,7 +503,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-13",
@@ -431,7 +515,9 @@
           "video_name": "three.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-14",
@@ -441,7 +527,9 @@
           "video_name": "one.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T01-T03-15",
@@ -451,7 +539,9 @@
           "video_name": "two.mp4",
           "interview_code": "002",
           "Level": "HARD",
-          "puzzle_price": "10"
+          "puzzle_price": "10",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         }
       ]
     },
@@ -466,7 +556,9 @@
           "video_name": "one.mp4",
           "interview_code": "001",
           "Level": "MEDIUM",
-          "puzzle_price": "20"
+          "puzzle_price": "20",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T02-T01-02",
@@ -476,7 +568,9 @@
           "video_name": "two.mp4",
           "interview_code": "001",
           "Level": "MEDIUM",
-          "puzzle_price": "20"
+          "puzzle_price": "20",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T02-T01-03",
@@ -486,7 +580,9 @@
           "video_name": "three.mp4",
           "interview_code": "001",
           "Level": "MEDIUM",
-          "puzzle_price": "20"
+          "puzzle_price": "20",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T02-T01-04",
@@ -496,7 +592,9 @@
           "video_name": "one.mp4",
           "interview_code": "001",
           "Level": "MEDIUM",
-          "puzzle_price": "20"
+          "puzzle_price": "20",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T02-T01-05",
@@ -506,7 +604,9 @@
           "video_name": "two.mp4",
           "interview_code": "001",
           "Level": "MEDIUM",
-          "puzzle_price": "20"
+          "puzzle_price": "20",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         }
       ]
     },
@@ -521,7 +621,9 @@
           "video_name": "one.mp4",
           "interview_code": "001",
           "Level": "HARD",
-          "puzzle_price": "30"
+          "puzzle_price": "30",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T03-T01-02",
@@ -531,7 +633,9 @@
           "video_name": "two.mp4",
           "interview_code": "001",
           "Level": "HARD",
-          "puzzle_price": "30"
+          "puzzle_price": "30",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T03-T01-03",
@@ -541,7 +645,9 @@
           "video_name": "three.mp4",
           "interview_code": "001",
           "Level": "HARD",
-          "puzzle_price": "30"
+          "puzzle_price": "30",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T03-T01-04",
@@ -551,7 +657,9 @@
           "video_name": "one.mp4",
           "interview_code": "001",
           "Level": "HARD",
-          "puzzle_price": "30"
+          "puzzle_price": "30",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         },
         {
           "puzzle_id": "T03-T01-05",
@@ -561,7 +669,9 @@
           "video_name": "two.mp4",
           "interview_code": "001",
           "Level": "HARD",
-          "puzzle_price": "30"
+          "puzzle_price": "30",
+          "puzzle_options": ["True", "False", "null", "None of the above"],
+          "correct_answer": "True"
         }
       ]
     }

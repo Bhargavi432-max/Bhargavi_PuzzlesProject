@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.conf import settings
 import os
 import json
-from .models import UserDataTableStatus,Admin,CustomUser,DataTable
+from .models import UserDataTableStatus,Admin,CustomUser,DataTable,PlanTable
 
 # View for reading data in the JSON file.
 def read_json_file_view(request):
@@ -15,6 +15,34 @@ def read_json_file_view(request):
         #hello
         # Get admin instance
         admin = Admin.objects.get(admin_email=admin_email)
+
+        plans_data = [
+    {
+        "plan_type": "FREE",
+        "plan_price": 0,
+        "benefits": "Five questions limit in Task-01.\nLimited features and content.\nNo cost.\nBasic introduction to the platform.\nEntry-level access to puzzles."
+    },
+    {
+        "plan_type": "BASIC",
+        "plan_price": 9.99,
+        "benefits": "Sequential puzzle traversal.\nMore puzzles and features.\nModerate subscription fee.\nStructured puzzle progression.\nIdeal for guided puzzle-solving."
+    },
+    {
+        "plan_type": "PREMIUM",
+        "plan_price": 19.99,
+        "benefits": "Full feature access.\nFree question selection.\nTask-to-task mobility.\nUnrestricted puzzle access.\nMaximum flexibility."
+    }
+]
+        # Create plans based on the provided data
+        for plan_data in plans_data:
+            plan_type = plan_data['plan_type']
+            plan_price = plan_data['plan_price']
+            benefits = plan_data['benefits']
+            # Check if plan already exists, if not, create it
+            PlanTable.objects.get_or_create(
+                plan_type=plan_type,
+                defaults={'plan_price': plan_price, 'benefits': benefits}
+            )
         
         # Define path for extra puzzle videos
         video_extra_path ='puzzle_frontend/src/videos/'
@@ -35,6 +63,8 @@ def read_json_file_view(request):
                 puzzle_interview_code = puzzle['interview_code']
                 level = puzzle['Level']
                 puzzle_price = puzzle['puzzle_price']
+                puzzle_options = puzzle['puzzle_options']
+                correct_answer = puzzle['correct_answer']
 
                 # Create DataTable instance for each puzzle
                 DataTable.objects.create(
@@ -47,7 +77,9 @@ def read_json_file_view(request):
                     puzzle_code=puzzle_code,
                     puzzle_interview_code=puzzle_interview_code,
                     level=level,
-                    puzzle_price=puzzle_price
+                    puzzle_price=puzzle_price,
+                    options=puzzle_options,
+                    correct_answer=correct_answer
                 )
         
         # Retrieve all puzzles from DataTable
@@ -67,7 +99,8 @@ def read_json_file_view(request):
                         user=user,
                         data_table=puzzle,
                         puzzle_status='notstarted',
-                        task_status='notstarted'
+                        task_status='notstarted',
+                        puzzle_locked=True,
                     )
 
         # Return success response with data
