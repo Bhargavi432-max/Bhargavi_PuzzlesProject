@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import useRazorpay from "react-razorpay";
 import { FaCheck } from "react-icons/fa";
 import def from "./defualtImage.jpg";
+import WalletIcon from "./Images/Wallet.png";
 
 function Wallet() {
   const [Razorpay] = useRazorpay();
@@ -19,6 +20,14 @@ function Wallet() {
     fetchAllPlans();
     fetchUserInfo();
   }, []);
+  const handleWalletIconClick = () => {
+    // Function to be called when clicking on the wallet icon
+    localStorage.setItem('activePage', "Wallet");
+    // Refresh the page
+    window.location.reload();
+    console.log("Wallet icon clicked!");
+    // Add your logic here
+  };
 
   const fetchUserData = () => {
     const email = localStorage.getItem("email"); // Assuming you store user email in localStorage
@@ -99,7 +108,7 @@ function Wallet() {
     if (!userEmail) {
       setError("User email not found");
       return;
-    }
+    } 
 
     // Now you can store the user's email and the plan price in variables or state
     // For example:
@@ -202,6 +211,7 @@ function Wallet() {
           <div className="user-subdetails">
             <div className="username">Hello, {userData.name}</div>
             <div className="wallet-balance">
+              <img src={WalletIcon} alt="Wallet" onClick={handleWalletIconClick}></img>
               <span className="text">Wallet Balance</span>
               <br />
               {userData.wallet}

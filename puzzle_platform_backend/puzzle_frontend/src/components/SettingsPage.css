@@ -106,3 +106,16 @@
     flex-grow: 1; /* Allow the content to occupy remaining space */
     overflow-y: auto; /* Add scrollbar if content overflows */
 }
+.save-button.disabled {
+    background-color: transparent;
+    border: 1px solid #0000005e; /* White border */
+    color: #00000036; /* White text */
+    cursor: not-allowed; /* Show not-allowed cursor */
+  }
+  .cancel-button.disabled {
+    background-color: transparent;
+    border: 1px solid #0000005e; /* White border */
+    color: #00000036; /* White text */
+    cursor: not-allowed; /* Show not-allowed cursor */
+  }
+  

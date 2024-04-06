@@ -15,6 +15,10 @@
     background-color: #D3D8F9;
     margin-left: 30px;
 }
+.wallet-balance img{
+    height: 20px;
+    width: 20px;
+}
 
 .prof-image img {
     height: 90px;
@@ -29,7 +33,7 @@
 
 .user-subdetails {
     display: flex;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .username {
@@ -47,7 +51,7 @@
     font-size: 25px;
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 500;
-    margin-right: 100px; /* Adjust as needed */
+    margin-right: 90px; /* Adjust as needed */
 }
 
 .text {
