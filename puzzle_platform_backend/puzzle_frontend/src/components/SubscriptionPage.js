@@ -212,14 +212,14 @@ function Wallet() {
             <div className="username">Hello, {userData.name}</div>
             <div className="wallet-balance">
               <img src={WalletIcon} alt="Wallet" onClick={handleWalletIconClick}></img>
-              <span className="text">Wallet Balance</span>
-              <br />
-              {userData.wallet}
+              <div className="wallet-details">
+                <span className="wallet-text">Wallet Balance</span>
+                <span>{userData.wallet}</span>
+              </div>
             </div>
             <div className="subscription">
-              <span className="text">Current Plan </span>
-              <br />
-              {userData.plan_type}
+              <span className="wallet-text">Current Plan </span>
+              <span>{userData.plan_type}</span>
             </div>
           </div>
         </div>

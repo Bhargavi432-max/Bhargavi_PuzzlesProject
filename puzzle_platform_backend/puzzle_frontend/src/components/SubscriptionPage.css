@@ -43,22 +43,38 @@
     font-weight: 600;
     margin-right: 100px; /* Adjust as needed */
 }
-
-.wallet-balance,
-.subscription {
+.subscription{
     display: flex;
     color: #686464;
     font-size: 25px;
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 500;
-    margin-right: 90px; /* Adjust as needed */
+    margin-right: 90px;
+    flex-direction: column;
+    margin-top: 7px;
+
 }
 
-.text {
-    color: #3B4AB4;
+.wallet-balance {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    color: #686464;
+    font-size: 25px;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-weight: 500;
+    margin-right: 90px;
+}
+.wallet-details {
+    display: flex;
+    flex-direction: column; /* Content inside wallet details as column */
+    margin-left: 10px; /* Adjust spacing between icon and details */
+  }
+  
+.wallet-text {
+    color: #3b4ab4;
+    width: 100px;
     font-size: 15px;
     font-family: "Inter-SemiBold", Helvetica;
-    left:0;
 }
 
 .message-con {
