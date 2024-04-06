@@ -217,6 +217,7 @@ function Wallet() {
                 <span>{userData.wallet}</span>
               </div>
             </div>
+            <div className="separate-line"></div>
             <div className="subscription">
               <span className="wallet-text">Current Plan </span>
               <span>{userData.plan_type}</span>

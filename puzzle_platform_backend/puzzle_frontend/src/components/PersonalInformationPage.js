@@ -4,7 +4,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import "./PersonalInformationPage.css";
 import def from "./defualtImage.jpg";
 
-const PersonalInformationPage = () => {
+const PersonalInformationPage = ({onEdit} ) => {
   const [userInfo, setUserInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,6 +71,8 @@ const PersonalInformationPage = () => {
 
   const handleEditClick = () => {
     setIsEditing(true);
+    // Call onEdit when editing is enabled
+    onEdit();
   };
 
   const handleInputChange = (e) => {

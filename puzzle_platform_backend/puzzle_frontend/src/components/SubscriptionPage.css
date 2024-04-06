@@ -62,7 +62,15 @@
     font-size: 25px;
     font-family: "Inter-SemiBold", Helvetica;
     font-weight: 500;
-    margin-right: 90px;
+    margin-right: 60px;
+}
+.separate-line{
+    /* display: flex; */
+    border-left: 4px solid #a09f9f; /* Add left border */
+    width: 0;
+    border-radius: 10px;
+    height: 70px; /* Adjust height as needed */
+    margin: 0 20px; /* Add margin for spacing */
 }
 .wallet-details {
     display: flex;
