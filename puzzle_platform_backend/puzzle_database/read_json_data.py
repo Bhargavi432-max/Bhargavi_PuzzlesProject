@@ -12,7 +12,7 @@ def read_json_file_view(request):
         
         # Get admin email
         admin_email = "admin@gmail.com"
-        
+        #hello
         # Get admin instance
         admin = Admin.objects.get(admin_email=admin_email)
         
