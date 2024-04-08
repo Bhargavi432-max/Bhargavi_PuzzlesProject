@@ -63,7 +63,6 @@ def mark_puzzle_status(request):
             video_count = data.get('video_count')
             puzzle_status = data.get('puzzle_status').lower()            
             time_spent = data.get('time_spent')
-
             # Retrieving user and puzzle information
             user = CustomUser.objects.get(email=user_email)
             puzzle = DataTable.objects.get(task_id=task_id, puzzle_id=puzzle_id)
@@ -73,27 +72,21 @@ def mark_puzzle_status(request):
             # Updating puzzle status counts and saving changes
             status.puzzle_count += puzzle_count
             status.video_count += video_count
-            status.save()
 
             # Calculating time spent on the puzzle
             hours, minutes, seconds_with_milliseconds = time_spent.split(":")
             seconds, milliseconds = seconds_with_milliseconds.split(".")
-            hours = int(hours)
-            minutes = int(minutes)
-            seconds = int(seconds)
-            total_seconds = (hours * 3600) + (minutes * 60) + int(seconds)
+            total_seconds = (int(hours) * 3600) + (int(minutes) * 60) + int(seconds)
             status.puzzle_status = puzzle_status
             status.time_spent = total_seconds
             status.save()
-
+            # Retrieving next puzzle ID
+            next_puzzle_id = DataTable.objects.filter(puzzle_id__gt=puzzle_id, task_id=task_id).order_by('puzzle_id').first()
             # Unlocking next puzzle for BASIC subscription users
-            if user_subscription_type == 'BASIC':
-                next_puzzle_id = DataTable.objects.filter(puzzle_id__gt=puzzle_id, task_id=task_id).order_by('puzzle_id').first()
-                if next_puzzle_id:
-                    next_status = UserDataTableStatus.objects.get(user=user, data_table=next_puzzle_id)
-                    next_status.puzzle_locked = False
-                    next_status.save()
-
+            if user_subscription_type == 'BASIC' and next_puzzle_id:
+                next_status = UserDataTableStatus.objects.get(user=user, data_table=next_puzzle_id)
+                next_status.puzzle_locked = False
+                next_status.save()
             # Updating task status if all puzzles in the task are completed or at least one is incomplete
             task_puzzles_count = DataTable.objects.filter(task_id=task_id).count()
             completed_puzzles_count = UserDataTableStatus.objects.filter(user=user, data_table__task_id=task_id, puzzle_status='completed').count()
@@ -109,8 +102,8 @@ def mark_puzzle_status(request):
                 for task_status in task_statuses:
                     task_status.task_status = 'incompleted'
                     task_status.save()
+            return JsonResponse({'status': True, 'message': 'Puzzle and Task status are updated', 'next_puzzle_id': next_puzzle_id.puzzle_id})
 
-            return JsonResponse({'status': True, 'message': 'Puzzle and Task status are updated'})
 
         except CustomUser.DoesNotExist:
             return JsonResponse({'status': False, 'message': 'User not found'})
@@ -120,7 +113,7 @@ def mark_puzzle_status(request):
             return JsonResponse({'status': False, 'message': 'UserDataTableStatus not found'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
-    
+
 # View for retrieving puzzle access details.
 @csrf_exempt
 def get_puzzle_access(request):
