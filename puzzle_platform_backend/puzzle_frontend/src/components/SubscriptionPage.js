@@ -254,6 +254,7 @@ function Wallet() {
               <br />${plan.plan_price}
             </p>
             <button
+              className="subscription-button"
               onClick={() => handleSubscribe(plan.plan_type, plan.plan_price)}
             >
               Subscribe

@@ -138,6 +138,21 @@
 .plan button {
     margin-top: 10px;
 }
+.subscription-button{
+    width: 113px;
+    height: 39px;
+    padding: 9.726px 14.588px;
+    border-radius: 9.726px;
+    background: #3B4AB4;
+    box-shadow: 0px 12.157px 30.392px 0px rgba(55, 69, 87, 0.10);
+    border: #3B4AB4 1px solid;
+    color: var(--Color-White, #FFF);
+    font-family: Poppins;
+    font-size: 14.941px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
 .benefits{
     width:270px;
     font-family: "Inter-SemiBold", Helvetica;
