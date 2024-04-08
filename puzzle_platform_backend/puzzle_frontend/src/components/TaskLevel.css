@@ -18,12 +18,18 @@
 }
 .task-button-levels{
   border-radius: 47.656px;
-  padding: 4.266px 13.348px 5.748px 15.361px;
-  
+  padding: 5.266px 14.348px 6.748px 16.361px;
   border: 0.853px solid #B9B9B9;
+  justify-content: center;
   background: rgba(132, 128, 187, 0.15);
   box-shadow: 3.413px 3.413px 12.8px 0px rgba(234, 234, 234, 0.27), -1.312px -1.749px 3.06px 0px rgba(255, 255, 255, 0.15) inset;
-}
+  color: #6A6A6A;
+  text-shadow: 0.437px 0.437px 0.437px rgba(0, 0, 0, 0.25);
+  font-family: Poppins;
+  font-size: 12.8px;
+  font-style: normal;
+  font-weight: 400;
+  }
 .task-button-levels.active {
   border-radius: 47.656px;
   border: 0.853px solid #B9B9B9;
