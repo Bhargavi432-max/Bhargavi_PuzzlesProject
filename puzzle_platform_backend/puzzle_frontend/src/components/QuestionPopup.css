@@ -71,6 +71,7 @@
     font-weight: 500;
     flex-direction: column;
     justify-content: center;
+    transition: background-color 0.3s ease;
 }
 .option-button:hover{
     background-color:#3B4AB4; 
@@ -136,7 +137,15 @@
     font-size: 13px;
     font-style: normal;
     font-weight: 500;
+    transition: background-color 0.3s ease;
 }
+.option-button.correct {
+    background-color: #7fff7f; /* Green color for correct selection */
+  }
+  
+  .option-button.incorrect {
+    background-color: #ff7f7f; /* Red color for incorrect selection */
+  }
 /* Background blur */
 .question-popup-background {
     position: fixed;

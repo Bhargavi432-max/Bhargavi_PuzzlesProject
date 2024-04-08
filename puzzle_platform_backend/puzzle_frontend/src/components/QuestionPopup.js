@@ -6,6 +6,8 @@ const QuestionPopup = ({ email, puzzleId, taskId, onClose }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [nextButtonEnabled, setNextButtonEnabled] = useState(false);
   const [answerStatus, setAnswerStatus] = useState(null);
+  const [correctOption, setCorrectOption] = useState(null);
+  const [optionDisabled, setOptionDisabled] = useState(false);
 
   useEffect(() => {
     // Fetch question and options data
@@ -29,6 +31,7 @@ const QuestionPopup = ({ email, puzzleId, taskId, onClose }) => {
       })
       .then((data) => {
         setQuestionData(data);
+        setCorrectOption(data.correct_answer);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -38,20 +41,20 @@ const QuestionPopup = ({ email, puzzleId, taskId, onClose }) => {
   const handleOptionSelect = (selectedOption) => {
     // Handle selected option
     setSelectedOption(selectedOption);
+    setOptionDisabled(true);
     setNextButtonEnabled(true);
   };
 
   const handleNextButtonClick = () => {
     // Check if the selected option is correct
-    const isCorrect = selectedOption === questionData.correct_answer;
+    const isCorrect = selectedOption === correctOption;
     setAnswerStatus(isCorrect ? "correct" : "incorrect");
+    setOptionDisabled(false); 
+    
   };
-  const handleContinueButtonClick = () => {
-    // Handle continue button click
-    // You can navigate to the next puzzle here
-    console.log("redirectiong to....");
-    onClose(selectedOption === questionData.correct_answer);  
-  };
+  const handleContinueButtonClick=() =>{
+      onClose(selectedOption === questionData.correct_answer);
+  }
 
   return (
     <>
@@ -81,8 +84,15 @@ const QuestionPopup = ({ email, puzzleId, taskId, onClose }) => {
               {questionData?.options.map((option, index) => (
                 <button
                   key={index}
-                  className="option-button"
+                  className={`option-button ${
+                    selectedOption === option
+                      ? selectedOption === correctOption
+                        ? "correct"
+                        : "incorrect"
+                      : ""
+                  }`}
                   onClick={() => handleOptionSelect(option)}
+                  disabled={optionDisabled}
                 >
                   {option}
                 </button>

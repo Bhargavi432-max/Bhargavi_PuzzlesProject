@@ -425,6 +425,7 @@ const Content = ({ selectedTask, puzzleData }) => {
   };
   const handleVideoEnd = () => {
     setShowQuestionPopup(true);
+    console.log("videotoquestion");
     
   };
   const handleVideoSeeking = (e) => {
