@@ -1,29 +1,30 @@
-.task-level-container {
+.tasks-levels-container {
   width: calc(100vw - 200px);
   height: 100vh;
   /* overflow: hidden; */
 }
-.task-level-container .button-container {
+.tasks-levels-container .tasklevels-button-container {
   white-space: nowrap;
   overflow-x: auto;
   padding: 20px;
 }
 
-.task-level-container .button-container::-webkit-scrollbar {
+.tasks-levels-container .tasklevels-button-container::-webkit-scrollbar {
   display: none;
 }
 
-.task-level-container .button-container button {
+.tasks-levels-container .tasklevels-button-container button {
   margin-right: 10px;
 }
-.button-level{
+.task-button-levels{
   border-radius: 47.656px;
+  padding: 4.266px 13.348px 5.748px 15.361px;
+  
   border: 0.853px solid #B9B9B9;
   background: rgba(132, 128, 187, 0.15);
-  color: rgb(24, 24, 24);
   box-shadow: 3.413px 3.413px 12.8px 0px rgba(234, 234, 234, 0.27), -1.312px -1.749px 3.06px 0px rgba(255, 255, 255, 0.15) inset;
 }
-.button-level.active {
+.task-button-levels.active {
   border-radius: 47.656px;
   border: 0.853px solid #B9B9B9;
   background: #463EBB;

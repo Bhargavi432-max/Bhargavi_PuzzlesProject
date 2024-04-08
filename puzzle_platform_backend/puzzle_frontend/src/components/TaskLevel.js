@@ -67,11 +67,11 @@ function TaskLevel() {
   };
 
   return (
-    <div className="task-level-container">
-      <div className="button-container">
+    <div className="tasks-levels-container">
+      <div className="tasklevels-button-container">
         {[...Array(25)].map((_, index) => (
           <button
-            className={`button-level${activeButton === index ? " active" : ""}`} // Apply 'active' class if the button is active
+            className={`task-button-levels${activeButton === index ? " active" : ""}`} // Apply 'active' class if the button is active
             key={index}
             onClick={() => handleClick(index + 1, index)}
           >
