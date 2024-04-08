@@ -50,7 +50,7 @@ const QuestionPopup = ({ email, puzzleId, taskId, onClose }) => {
     // Handle continue button click
     // You can navigate to the next puzzle here
     console.log("redirectiong to....");
-    onClose(); 
+    onClose(selectedOption === questionData.correct_answer);  
   };
 
   return (

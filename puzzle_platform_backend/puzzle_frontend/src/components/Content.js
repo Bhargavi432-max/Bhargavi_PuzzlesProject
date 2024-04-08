@@ -292,13 +292,13 @@ const Content = ({ selectedTask, puzzleData }) => {
       .map((val) => (val < 10 ? `0${val}` : val))
       .join(":");
   };
-  const handleCloseQuestionPopup = () => {
+  const handleCloseQuestionPopup = (isCorrect) => {
     // Function to handle closing the QuestionPopup
     setShowQuestionPopup(false);
-  };
-  const handleVideoEnd = () => {
-    setShowQuestionPopup(true);
-    const currentDateTime = new Date();
+    if (isCorrect) {
+      // If answer is correct, navigate to the next puzzle
+      console.log("Answer is correct. Navigating to the next puzzle...");
+      const currentDateTime = new Date();
     const endTime =
       currentDateTime.toLocaleDateString("en-US", {
         year: "numeric",
@@ -365,7 +365,7 @@ const Content = ({ selectedTask, puzzleData }) => {
       .then((data) => {
         console.log("nextpuzzle:",data); // Log the response from the backend
         setNextPuzzleId(data.next_puzzle_id);
-        console.log({nextPuzzleId});
+        console.log(nextPuzzleId);
         if (nextPuzzleId) {
           handleDifficultyBoxButtonClick(nextPuzzleId);
         }
@@ -416,6 +416,16 @@ const Content = ({ selectedTask, puzzleData }) => {
       .catch((error) => {
         console.error("Error:", error);
       });
+      // Add your navigation logic here
+    } else {
+      // If answer is incorrect, stay on the same puzzle
+      console.log("Answer is incorrect. Staying on the same puzzle.");
+      // You can handle this scenario as per your requirement
+    }
+  };
+  const handleVideoEnd = () => {
+    setShowQuestionPopup(true);
+    
   };
   const handleVideoSeeking = (e) => {
     // Prevent seeking forward by setting the current time back to the previous time
