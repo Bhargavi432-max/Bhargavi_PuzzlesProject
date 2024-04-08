@@ -55,7 +55,7 @@
     border: 1px solid white; 
   }
   
-  button {
+  .contactus-button {
     /* Add styles for the submit button */
     background-color: #274A99;
     color:white;

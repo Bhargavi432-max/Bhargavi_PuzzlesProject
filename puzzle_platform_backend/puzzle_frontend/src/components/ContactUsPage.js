@@ -97,7 +97,7 @@ function ContactUsPage() {
               required
             />
           </div>
-          <button type="submit">Submit</button>
+          <button className="contactus-button" type="submit">Submit</button>
         </form>
       </div>
       <ToastContainer />

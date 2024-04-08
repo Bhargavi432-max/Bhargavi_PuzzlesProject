@@ -363,8 +363,9 @@ const Content = ({ selectedTask, puzzleData }) => {
         }
       })
       .then((data) => {
-        console.log(data); // Log the response from the backend
+        console.log("nextpuzzle:",data); // Log the response from the backend
         setNextPuzzleId(data.next_puzzle_id);
+        console.log({nextPuzzleId});
         if (nextPuzzleId) {
           handleDifficultyBoxButtonClick(nextPuzzleId);
         }
@@ -409,7 +410,7 @@ const Content = ({ selectedTask, puzzleData }) => {
         }
       })
       .then((data) => {
-        console.log(data); // Log the response from the backend
+        console.log("log:",data); // Log the response from the backend
         // Move to the next puzzle if the nextPuzzleId is set
       })
       .catch((error) => {
