@@ -273,6 +273,7 @@ const Content = ({ selectedTask, puzzleData }) => {
     setStartTime(startTime);
     setIsVideoStarted(true);
     const currentPuzzleId = selectedPuzzle?.puzzle_id;
+    selectedPuzzle.puzzle_status = "incompleted";
     if (currentPuzzleId) {
       setPuzzleCounts((prevCounts) => ({
         ...prevCounts,
