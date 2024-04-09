@@ -7,6 +7,9 @@ import SettingsPage from './SettingsPage';
 import TaskLevel from './TaskLevel';
 import BalancePage from './BalancePage';
 
+// Import icon library and icons
+import { FaChartBar, FaTasks, FaQuestionCircle, FaWallet, FaRegAddressBook, FaCog } from 'react-icons/fa';
+
 function HomePage() {
   const [activePage, setActivePage] = useState('Dashboard');
 
@@ -23,14 +26,22 @@ function HomePage() {
   };
 
   const Navbar = () => {
-    const pages = ['Dashboard', 'Task Level', 'Help and Support', 'Wallet','Subscription', 'Settings'];
+    const pages = [
+      { name: 'Dashboard', icon: <FaChartBar /> },
+      { name: 'Task Level', icon: <FaTasks /> },
+      { name: 'Help and Support', icon: <FaQuestionCircle /> },
+      { name: 'Wallet', icon: <FaWallet /> },
+      { name: 'Subscription', icon: <FaRegAddressBook /> },
+      { name: 'Settings', icon: <FaCog /> }
+    ];
 
     return (
       <div className="home-nav">
         <ul>
           {pages.map(page => (
-            <li key={page} className={activePage === page ? 'active' : ''} onClick={() => handlePageChange(page)}>
-              {page}
+            <li key={page.name} className={activePage === page.name ? 'active' : ''} onClick={() => handlePageChange(page.name)}>
+              <span className="icon">{page.icon}</span>
+              {page.name}
             </li>
           ))}
         </ul>
@@ -47,7 +58,7 @@ function HomePage() {
       case 'Help and Support':
         return <Helpandsupport />;
       case 'Wallet':
-        return <BalancePage  />;
+        return <BalancePage />;
       case 'Subscription':
         return <Wallet />;
       case 'Settings':
