@@ -47,6 +47,7 @@
     align-items: center;
     border-radius: 7.772px;
     background: #3B4AB4;
+    border:#3B4AB4 1px solid ;
 }
 
 .cancel-button{
