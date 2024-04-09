@@ -81,7 +81,14 @@ def mark_puzzle_status(request):
             status.time_spent = total_seconds
             status.save()
             # Retrieving next puzzle ID
-            next_puzzle_id = DataTable.objects.filter(puzzle_id__gt=puzzle_id, task_id=task_id).order_by('puzzle_id').first()
+            # Retrieving next puzzle ID or first puzzle of the next task
+            next_puzzle_id = DataTable.objects.filter(task_id=task_id, puzzle_id__gt=puzzle_id).order_by('puzzle_id').first()
+            print("----------")
+            print(next_puzzle_id)
+            if not next_puzzle_id:
+                    next_puzzle_id = DataTable.objects.filter(task_id=task_id+1).order_by('puzzle_id').first()
+            print("----------")
+            print(next_puzzle_id)
             # Unlocking next puzzle for BASIC subscription users
             if user_subscription_type == 'BASIC' and next_puzzle_id:
                 next_status = UserDataTableStatus.objects.get(user=user, data_table=next_puzzle_id)
