@@ -143,11 +143,11 @@ const PersonalInformationPage = ({onEdit} ) => {
               <img src={imagepath || def} alt="User" />
             </div>
             <div className="details-box">
-              <p>Username: {userInfo.username}</p>
-              <p>Email: {userInfo.email}</p>
-              <p>Education: {userInfo.education}</p>
+              <p>Username: <span className="details-user">{userInfo.username}</span></p>
+              <p>Email:<span className="details-user"> {userInfo.email}</span></p>
+              <p>Education:<span className="details-user"> {userInfo.education}</span></p>
               {userInfo.collegeName && (
-                <p>College Name: {userInfo.collegeName}</p>
+                <p>College Name:<span className="details-user"> {userInfo.collegeName}</span></p>
               )}
             </div>
           </div>
@@ -206,7 +206,7 @@ const PersonalInformationPage = ({onEdit} ) => {
                 />
               </div>
             </div>
-            <button type="submit" disabled={loading}>
+            <button className="personal-save "type="submit" disabled={loading}>
               Save
             </button>
             {error && <p className="error-message">{error}</p>}

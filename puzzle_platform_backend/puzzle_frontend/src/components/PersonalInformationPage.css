@@ -21,13 +21,28 @@
 }
 .text-personal{
   font-family: "Acme-Regular", Helvetica;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 25px;
   margin-bottom: 40px;
 }
 .details-container {
   display: flex;
   align-items: center;
+}
+.personal-save{
+  padding: 10.103px 31.935px 9.201px 29.542px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7.772px;
+  background: #3B4AB4;
+  border: #3B4AB4 1px solid;
+  color: #FFF;
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 17.098px; 
 }
 
 .person-image {
@@ -60,6 +75,12 @@ margin: 5px 0;
 margin-bottom: 20px;
 font-family: "Acme-Regular", Helvetica;
 font-weight: 700;
+}
+.details-user{
+  margin: 5px 0;
+  margin-bottom: 20px;
+  font-family: "Acme-Regular", Helvetica;
+  font-weight: 500;
 }
 .form-group {
 display: flex;
