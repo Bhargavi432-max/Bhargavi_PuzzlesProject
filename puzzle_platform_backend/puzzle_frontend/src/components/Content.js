@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import LockIcon from "./Images/Vector.png";
-import "./Content.css";
+import "./CSSFiles/Content.css";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import QuestionPopup from "./QuestionPopup.js";
+import QuestionPopup from "./JSFiles/QuestionPopup.js";
 
 const Content = ({ selectedTask, puzzleData }) => {
   // const [videoWatchCount, setVideoWatchCount] = useState(0);
