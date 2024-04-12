@@ -3,9 +3,9 @@ import json
 import random
 from django.conf import settings
 from django.http import JsonResponse
-from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
+from puzzle_platform_backend.email_sender import send_email
 from .models import CustomUser,PlanTable,Subscription,UserProfile
 
 # This function handles the user registration.
@@ -50,53 +50,9 @@ def register_user(request):
                 is_active=False
             )
 
-            # Email message content with OTP
-            html_message = f"""
-                <html>
-                    <head>
-                        <style>
-                            body {{
-                                font-family: 'Arial', sans-serif;
-                                background-color: #f4f4f4;
-                                color: #333;
-                            }}
-                            .container {{
-                                max-width: 600px;
-                                margin: 0 auto;
-                                padding: 20px;
-                                background-color: #fff;
-                                border-radius: 5px;
-                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                            }}
-                            .logo {{
-                                max-width: 100px;
-                                height: auto;
-                                margin-bottom: 20px;
-                            }}
-                            .otp-message {{
-                                font-size: 16px;
-                                color: #333;
-                                margin-bottom: 20px;
-                            }}
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <p class="otp-message">Dear user, your OTP for account activation at T-Machine School of Python is: <strong>{otp}</strong></p>
-                        </div>
-                    </body>
-                </html>
-                """
-
             # Send email with OTP for account activation
-            send_mail(
-                'Account Activation OTP',
-                'Plain text version of the message (not displayed in HTML-enabled clients)',
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-                fail_silently=False,
-                html_message=html_message,
-            )
+            send_email('Account Activation OTP','Account Activation',[email],username,otp)
+
             return JsonResponse({'status': True, 'message': 'User registered successfully. Please check your email for OTP.'})
         except json.JSONDecodeError:
             return JsonResponse({'status': False, 'message': 'Invalid JSON format in the request body'}, status=400)

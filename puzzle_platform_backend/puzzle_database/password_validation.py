@@ -3,10 +3,10 @@ import random
 from .models import CustomUser
 from django.conf import settings
 from django.http import JsonResponse
-from django.core.mail import send_mail
 from .authentication import authenticate_user
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
+from puzzle_platform_backend.email_sender import send_email
 
 
 # View for changing user password.
@@ -52,12 +52,8 @@ def forgot_password(request):
         user.otp = otp
         user.save()
 
-        # Send OTP to user's email
-        subject = 'Password Reset OTP'
-        message = f'Your OTP for password reset is: {otp}'  
-        email_from = settings.DEFAULT_FROM_EMAIL
-        recipient_list = [email]
-        send_mail(subject, message, email_from, recipient_list)
+        # Send OTP to user's email for password reset
+        send_email('Password Reset OTP','Password Reset',[email],user.username,otp)
 
         return JsonResponse({'status': True, 'message': 'OTP sent to your email. Please check your inbox.'})
     else:

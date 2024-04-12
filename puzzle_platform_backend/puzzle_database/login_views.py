@@ -3,8 +3,8 @@ import random
 from .models import CustomUser
 from django.conf import settings
 from django.http import JsonResponse
-from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
+from puzzle_platform_backend.email_sender import send_email
 from .authentication import authenticate_user,authenticate_admin
 
 # This function handles user login.
@@ -68,12 +68,8 @@ def send_otp_via_email(request):
         otp = str(random.randint(100000, 999999))
         user.otp = otp
         user.save()
-
-        subject = '2-step verification OTP'
-        message = f'Your OTP for 2-step verification is: {otp}'  
-        email_from = settings.DEFAULT_FROM_EMAIL
-        recipient_list = [email]
-        send_mail(subject, message, email_from, recipient_list)
+        print([email])
+        print(send_email('2-step verification OTP','2-step verification',[email],user.username,otp))
 
         return JsonResponse({'status': True, 'message': 'OTP sent to your email. Please check your inbox.'})
     else:
