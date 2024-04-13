@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SideNavbar from "./SideNavbar";
-import Content from "C:/Users/Employee/Desktop/PuzzleProject/Bhargavi_PuzzlesProject/puzzle_platform_backend/puzzle_frontend/src/components/Content.js";
+import Content from "../Content.js";
 import { useNavigate } from "react-router-dom";
 import WelcomImage from "../Images/WelcomImage.png";
 import "../CSSFiles/PuzzlePage.css";

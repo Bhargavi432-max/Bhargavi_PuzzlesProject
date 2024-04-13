@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useRazorpay from "react-razorpay";
-import def from "C:/Users/Employee/Desktop/PuzzleProject/Bhargavi_PuzzlesProject/puzzle_platform_backend/puzzle_frontend/src/components/Images/defualtImage.jpg";
-import "C:/Users/Employee/Desktop/PuzzleProject/Bhargavi_PuzzlesProject/puzzle_platform_backend/puzzle_frontend/src/components/CSSFiles/BalancePage.css";
+import def from "../Images/defualtImage.jpg";
+import "../CSSFiles/BalancePage.css";
 
 const BalancePage = () => {
   const [balance, setBalance] = useState('');
