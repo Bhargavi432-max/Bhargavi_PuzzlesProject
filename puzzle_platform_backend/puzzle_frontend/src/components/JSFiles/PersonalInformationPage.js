@@ -46,6 +46,7 @@ const PersonalInformationPage = ({onEdit} ) => {
           setImagePath(path);
         } else {
           // Set default image path if no image is provided
+          //pushed
           setImagePath(def);
         }
         setUserInfo({
