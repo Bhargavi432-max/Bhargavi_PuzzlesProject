@@ -41,8 +41,8 @@ const PersonalInformationPage = ({onEdit} ) => {
         if (imageFileName) {
           const filePath = imageFileName;
           const filename = filePath.split("/").pop();
-          const path = require("../../profile_image" + filename);
-          console.log({path});
+          const path = require("../../profile_image/" + filename);
+          console.log(path);
           setImagePath(path);
         } else {
           // Set default image path if no image is provided
