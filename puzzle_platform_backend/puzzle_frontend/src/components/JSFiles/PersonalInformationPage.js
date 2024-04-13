@@ -37,16 +37,17 @@ const PersonalInformationPage = ({onEdit} ) => {
       if (data.success) {
         console.log({data});
         const userData = data.user_data;
-        const imageFileName = userData.profile_image;
-        if (imageFileName) {
-          const filePath = imageFileName;
-          const filename = filePath.split("/").pop();
-          const path = require(".../profile_image/" + filename);
-          setImagePath(path);
-        } else {
-          // Set default image path if no image is provided
-          setImagePath(def);
-        }
+        // const imageFileName = userData.profile_image;
+        // if (imageFileName) {
+        //   const filePath = imageFileName;
+        //   const filename = filePath.split("/").pop();
+        //   const path = require("./src/profile_image/" + filename);
+        //   console.log({path});
+        //   setImagePath(path);
+        // } else {
+        //   // Set default image path if no image is provided
+        //   setImagePath(def);
+        // }
         setUserInfo({
           username: userData.username,
           email: userData.email,
