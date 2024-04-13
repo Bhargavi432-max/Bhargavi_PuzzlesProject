@@ -6,7 +6,7 @@ function SinglePercentagePieChart({ easyPercentage, mediumPercentage, hardPercen
   const remainingEasyPercentage = 20;
   const remainingMediumPercentage = 70;
   const remainingHardPercentage = 10;
-
+  //comment
   // Define data for the outer pie chart
   const data = {
     labels: ["Completed", "Remaining"],
