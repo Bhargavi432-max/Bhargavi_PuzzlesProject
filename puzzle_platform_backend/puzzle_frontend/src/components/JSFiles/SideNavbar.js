@@ -37,7 +37,7 @@ const SideNavbar = ({
     <div className="Sidebar-container">
       <div className="sidenavbar" id="Scrollbar">
         {tasks.map((task) => (
-          <div key={task.id} className="button-container">
+          <div key={task.id} className="buttons-container">
             <button
               onClick={() => handleClick(task.id)}
               className={`task-button ${

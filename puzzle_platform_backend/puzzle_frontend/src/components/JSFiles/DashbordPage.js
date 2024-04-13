@@ -65,7 +65,7 @@ const DashboardPage = () => {
         if (imageFileName) {
           const filePath = imageFileName;
           const filename = filePath.split("/").pop();
-          const path = require("../profile_image/" + filename);
+          const path = require("../../profile_image/" + filename);
           setImagePath(path);
         } else {
           // Set default image path if no image is provided
